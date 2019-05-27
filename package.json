@@ -1,0 +1,48 @@
+{
+  "name": "blockade-pos",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "lint": "tslint src/**/*.{ts,tsx}",
+    "android-dev": "ENVFILE=./config/.env.dev react-native run-android",
+    "android-staging": "ENVFILE=./config/.env.staging react-native run-android",
+    "android-prod": "ENVFILE=./config/.env.production react-native run-android --variant=release",
+    "ios-dev": "ENVFILE=./config/.env.dev react-native run-ios",
+    "ios-staging": "ENVFILE=./config/.env.staging react-native run-ios",
+    "ios-prod": "ENVFILE=./config/.env.production react-native run-ios"
+  },
+  "dependencies": {
+    "@types/i18n-js": "^3.0.1",
+    "@types/lodash": "^4.14.132",
+    "i18n-js": "^3.2.2",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "react": "16.8.3",
+    "react-native": "0.59.8",
+    "react-native-config": "^0.11.7",
+    "react-native-gesture-handler": "^1.2.1",
+    "react-native-localize": "^1.1.2",
+    "react-native-sentry": "^0.43.1",
+    "react-native-vector-icons": "^6.4.2",
+    "react-navigation": "^3.11.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
+    "@types/react": "^16.8.18",
+    "@types/react-native": "^0.57.59",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "^0.54.1",
+    "react-native-typescript-transformer": "^1.2.12",
+    "react-test-renderer": "16.8.3",
+    "tslint": "^5.16.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.4.5"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
