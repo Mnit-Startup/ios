@@ -4,10 +4,16 @@ import _ from 'lodash';
 import i18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
 
+
 import {AppContainer} from './routes';
 import {AppNavigationScreenProps} from './app-navigation-props';
+import {AccountService, AccountServiceImpl} from './services';
+
 
 export default class App extends React.Component {
+
+  accountService: AccountService;
+
   readonly translationGetters = {
     en: () => require('../assets/locales/en.json'),
     de: () => require('../assets/locales/de.json'),
@@ -23,6 +29,8 @@ export default class App extends React.Component {
     console.disableYellowBox = true; // disable warning yellow message
 
     this.setLocale();
+
+    this.accountService = new AccountServiceImpl();
   }
 
   setLocale() {
@@ -61,9 +69,10 @@ export default class App extends React.Component {
   }
 
   getScreenProps(): AppNavigationScreenProps {
-    const {translate} = this;
+    const {translate, accountService} = this;
     return {
       translate,
+      accountService,
     };
   }
 

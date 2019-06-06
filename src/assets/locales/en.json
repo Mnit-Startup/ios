@@ -1,3 +1,23 @@
 {
-  "HELLO_WORLD": "Hello World"
+  "HELLO_WORLD": "Hello World en",
+  "SIGNIN_SCREEN": {
+    "SIGN_IN": "SIGN IN",
+    "SIGN_UP": "SIGN UP"
+  },
+  "SIGNUP_SCREEN": {
+    "SIGN_UP_SUCCESS": "Your account has been created. Please sign in to continue",
+    "PASSWORD": "PASSWORD",
+    "CONFIRM_PASSWORD": "CONFIRM PASSWORD",
+    "TERMS_OF_SERVICE": "By signing up, I agree to the Terms of Use",
+    "CREATE_ACCOUNT": "CREATE\nACCOUNT",
+    "ACCOUNT_TYPE": "ACCOUNT TYPE"
+  },
+  "EMAIL_INPUT_COMPONENT": {
+    "EMAIL_INPUT_TITLE": "EMAIL",
+    "INVALID_EMAIL": "Please specify a valid email to continue"
+  },
+  "PASSWORD_INPUT_COMPONENT": {
+    "INVALID_PASSWORD": "Please specify a valid password to continue",
+    "PASSWORD_MISMATCH": "Please ensure that confirm password match with the specified password."
+  }
 }
