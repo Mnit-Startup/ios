@@ -6,7 +6,7 @@ export const emailInputStyle = StyleSheet.create({
     paddingLeft: 15,
   },
   inputLabelText: {
-    color: '#bab8b8',
+    color: '#A3ADB4',
   },
   errorLabelContainer: {
     paddingLeft: 15,

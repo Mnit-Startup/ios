@@ -1,5 +1,5 @@
 {
-  "HELLO_WORLD": "Hello World en",
+  "no_internet": "We are unable to reach the network. Please ensure that you are connected to internet and try again.",
   "SIGNIN_SCREEN": {
     "SIGN_IN": "SIGN IN",
     "SIGN_UP": "SIGN UP"
@@ -11,6 +11,11 @@
     "TERMS_OF_SERVICE": "By signing up, I agree to the Terms of Use",
     "CREATE_ACCOUNT": "CREATE\nACCOUNT",
     "ACCOUNT_TYPE": "ACCOUNT TYPE"
+  },
+  "LOGIN_SCREEN": {
+    "LOGIN_SUCCESS": "You are Logged In",
+    "PASSWORD": "PASSWORD",
+    "SIGN_IN": "SIGN IN"
   },
   "EMAIL_INPUT_COMPONENT": {
     "EMAIL_INPUT_TITLE": "EMAIL",

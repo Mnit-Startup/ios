@@ -10,7 +10,7 @@ export const passwordInputStyle = StyleSheet.create({
     flexDirection: 'row',
   },
   inputLabelText: {
-    color: '#bab8b8',
+    color: '#A3ADB4',
   },
   errorLabelContainer: {
     paddingLeft: 15,

@@ -8,7 +8,7 @@ const button = {
   paddingRight: 15,
   borderRadius: 45,
   marginTop: 30,
-  backgroundColor: '#2288D9',
+  backgroundColor: '#2C8DDB',
   elevation: 8,
   flexDirection: 'row',
   width: 300,

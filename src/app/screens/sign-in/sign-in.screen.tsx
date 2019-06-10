@@ -30,7 +30,7 @@ export class SignInScreen extends React.Component<AppNavigationProps> {
           <View style={style.signInButtonContainer}>
           <Button
             type={'btn-primary'}
-            onPress={() => navigate('SignUp')}
+            onPress={() => navigate('LogIn')}
             text={translate('SIGNIN_SCREEN.SIGN_IN')}
           />
           </View>

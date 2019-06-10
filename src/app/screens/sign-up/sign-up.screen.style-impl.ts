@@ -5,8 +5,6 @@ interface SignUpScreenStyle {
   rootView: ViewStyle;
   header: ViewStyle;
   logo: ImageStyle;
-  companyName: TextStyle;
-  signUpForm: ViewStyle;
   inputLabel: TextStyle;
   forgotStyle: TextStyle;
   inputContainer: ViewStyle;
@@ -46,12 +44,6 @@ export const style = StyleSheet.create<SignUpScreenStyle>({
     height: 62,
     width: 200,
   },
-  companyName: {
-    color: 'red',
-  },
-  signUpForm: {
-    width: '80%',
-  },
   inputLabel: {
     fontSize: 16,
   },
@@ -63,11 +55,12 @@ export const style = StyleSheet.create<SignUpScreenStyle>({
   },
   input: {
     fontSize: 18,
-    borderBottomColor: 'gray',
+    borderBottomColor: '#A3ADB4',
     borderBottomWidth: 1,
     width: 300,
     padding: 10,
     paddingHorizontal: 15,
+    color: '#506C82',
   },
   errorStyle: {
     color: 'red',
@@ -83,7 +76,7 @@ export const style = StyleSheet.create<SignUpScreenStyle>({
     flexDirection: 'row',
   },
   termsOfUseText: {
-    color: '#bab8b8',
+    color: '#A3ADB4',
     fontSize: 18,
     fontWeight: '100',
     fontFamily: 'Times',
@@ -95,7 +88,7 @@ export const style = StyleSheet.create<SignUpScreenStyle>({
     paddingRight: 15,
     borderRadius: 45,
     marginTop: 30,
-    backgroundColor: '#2288D9',
+    backgroundColor: '#2C8DDB',
     elevation: 8,
     flexDirection: 'row',
     width: 300,
@@ -123,7 +116,7 @@ export const style = StyleSheet.create<SignUpScreenStyle>({
     paddingRight: 150,
   },
   buttonContainer: {
-    color: '#bab8b8',
+    color: '#A3ADB4',
   },
   listContainerStyle: {
     justifyContent: 'center',
@@ -149,12 +142,12 @@ export const style = StyleSheet.create<SignUpScreenStyle>({
     paddingRight: 3,
     paddingLeft: 3,
     paddingTop: 2,
-    backgroundColor: '#2288D9',
+    backgroundColor: '#2C8DDB',
     borderRadius: 2,
   },
   selectedOptionContainer: {
     marginTop: 15,
-    borderColor: '#bab8b8',
+    borderColor: '#A3ADB4',
     borderWidth: 1,
     width: 150,
     flexDirection: 'row',
