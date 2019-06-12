@@ -13,7 +13,6 @@
     "ACCOUNT_TYPE": "ACCOUNT TYPE"
   },
   "LOGIN_SCREEN": {
-    "LOGIN_SUCCESS": "You are Logged In",
     "PASSWORD": "PASSWORD",
     "SIGN_IN": "SIGN IN"
   },
@@ -24,5 +23,8 @@
   "PASSWORD_INPUT_COMPONENT": {
     "INVALID_PASSWORD": "Please specify a valid password to continue",
     "PASSWORD_MISMATCH": "Please ensure that confirm password match with the specified password."
-  }
+  },
+  "LOADING_ACCOUNT": "Loading account ...",
+  "BALANCES": "Balances",
+  "TRANSACTIONS": "Transactions"
 }

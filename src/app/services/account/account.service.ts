@@ -1,20 +1,14 @@
 import {ServiceResponse} from '../service.response';
+import {UserAccount} from '../../models';
+import {WalletBalanceList} from '../../models/wallet-balance-list';
 
 export interface AccountService {
-  /**
-   * Signs up a Consumer
-   */
-  createConusmerAccount(
-    email: string,
-    password: string,
-  ): Promise<ServiceResponse<void>>;
+  getDetails(
+      accountId: string,
+  ): Promise<ServiceResponse<UserAccount>>;
 
-  /**
-   * Signs up a Merchant
-   */
-  createMerchantAccount(
-    email: string,
-    password: string,
-  ): Promise<ServiceResponse<void>>;
-
+  getWalletBalance(
+    accountId: string,
+    walletAddress: string,
+  ): Promise<ServiceResponse<WalletBalanceList>>;
 }

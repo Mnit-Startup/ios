@@ -8,15 +8,18 @@ import * as RNLocalize from 'react-native-localize';
 import {AppContainer} from './routes';
 import {AppNavigationScreenProps} from './app-navigation-props';
 import {
-  AccountService,
-  AccountServiceImpl,
+  AccountsService,
+  AccountsServiceImpl,
   AuthService,
-  AuthServiceImpl} from './services';
+  AuthServiceImpl,
+  AccountService,
+  AccountServiceImpl} from './services';
 
 
 export default class App extends React.Component {
 
   accountService: AccountService;
+  accountsService: AccountsService;
   authService: AuthService;
 
   readonly translationGetters = {
@@ -35,8 +38,10 @@ export default class App extends React.Component {
 
     this.setLocale();
 
-    this.accountService = new AccountServiceImpl();
+    this.accountsService = new AccountsServiceImpl();
     this.authService = new AuthServiceImpl();
+
+    this.accountService = new AccountServiceImpl(this.authService);
   }
 
   setLocale() {
@@ -75,11 +80,12 @@ export default class App extends React.Component {
   }
 
   getScreenProps(): AppNavigationScreenProps {
-    const {translate, accountService, authService} = this;
+    const {translate, accountService, accountsService, authService} = this;
     return {
       translate,
-      accountService,
+      accountsService,
       authService,
+      accountService,
     };
   }
 

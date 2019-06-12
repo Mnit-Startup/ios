@@ -11,4 +11,7 @@ export interface AuthService {
     password: string,
   ): Promise<ServiceResponse<User>>;
 
+  getUser(): Promise<ServiceResponse<User>>;
+
+  logout(): Promise<ServiceResponse<void>>;
 }

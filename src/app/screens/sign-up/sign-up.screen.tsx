@@ -46,7 +46,7 @@ export class SignUpScreen extends React.Component<AppNavigationProps, SignUpScre
       onceSubmitted: true,
     });
     if (this.state.email.valid && this.state.passwordMatch) {
-      const accountService = this.getAccountService();
+      const accountService = this.getAccountsService();
         this.setState({
           componentState: ComponentViewState.LOADING,
         });
@@ -56,18 +56,19 @@ export class SignUpScreen extends React.Component<AppNavigationProps, SignUpScre
         } else {
           response = await accountService.createMerchantAccount(this.state.email.address, this.state.password.value);
         }
-        if (response.hasError()) {
+        if (response.hasData()
+        && response.data) {
+          this.setState({
+            componentState: ComponentViewState.LOADED,
+          });
+          Alert.alert(this.translate('SIGNUP_SCREEN.SIGN_UP_SUCCESS'));
+          this.props.navigation.navigate('LogIn');
+        } else {
           const msg = response.error || this.translate('no_internet');
           Alert.alert(msg);
           this.setState({
             componentState: ComponentViewState.ERROR,
           });
-        } else {
-          this.setState({
-            componentState: ComponentViewState.LOADED,
-          });
-          Alert.alert(this.translate('SIGNUP_SCREEN.SIGN_UP_SUCCESS'));
-          this.props.navigation.navigate('SignIn');
         }
     }
   }
@@ -108,8 +109,8 @@ export class SignUpScreen extends React.Component<AppNavigationProps, SignUpScre
     return this.props.screenProps.translate(key, null);
   }
 
-  getAccountService() {
-    return this.props.screenProps.accountService;
+  getAccountsService() {
+    return this.props.screenProps.accountsService;
   }
 
   onShow = () => {

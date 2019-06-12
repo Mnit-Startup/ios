@@ -37,8 +37,23 @@ export class AuthServiceImpl implements AuthService {
         role: response.data.role,
       }));
     } catch (e) {
-      return new ServiceResponse(undefined, AuthServiceImpl.parseError(e));
+      return new ServiceResponse<User>(undefined, AuthServiceImpl.parseError(e));
     }
   }
 
+  async getUser(): Promise<ServiceResponse<User>> {
+    const accountId = await AsyncStorage.getItem(AuthServiceImpl.ACCOUNT_ID);
+    const token = await AsyncStorage.getItem(AuthServiceImpl.TOKEN_KEY);
+    const role = await AsyncStorage.getItem(AuthServiceImpl.USER_ROLE);
+    return new ServiceResponse(new User({
+      account_id: accountId,
+      access_token: token,
+      role: role,
+    }));
+  }
+
+  async logout(): Promise<ServiceResponse<void>> {
+    await AsyncStorage.clear();
+    return new ServiceResponse();
+  }
 }

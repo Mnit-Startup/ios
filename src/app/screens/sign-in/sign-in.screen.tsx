@@ -10,10 +10,6 @@ export class SignInScreen extends React.Component<AppNavigationProps> {
     super(props);
   }
 
-  signIn() {
-
-  }
-
   render() {
 
     const {screenProps: {translate}, navigation: {navigate}} = this.props;

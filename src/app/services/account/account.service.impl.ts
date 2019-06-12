@@ -1,51 +1,34 @@
 import _ from 'lodash';
 import {AccountService} from './account.service';
-import Axios, {AxiosResponse} from 'axios';
-import Config from 'react-native-config';
+import {ApiServiceImpl} from '../api.service.impl';
+import {AuthService} from '..';
 import {ServiceResponse} from '../service.response';
+import {UserAccount} from '../../models';
+import {WalletBalanceList} from '../../models/wallet-balance-list';
 
-export class AccountServiceImpl implements AccountService {
+export class AccountServiceImpl extends ApiServiceImpl implements AccountService {
 
-  protected static parseError(response: AxiosResponse): string {
-    return _.get(response, 'response.data.errors[0].msg', '');
+  constructor(authService: AuthService) {
+    super(authService);
   }
 
-  async createConusmerAccount(
-    email: string,
-    password: string,
-  ):  Promise<ServiceResponse<void>> {
+  async getDetails(accountId: string): Promise<ServiceResponse<UserAccount>> {
     try {
-      const response = await Axios.create().post(`${Config.API_ENDPOINT}/accounts/register/consumer`, {
-        email: email,
-        password: password,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return new ServiceResponse();
+      const response = await this.get(`/account/${accountId}`);
+      const userAccount = new UserAccount(response.data);
+      return new ServiceResponse<UserAccount>(userAccount);
     } catch (e) {
-      return new ServiceResponse(undefined, AccountServiceImpl.parseError(e));
+      return new ServiceResponse<UserAccount>(undefined, ApiServiceImpl.parseError(e));
     }
   }
 
-  async createMerchantAccount(
-    email: string,
-    password: string,
-  ):  Promise<ServiceResponse<void>> {
+  async getWalletBalance(accountId: string, walletAddress: string): Promise<ServiceResponse<WalletBalanceList>> {
     try {
-      const response = await Axios.create().post(`${Config.API_ENDPOINT}/accounts/register/merchant`, {
-        email: email,
-        password: password,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return new ServiceResponse();
+      const response = await this.get(`/account/${accountId}/wallet/${walletAddress}/balance`);
+      const walletBalanceList = new WalletBalanceList(response.data);
+      return new ServiceResponse<WalletBalanceList>(walletBalanceList);
     } catch (e) {
-      return new ServiceResponse(undefined, AccountServiceImpl.parseError(e));
+      return new ServiceResponse<WalletBalanceList>(undefined, ApiServiceImpl.parseError(e));
     }
   }
-
 }

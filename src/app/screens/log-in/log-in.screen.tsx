@@ -69,8 +69,7 @@ export class LogInScreen extends React.Component<AppNavigationProps, LoginScreen
         this.setState({
           componentState: ComponentViewState.LOADED,
         });
-        Alert.alert(this.translate('LOGIN_SCREEN.LOGIN_SUCCESS'));
-        this.props.navigation.navigate('SignIn');
+        this.props.navigation.navigate('AuthLoading');
       } else {
         const msg = response.error || this.translate('no_internet');
         Alert.alert(msg);
