@@ -8,7 +8,8 @@ import {UserAccount} from '../../../models';
 import {DashboardScreenState} from './dashboard.screen.state';
 import {ComponentViewState} from '../../../component.state';
 import {CurrencyText} from '../../../components/currency-text/currency-text.component';
-import {BalancesList} from './balances.list';
+import {BalancesListView} from './balances.list';
+import {TransactionListView} from './transactions.list';
 
 export class ConsumerDashboardScreen extends React.Component<AppNavigationProps, DashboardScreenState> {
 
@@ -68,9 +69,9 @@ export class ConsumerDashboardScreen extends React.Component<AppNavigationProps,
 
     switch (route.key) {
     case 'balances':
-      return <BalancesList userAccount={userAccount} accountService={accountService} translate={translate}/>;
+      return <BalancesListView userAccount={userAccount} accountService={accountService} translate={translate}/>;
     case 'transactions':
-        return <View style={[styles.tab]} />;
+      return <TransactionListView userAccount={userAccount} accountService={accountService} translate={translate}/>;
     default:
       return null;
     }

@@ -1,26 +1,26 @@
-import _, {MemoizedFunction} from 'lodash';
-import React from 'react';
+import _, {MemoizedFunction} from '';
+import React from 'React';
 import {Text, View, ActivityIndicator, FlatList} from 'react-native';
 import {styles} from './dashboard.style-impl';
 import {ComponentViewState, ComponentState} from '../../../component.state';
-import {WalletBalanceList} from '../../../models/wallet-balance-list';
+import {TransactionList} from '../../../models/transaction-list';
 import {UserAccount} from '../../../models';
 import {AccountService} from '../../../services';
 import {CurrencyText} from '../../../components/currency-text/currency-text.component';
 import moment from 'moment';
 
-interface BalancesListProps {
+interface TransactionsListProps {
   userAccount: UserAccount;
   accountService: AccountService;
   translate: ((key: any, config?: any) => string) & MemoizedFunction;
 }
 
-interface BalancesListState extends ComponentState {
-  walletBalanceList?: WalletBalanceList;
+interface TransactionListState extends ComponentState {
+  transactionList?: TransactionList;
 }
 
-export class BalancesListView extends React.Component<BalancesListProps, BalancesListState> {
-  constructor(props: Readonly<BalancesListProps>) {
+export class TransactionListView extends React.Component<TransactionsListProps, TransactionListState> {
+  constructor(props: Readonly<TransactionsListProps>) {
     super(props);
     this.state = {
       componentState: ComponentViewState.DEFAULT,
@@ -35,12 +35,12 @@ export class BalancesListView extends React.Component<BalancesListProps, Balance
       componentState: ComponentViewState.LOADING,
     });
 
-    const response = await accountService.getWalletBalance(userAccount.getAccountId(), userAccount.getWalletAddress());
+    const response = await accountService.getTransactions(userAccount.getAccountId());
     if (response.hasData()
       && response.data) {
       this.setState({
         componentState: ComponentViewState.LOADED,
-        walletBalanceList: response.data,
+        transactionList: response.data,
       });
     } else {
       const msg = response.error || translate('no_internet');
@@ -51,23 +51,23 @@ export class BalancesListView extends React.Component<BalancesListProps, Balance
     }
   }
 
-  renderBalance = ({item}) => {
-    const dateStr = moment(item.updatedAt).format('MM/DD/YYYY');
+  renderTransaction = ({item}) => {
+    const dateStr = moment(item.paidOn).format('MM/DD/YYYY');
     return (
       <View style={styles.rowItem}>
         <View style={styles.rowDescription}>
-          <Text style={styles.rowTitle}>{item.description}</Text>
+          <Text style={styles.rowTitle}>{item.merchantName}</Text>
           <Text style={styles.rowSubtitle}>{dateStr}</Text>
         </View>
         <View>
-          <CurrencyText value={item.balance} style={styles.rowAmount}/>
+          <CurrencyText value={item.amount} style={styles.rowAmount}/>
         </View>
       </View>
     );
   }
 
   render() {
-    const {componentState, walletBalanceList, error} = this.state;
+    const {componentState, transactionList, error} = this.state;
     const isLoaded = componentState === ComponentViewState.LOADED;
     const isLoading = componentState === ComponentViewState.LOADING;
     const isError = componentState === ComponentViewState.ERROR;
@@ -87,10 +87,10 @@ export class BalancesListView extends React.Component<BalancesListProps, Balance
           </View>
         }
         {
-          isLoaded && walletBalanceList &&
+          isLoaded && transactionList &&
           <FlatList
-            data={walletBalanceList.balances}
-            renderItem={this.renderBalance}
+            data={transactionList.transactions}
+            renderItem={this.renderTransaction}
           />
         }
       </View>

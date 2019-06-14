@@ -5,6 +5,7 @@ import {AuthService} from '..';
 import {ServiceResponse} from '../service.response';
 import {UserAccount} from '../../models';
 import {WalletBalanceList} from '../../models/wallet-balance-list';
+import {TransactionList} from '../../models/transaction-list';
 
 export class AccountServiceImpl extends ApiServiceImpl implements AccountService {
 
@@ -29,6 +30,16 @@ export class AccountServiceImpl extends ApiServiceImpl implements AccountService
       return new ServiceResponse<WalletBalanceList>(walletBalanceList);
     } catch (e) {
       return new ServiceResponse<WalletBalanceList>(undefined, ApiServiceImpl.parseError(e));
+    }
+  }
+
+  async getTransactions(accountId: string): Promise<ServiceResponse<TransactionList>> {
+    try {
+      const response = await this.get(`/account/${accountId}/transactions`);
+      const transactionsList = new TransactionList(response.data);
+      return new ServiceResponse<TransactionList>(transactionsList);
+    } catch (e) {
+      return new ServiceResponse<TransactionList>(undefined, ApiServiceImpl.parseError(e));
     }
   }
 }

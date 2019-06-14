@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 21,
   },
-  balanceItem: {
+  rowItem: {
     paddingLeft: 21,
     paddingRight: 21,
     paddingTop: 16,
@@ -61,20 +61,20 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#35C5AB',
   },
-  balanceDescription: {
+  rowDescription: {
     flexDirection: 'column',
     flex: 1,
   },
-  balanceItemTitle: {
+  rowTitle: {
     fontSize: 17,
     color: '#4F6C8D',
   },
-  balanceItemDate: {
+  rowSubtitle: {
     fontSize: 13,
     color: '#A3ADB4',
     marginTop: 8,
   },
-  balanceItemValue: {
+  rowAmount: {
     color: '#35C5AB',
   },
 });
