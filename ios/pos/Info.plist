@@ -71,5 +71,7 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera will be used to scan QR code at merchant location to pay for transactions</string>
 </dict>
 </plist>

@@ -13,14 +13,16 @@ import {
   AuthService,
   AuthServiceImpl,
   AccountService,
-  AccountServiceImpl} from './services';
-
+  AccountServiceImpl,
+  TransactionService,
+  TransactionServiceImpl} from './services';
 
 export default class App extends React.Component {
 
   accountService: AccountService;
   accountsService: AccountsService;
   authService: AuthService;
+  transactionService: TransactionService;
 
   readonly translationGetters = {
     en: () => require('../assets/locales/en.json'),
@@ -42,6 +44,8 @@ export default class App extends React.Component {
     this.authService = new AuthServiceImpl();
 
     this.accountService = new AccountServiceImpl(this.authService);
+
+    this.transactionService = new TransactionServiceImpl(this.authService);
   }
 
   setLocale() {
@@ -80,12 +84,13 @@ export default class App extends React.Component {
   }
 
   getScreenProps(): AppNavigationScreenProps {
-    const {translate, accountService, accountsService, authService} = this;
+    const {translate, accountService, accountsService, authService, transactionService} = this;
     return {
       translate,
       accountsService,
       authService,
       accountService,
+      transactionService,
     };
   }
 

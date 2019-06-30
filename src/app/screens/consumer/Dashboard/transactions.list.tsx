@@ -1,4 +1,5 @@
-import _, {MemoizedFunction} from '';
+import _, {MemoizedFunction} from 'lodash';
+import moment from 'moment';
 import React from 'React';
 import {Text, View, ActivityIndicator, FlatList} from 'react-native';
 import {styles} from './dashboard.style-impl';
@@ -7,7 +8,8 @@ import {TransactionList} from '../../../models/transaction-list';
 import {UserAccount} from '../../../models';
 import {AccountService} from '../../../services';
 import {CurrencyText} from '../../../components/currency-text/currency-text.component';
-import moment from 'moment';
+
+const emitter = require('tiny-emitter/instance');
 
 interface TransactionsListProps {
   userAccount: UserAccount;
@@ -25,9 +27,11 @@ export class TransactionListView extends React.Component<TransactionsListProps, 
     this.state = {
       componentState: ComponentViewState.DEFAULT,
     };
+    this.refresh = this.refresh.bind(this);
+    emitter.on('refresh', this.refresh);
   }
 
-  async componentDidMount() {
+  async refresh() {
     const {userAccount, accountService, translate} = this.props;
 
     // Fetch balance
@@ -49,6 +53,10 @@ export class TransactionListView extends React.Component<TransactionsListProps, 
         error: msg,
       });
     }
+  }
+
+  async componentDidMount() {
+    this.refresh();
   }
 
   renderTransaction = ({item}) => {

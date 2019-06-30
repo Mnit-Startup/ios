@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
 import {Text, Image, View, ActivityIndicator, Dimensions} from 'react-native';
+import ActionButton from 'react-native-action-button';
 import {TabBar, TabView} from 'react-native-tab-view';
+import {BlurView} from '@react-native-community/blur';
 import {AppNavigationProps} from '../../../app-navigation-props';
 import {styles} from './dashboard.style-impl';
 import {UserAccount} from '../../../models';
@@ -10,6 +12,7 @@ import {ComponentViewState} from '../../../component.state';
 import {CurrencyText} from '../../../components/currency-text/currency-text.component';
 import {BalancesListView} from './balances.list';
 import {TransactionListView} from './transactions.list';
+const emitter = require('tiny-emitter/instance');
 
 export class ConsumerDashboardScreen extends React.Component<AppNavigationProps, DashboardScreenState> {
 
@@ -25,13 +28,14 @@ export class ConsumerDashboardScreen extends React.Component<AppNavigationProps,
         ],
       },
     };
+    this.refresh = this.refresh.bind(this);
   }
 
   translate(key: string) {
     return this.props.screenProps.translate(key, null);
   }
 
-  async componentDidMount() {
+  async refresh() {
     const {navigation: {getParam}, screenProps: {accountService}} = this.props;
     const userAccount: UserAccount = getParam('user_account');
 
@@ -53,6 +57,12 @@ export class ConsumerDashboardScreen extends React.Component<AppNavigationProps,
         error: msg,
       });
     }
+
+    emitter.emit('refresh');
+  }
+
+  async componentDidMount() {
+    this.refresh();
   }
 
   onTabIndexChanged = (index: number) => {
@@ -75,6 +85,11 @@ export class ConsumerDashboardScreen extends React.Component<AppNavigationProps,
     default:
       return null;
     }
+  }
+
+  pay = () => {
+    const {navigation: {navigate, getParam}} = this.props;
+    navigate('Pay', {user_account: getParam('user_account'), refresh: this.refresh});
   }
 
   render() {
@@ -111,6 +126,21 @@ export class ConsumerDashboardScreen extends React.Component<AppNavigationProps,
             renderScene={this.renderScene}
           />
         </View>
+        <ActionButton
+          buttonColor='rgba(46, 130, 198, 1)'
+          position='center'
+          offsetY={100}
+          size={65}
+          degrees={0}
+          buttonTextStyle={styles.actionButtonTextStyle}
+          buttonText='...'>
+          <ActionButton.Item
+            size={120}
+            onPress={this.pay}
+            buttonColor='#FFFFFF'>
+            <Image source={require('../../../../assets/images/icon_wallet.png')}/>
+          </ActionButton.Item>
+        </ActionButton>
       </View>
     );
   }

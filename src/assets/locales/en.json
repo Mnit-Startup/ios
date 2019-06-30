@@ -26,5 +26,14 @@
   },
   "LOADING_ACCOUNT": "Loading account ...",
   "BALANCES": "Balances",
-  "TRANSACTIONS": "Transactions"
+  "TRANSACTIONS": "Transactions",
+  "SCAN_QR_CODE": "Select Payment Source and Scan QR Code",
+  "AVAILABLE_BALANCE": "Available",
+  "FETCHING_TRANSACTION_DETAILS": "Fetching transaction details...",
+  "PAY_TO_MERCHANT": "Pay %{amount} %{currency} to %{merchant}",
+  "PAY": "Pay",
+  "TRANSACTION_COMPLETE": "Transaction Complete!",
+  "AMOUNT": "Amount",
+  "CLOSE": "Close",
+  "FUND_TRANSFER": "Fund transfer from %{currency}"
 }

@@ -50,7 +50,6 @@ export class ApiServiceImpl implements ApiService {
       && userResponse.data.isUserLoggedIn()) {
         headers['Authorization'] = `Bearer ${userResponse.data.accessToken}`;
     }
-
     const instance = axios.create({
       baseURL: `${Config.API_ENDPOINT}`,
       timeout: ApiServiceImpl.API_REQUEST_TIMEOUT,
@@ -60,7 +59,7 @@ export class ApiServiceImpl implements ApiService {
     instance.interceptors.request.use((request) => {
       this.logger(request, 'request');
       return request;
-    })
+    });
 
     instance.interceptors.response.use(
       (response) => {
@@ -69,6 +68,7 @@ export class ApiServiceImpl implements ApiService {
       },
       (error) => {
         this.logger(error.response, 'error');
+        return Promise.reject(error);
       },
     );
 

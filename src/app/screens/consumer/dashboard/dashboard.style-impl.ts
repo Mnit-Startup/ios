@@ -77,4 +77,8 @@ export const styles = StyleSheet.create({
   rowAmount: {
     color: '#35C5AB',
   },
+  actionButtonTextStyle: {
+    fontWeight: 'bold',
+    marginTop: -12,
+  },
 });

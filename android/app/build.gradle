@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 import com.android.build.OutputFile
 
 /**
@@ -108,6 +108,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
         abi {
@@ -139,6 +140,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-camera')
+    implementation project(':@react-native-community_blur')
     implementation project(':react-native-reanimated')
     implementation project(':react-native-sentry')
     implementation project(':react-native-vector-icons')

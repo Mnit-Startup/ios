@@ -17,7 +17,7 @@ export const style = StyleSheet.create<SignInScreenStyle>({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 80,
+    paddingTop: 40,
   },
   header: {
     flexDirection: 'column',

@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {ButtonComponentProps} from './button.component.props';
 import {buttonStyles as styles} from './button.component.style-impl';
 import {ButtonType} from './button.component.type';
@@ -25,9 +26,19 @@ export class Button extends React.Component<ButtonComponentProps> {
 
   render() {
     const {text, style, ...props} = this.props;
+    let buttonStyle = this.getSubmitButtonStyle(this.props.type);
+    if (this.props.disabled) {
+      buttonStyle = _.assign(_.cloneDeep(buttonStyle), {
+        opacity: 0.5,
+      });
+    }
     return (
-      <TouchableOpacity style={this.getSubmitButtonStyle(this.props.type)} {...props}>
+      <TouchableOpacity style={buttonStyle} {...props}>
         <Text style={this.getSubmitButtonTextStyle(this.props.type)}>{text}</Text>
+        {
+          this.props.showActivityIndicator &&
+          <ActivityIndicator size='small' color='#fffff' />
+        }
       </TouchableOpacity>
     );
   }
