@@ -10,6 +10,8 @@ interface SignInScreenStyle {
   termsOfUse: TextStyle;
   signInButtonContainer: ViewStyle;
   signUpButtonContainer: ViewStyle;
+  actionButtonsContainerTabletLandscapeStyle: ViewStyle;
+  actionButtonsContainerDefaultStyle: ViewStyle;
 }
 
 export const style = StyleSheet.create<SignInScreenStyle>({
@@ -36,7 +38,7 @@ export const style = StyleSheet.create<SignInScreenStyle>({
   bankIconContainer: {
     marginTop: 50,
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 68,
   },
   termsOfUse: {
     flex: 1,
@@ -45,9 +47,18 @@ export const style = StyleSheet.create<SignInScreenStyle>({
   },
   signInButtonContainer: {
     flex: 1,
-    paddingTop: 60,
+    alignItems: 'center',
   },
   signUpButtonContainer: {
     flex: 1,
+    alignItems: 'center',
+  },
+  actionButtonsContainerTabletLandscapeStyle: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  actionButtonsContainerDefaultStyle: {
+    flex: 1,
+    flexDirection: 'column',
   },
 });

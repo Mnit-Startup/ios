@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import {SafeAreaView, View, Text, TouchableOpacity, ActivityIndicator, Image, Alert} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {EmailInput, PasswordInput} from '../../components';
 import {appStyles} from '../../app.style-impl';
 import {style} from './sign-up.screen.style-impl';
@@ -158,84 +159,86 @@ export class SignUpScreen extends React.Component<AppNavigationProps, SignUpScre
 
     return (
         <SafeAreaView style={appStyles.safeAreaView}>
-        <View style={style.rootView}>
-          <View style={style.header}>
-            <Image source={require('../../../assets/images/logo/logo.png')} style={style.logo} />
-          </View>
-          <View>
-            <EmailInput
-              autoFocus={true}
-              onceSubmitted={this.state.onceSubmitted}
-              style={inputStyle}
-              editable={!signingUp}
-              translate={this.props.screenProps.translate}
-              onChange={this.onEmailChanged}
-            />
-            <PasswordInput
-              label={translate('SIGNUP_SCREEN.PASSWORD')}
-              onceSubmitted={this.state.onceSubmitted}
-              autoFocus={false}
-              style={inputStyle}
-              editable={!signingUp}
-              translate={this.props.screenProps.translate}
-              onChange={this.onPasswordChanged}
-            />
-            <PasswordInput
-              label={translate('SIGNUP_SCREEN.CONFIRM_PASSWORD')}
-              onceSubmitted={this.state.onceSubmitted}
-              autoFocus={false}
-              style={inputStyle}
-              editable={!signingUp}
-              translate={this.props.screenProps.translate}
-              onChange={this.onConfirmPasswordChanged}
-            />
-            {this.state.onceSubmitted && !this.state.passwordMatch &&
-              <View style={style.errorLabelContainer}>
-                <Text style={style.errorStyle}>{translate('PASSWORD_INPUT_COMPONENT.PASSWORD_MISMATCH')}</Text>
-              </View>
-            }
-          </View>
-          <View style={style.container}>
-            <TouchableOpacity onPress={this.onShow}>
-              <Text style={style.buttonContainer}>{translate('SIGNUP_SCREEN.ACCOUNT_TYPE')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={style.selectedOptionContainer} onPress={this.onShow}>
-              <Text style={style.selectedOptionStyle}>{this.state.dropdown.picked}</Text>
-              <View style={style.chevron_down}><Icon color={'white'} name='chevron-down'></Icon></View>
-            </TouchableOpacity>
-            <ModalFilterPicker
-              visible={this.state.dropdown.visible}
-              onSelect={this.onSelect}
-              onCancel={this.onCancel}
-              options={options}
-              listContainerStyle={style.listContainerStyle}
-              optionTextStyle={style.optionTextStyle}
-              showFilter={false}
-              cancelContainerStyle={style.cancelContainerStyle}
-            />
-          </View>
-          <View style={style.signUpButtonContainer}>
-            <TouchableOpacity
-              style={style.signUpButton}
-              onPress={this.signUp}
-              disabled={signingUp}
-            >
-              <Text style={style.signUpButtonText}>
-                {translate('SIGNUP_SCREEN.CREATE_ACCOUNT')}
+          <KeyboardAwareScrollView>
+            <View style={style.rootView}>
+            <View style={style.header}>
+              <Image source={require('../../../assets/images/logo/logo.png')} style={style.logo} />
+            </View>
+            <View>
+              <EmailInput
+                autoFocus={true}
+                onceSubmitted={this.state.onceSubmitted}
+                style={inputStyle}
+                editable={!signingUp}
+                translate={this.props.screenProps.translate}
+                onChange={this.onEmailChanged}
+              />
+              <PasswordInput
+                label={translate('SIGNUP_SCREEN.PASSWORD')}
+                onceSubmitted={this.state.onceSubmitted}
+                autoFocus={false}
+                style={inputStyle}
+                editable={!signingUp}
+                translate={this.props.screenProps.translate}
+                onChange={this.onPasswordChanged}
+              />
+              <PasswordInput
+                label={translate('SIGNUP_SCREEN.CONFIRM_PASSWORD')}
+                onceSubmitted={this.state.onceSubmitted}
+                autoFocus={false}
+                style={inputStyle}
+                editable={!signingUp}
+                translate={this.props.screenProps.translate}
+                onChange={this.onConfirmPasswordChanged}
+              />
+              {this.state.onceSubmitted && !this.state.passwordMatch &&
+                <View style={style.errorLabelContainer}>
+                  <Text style={style.errorStyle}>{translate('PASSWORD_INPUT_COMPONENT.PASSWORD_MISMATCH')}</Text>
+                </View>
+              }
+            </View>
+            <View style={style.container}>
+              <TouchableOpacity onPress={this.onShow}>
+                <Text style={style.buttonContainer}>{translate('SIGNUP_SCREEN.ACCOUNT_TYPE')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={style.selectedOptionContainer} onPress={this.onShow}>
+                <Text style={style.selectedOptionStyle}>{this.state.dropdown.picked}</Text>
+                <View style={style.chevron_down}><Icon color={'white'} name='chevron-down'></Icon></View>
+              </TouchableOpacity>
+              <ModalFilterPicker
+                visible={this.state.dropdown.visible}
+                onSelect={this.onSelect}
+                onCancel={this.onCancel}
+                options={options}
+                listContainerStyle={style.listContainerStyle}
+                optionTextStyle={style.optionTextStyle}
+                showFilter={false}
+                cancelContainerStyle={style.cancelContainerStyle}
+              />
+            </View>
+            <View style={style.signUpButtonContainer}>
+              <TouchableOpacity
+                style={style.signUpButton}
+                onPress={this.signUp}
+                disabled={signingUp}
+              >
+                <Text style={style.signUpButtonText}>
+                  {translate('SIGNUP_SCREEN.CREATE_ACCOUNT')}
+                </Text>
+                <ActivityIndicator
+                  color='#ffffff'
+                  animating={true}
+                  style={{opacity: signingUp ? 1 : 0}}
+                ></ActivityIndicator>
+              </TouchableOpacity>
+            </View>
+            <View style={style.termsOfUse}>
+              <Text style={style.termsOfUseText}>
+                {translate('SIGNUP_SCREEN.TERMS_OF_SERVICE')}
               </Text>
-              <ActivityIndicator
-                color='#ffffff'
-                animating={true}
-                style={{opacity: signingUp ? 1 : 0}}
-              ></ActivityIndicator>
-            </TouchableOpacity>
+            </View>
           </View>
-          <View style={style.termsOfUse}>
-            <Text style={style.termsOfUseText}>
-              {translate('SIGNUP_SCREEN.TERMS_OF_SERVICE')}
-            </Text>
-          </View>
-        </View>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     );
   }
