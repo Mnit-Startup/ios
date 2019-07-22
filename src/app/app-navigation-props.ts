@@ -1,6 +1,6 @@
 import {NavigationScreenProps} from 'react-navigation';
 import {MemoizedFunction} from 'lodash';
-import {AccountsService, AuthService, AccountService, TransactionService} from './services';
+import {AccountsService, AuthService, AccountService, TransactionService, StoreService} from './services';
 
 export interface AppNavigationScreenProps {
   accountsService: AccountsService;
@@ -8,6 +8,7 @@ export interface AppNavigationScreenProps {
   accountService: AccountService;
   transactionService: TransactionService;
   translate: ((key: any, config?: any) => string) & MemoizedFunction;
+  storeService: StoreService;
 }
 
 /**

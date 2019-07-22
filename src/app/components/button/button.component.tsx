@@ -10,6 +10,8 @@ export class Button extends React.Component<ButtonComponentProps> {
     getSubmitButtonStyle(type: string) {
       if (type === ButtonType.PRIMARY) {
         return styles.buttonPrimary;
+      } else if (type === ButtonType.DANGER) {
+        return styles.buttonDanger;
       } else {
         return styles.buttonSecondary;
       }
@@ -18,6 +20,8 @@ export class Button extends React.Component<ButtonComponentProps> {
     getSubmitButtonTextStyle(type: string) {
         if (type === ButtonType.PRIMARY) {
           return styles.buttonPrimaryText;
+        } else if (type === ButtonType.DANGER) {
+          return styles.buttonDangerText;
         } else {
           return styles.buttonSecondaryText;
         }

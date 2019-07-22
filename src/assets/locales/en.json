@@ -24,6 +24,15 @@
     "INVALID_PASSWORD": "Please specify a valid password to continue",
     "PASSWORD_MISMATCH": "Please ensure that confirm password match with the specified password."
   },
+  "PHONE_INPUT_COMPONENT": {
+    "INVALID_PHONE": "Please specify a valid phone to continue"
+  },
+  "STRING_INPUT_COMPONENT": {
+    "INVALID_INPUT": "Please specify a valid %{field} to continue"
+  },
+  "ZIPCODE_INPUT_COMPONENT": {
+    "INVALID_ZIPCODE": "Please specify a valid zipcode to continue"
+  },
   "LOADING_ACCOUNT": "Loading account ...",
   "BALANCES": "Balances",
   "TRANSACTIONS": "Transactions",
@@ -35,5 +44,35 @@
   "TRANSACTION_COMPLETE": "Transaction Complete!",
   "AMOUNT": "Amount",
   "CLOSE": "Close",
-  "FUND_TRANSFER": "Fund transfer from %{currency}"
+  "FUND_TRANSFER": "Fund transfer from %{currency}",
+  "MERCHANT_HOME_PAGE": {
+    "PROCESS_SALE": "Process Sales",
+    "MANAGE_USERS": "Manage Users",
+    "RUN_REPORTS": "Run Reports",
+    "MANAGE_STORE": "Manage Store"
+  },
+  "MANAGE_STORE_SCREEN": {
+    "CREATE_STORE": "Create Store",
+    "ADD_PRODUCT": "Add Product",
+    "REMOVE_PRODUCT": "Remove Product"
+  },
+  "CREATE_STORE_SCREEN": {
+    "MANAGE_STORE": "Manage Store",
+    "STORE_NAME": "STORE NAME",
+    "PHONE": "PHONE",
+    "STREET_ADDRESS": "STREET ADDRESS",
+    "STREET_ADDRESS_2": "STREET ADDRESS 2",
+    "EMAIL": "EMAIL",
+    "MERCHANT_ID/EIN": "MERCHANT ID/EIN",
+    "CITY": "CITY",
+    "STATE": "STATE",
+    "SEARCH": "Search..",
+    "ZIP": "ZIP",
+    "STORE_PROFILE": "STORE PROFILE",
+    "CREATE_STORE": "CREATE STORE",
+    "CANCEL": "CANCEL",
+    "SELECT_STATE": "Select State",
+    "PROFILE": "Profile?",
+    "CREATE_STORE_SUCCESS": "Your store has been created successfully"
+  }
 }

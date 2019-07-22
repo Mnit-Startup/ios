@@ -6,3 +6,5 @@ export {AccountService} from './account/account.service';
 export {AccountServiceImpl} from './account/account.service.impl';
 export {TransactionService} from './transaction/transaction.service';
 export {TransactionServiceImpl} from './transaction/transaction.service.impl';
+export {StoreService} from './store/store.service';
+export {StoreServiceImpl} from './store/store.service.impl';

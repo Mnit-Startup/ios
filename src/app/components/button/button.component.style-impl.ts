@@ -30,8 +30,13 @@ export const buttonStyles = StyleSheet.create({
     borderColor: '#506C82',
     borderWidth: 2,
   }),
+  buttonDanger: <ViewStyle> _.assign(_.clone(button), {
+    backgroundColor: 'red',
+    width: 150,
+  }),
   buttonPrimaryText: <TextStyle> buttonText,
   buttonSecondaryText: <ViewStyle> _.assign(_.clone(buttonText), {
     color: '#506C82',
   }),
+  buttonDangerText: <TextStyle> buttonText,
 });
