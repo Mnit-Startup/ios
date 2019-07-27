@@ -1,6 +1,6 @@
 import {StyleSheet, ViewStyle, ImageStyle, TextStyle} from 'react-native';
 
-interface MerchantHomeScreenStyle {
+interface StoreDashboardStyle {
   rootView: ViewStyle;
   header: ViewStyle;
   logo: ImageStyle;
@@ -9,7 +9,7 @@ interface MerchantHomeScreenStyle {
   imageStyle: ImageStyle;
   textStyle: TextStyle;
 }
-export const styles = StyleSheet.create<MerchantHomeScreenStyle>({
+export const styles = StyleSheet.create<StoreDashboardStyle>({
   rootView: {
     flex: 1,
     flexDirection: 'column',

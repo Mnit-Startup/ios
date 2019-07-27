@@ -74,5 +74,10 @@
     "SELECT_STATE": "Select State",
     "PROFILE": "Profile?",
     "CREATE_STORE_SUCCESS": "Your store has been created successfully"
+  },
+  "MERCHANT_DASHBOARD": {
+    "CREATE_NEW_STORE": "CREATE NEW STORE",
+    "SELECT_STORE": "Select Store",
+    "CREATE_STORE": "Create Store"
   }
 }

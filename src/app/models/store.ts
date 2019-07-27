@@ -1,4 +1,7 @@
+import _ from 'lodash';
+
 export class Store {
+  readonly storeId?: string;
   readonly name: string;
   readonly phone: string;
   readonly streetAddress: string;
@@ -10,16 +13,18 @@ export class Store {
   readonly storeProfile: string;
   readonly zipcode: string;
 
-  constructor(store: any) {
-    this.name = store.name;
-    this.phone = store.phone;
-    this.streetAddress = store.streetAddress;
-    this.streetAddress2 = store.streetAddress2;
-    this.email = store.email;
-    this.merchantIdEin = store.merchantIdEin;
-    this.city = store.city;
-    this.state = store.state;
-    this.storeProfile = store.storeProfile;
-    this.zipcode = store.zipcode;
+  constructor(item: any) {
+    this.storeId = _.get(item, 'id', '');
+    this.name = _.get(item, 'name', '');
+    this.phone = _.get(item, 'contact.phone', '');
+    this.streetAddress =  _.get(item, 'address.street_address', '');
+    this.streetAddress2 = _.get(item, 'address.street_address_2', '');
+    this.email = _.get(item, 'contact.email', '');
+    this.merchantIdEin = _.get(item, 'merchant_id_ein', '');
+    this.city = _.get(item, 'address.city', '');
+    this.state = _.get(item, 'address.state', '');
+    this.storeProfile = _.get(item, 'store_profile', '');
+    this.zipcode = _.get(item, 'zipcode', '');
   }
+
 }
