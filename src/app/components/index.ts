@@ -15,3 +15,6 @@ export {PhoneInputProps} from './phone-input/phone-input.component.props';
 
 export {ZipcodeInput} from './zipcode-input/zipcode-input.component';
 export {ZipcodeInputProps} from './zipcode-input/zipcode-input.component.props';
+
+export {PriceInput} from './price-input/price-input.component';
+export {PriceInputProps} from './price-input/price-input.component.props';

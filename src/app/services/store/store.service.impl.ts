@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {StoreService} from './store.service';
-import {Store} from '../../models';
+import {Store, Product, Image, ProductList} from '../../models';
 import {StoreList} from '../../models/store-list';
 import {ApiServiceImpl} from '../api.service.impl';
 import {ServiceResponse} from '../service.response';
@@ -8,17 +8,24 @@ import {AuthService} from '..';
 
 export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
 
+  storeList: StoreList;
+  products: Map<string, ProductList>;
+
   constructor(authService: AuthService) {
     super(authService);
+    this.storeList = new StoreList();
+    this.products = new Map<string, ProductList>();
   }
 
   async getStores(
     ): Promise<ServiceResponse<StoreList>> {
       try {
-        const userId = await this.getUserAccountId();
-        const response = await this.get(`/account/${userId}/stores`);
-        const storesList = new StoreList(response.data);
-        return new ServiceResponse<StoreList>(storesList);
+        if (!this.storeList.hasStores()) {
+          const userId = await this.getUserAccountId();
+          const response = await this.get(`/account/${userId}/stores`);
+          this.storeList = new StoreList(response.data);
+        }
+        return new ServiceResponse<StoreList>(this.storeList);
       } catch (e) {
         return new ServiceResponse<StoreList>(undefined, ApiServiceImpl.parseError(e));
       }
@@ -40,9 +47,117 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
       };
       const userId = await this.getUserAccountId();
       const response = await this.post(`/account/${userId}/store`, storeEntries);
-      return new ServiceResponse(new Store(response.data));
+      const newStore = new Store(response.data);
+      this.storeList.addNewStore(newStore);
+      return new ServiceResponse(newStore);
     } catch (e) {
       return new ServiceResponse<Store>(undefined, ApiServiceImpl.parseError(e));
     }
   }
+
+  async createProduct(storeId: string, product: Product): Promise<ServiceResponse<Product>> {
+    try {
+      const productEntries = {
+        name: product.name,
+        price: product.price,
+        sku_number: product.skuNumber,
+        taxable: product.taxable,
+        image: product.image,
+        active: product.active,
+      };
+      const userId = await this.getUserAccountId();
+      const response = await this.post(`/account/${userId}/store/${storeId}/product`, productEntries);
+      const newProduct = new Product(response.data);
+      // find and push
+      if (this.products.has(storeId)) {
+        const products: ProductList = this.products.get(storeId);
+        products.addProduct(newProduct);
+      }
+      return new ServiceResponse(newProduct);
+    } catch (e) {
+      return new ServiceResponse<Product>(undefined, ApiServiceImpl.parseError(e));
+    }
+  }
+
+  async editProduct(storeId: string, productId: string, product: Product): Promise<ServiceResponse<Product>> {
+    try {
+      const productEntries = {
+        name: product.name,
+        price: product.price,
+        sku_number: product.skuNumber,
+        taxable: product.taxable,
+        image: product.image,
+        active: product.active,
+      };
+      const userId = await this.getUserAccountId();
+      const response = await this.put(`/account/${userId}/store/${storeId}/product/${productId}`, productEntries);
+      const editedProduct = new Product(response.data);
+      if (this.products.has(storeId)) {
+        const products: ProductList = this.products.get(storeId);
+        products.updateProduct(editedProduct);
+      }
+      return new ServiceResponse(editedProduct);
+    } catch (e) {
+      return new ServiceResponse<Product>(undefined, ApiServiceImpl.parseError(e));
+    }
+  }
+
+  async uploadImage(
+    data: any,
+  ): Promise<ServiceResponse<Image>> {
+    try {
+      const config = {
+        timeout: 30000,
+    };
+      const response = await this.post('/account/upload-image', data, config);
+      return new ServiceResponse(new Image({
+        uri: response.data.logo,
+      }));
+    } catch (e) {
+      return new ServiceResponse<Image>(undefined, ApiServiceImpl.parseError(e));
+    }
+  }
+
+  async getProducts(
+    storeId: string,
+    ): Promise<ServiceResponse<ProductList>> {
+      try {
+        if (!this.products.has(storeId)) {
+          const userId = await this.getUserAccountId();
+          const response = await this.get(`/account/${userId}/store/${storeId}/products`);
+          const productsList: ProductList = new ProductList(response.data);
+          this.products.set(storeId, productsList);
+        }
+        return new ServiceResponse<ProductList>(this.products.get(storeId));
+      } catch (e) {
+        return new ServiceResponse<ProductList>(undefined, ApiServiceImpl.parseError(e));
+      }
+    }
+
+    async removeProduct(
+      storeId: string,
+      productId: string,
+    ): Promise<ServiceResponse<Product>> {
+      try {
+        const userId = await this.getUserAccountId();
+        const response = await this.delete(`/account/${userId}/store/${storeId}/product/${productId}`, undefined);
+        const deletedProduct = new Product(response.data);
+        if (this.products.has(storeId)) {
+          const products: ProductList = this.products.get(storeId);
+          products.removeProduct(productId);
+        }
+      return new ServiceResponse(deletedProduct);
+      } catch (e) {
+        return new ServiceResponse<Product>(undefined, ApiServiceImpl.parseError(e));
+      }
+    }
+
+    async getProduct(
+      storeId: string,
+      productId: string,
+    ): Promise<ServiceResponse<Product>> {
+          const products: ProductList = this.products.get(storeId);
+          const product: Product = products.getProductById(productId);
+          return new ServiceResponse(product);
+    }
 }

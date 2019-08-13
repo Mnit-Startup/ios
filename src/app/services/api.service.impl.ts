@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Config from 'react-native-config';
-import axios, {AxiosInstance, AxiosResponse} from 'axios';
+import axios, {AxiosInstance, AxiosResponse, AxiosRequestConfig} from 'axios';
 import {AuthService} from './auth/auth.service';
 import {ApiService} from './api.service';
 
@@ -90,13 +90,23 @@ export class ApiServiceImpl implements ApiService {
     return await api.get(url);
   }
 
-  protected async post(url: string, data: any): Promise<AxiosResponse> {
+  protected async post(url: string, data: any, config?: AxiosRequestConfig): Promise<AxiosResponse> {
     const api = await this.getAxiosInstance();
-    return await api.post(url, data);
+    return await api.post(url, data, config);
   }
 
   protected async patch(url: string, data: any): Promise<AxiosResponse> {
     const api = await this.getAxiosInstance();
     return await api.patch(url, data);
+  }
+
+  protected async put(url: string, data: any): Promise<AxiosResponse> {
+    const api = await this.getAxiosInstance();
+    return await api.put(url, data);
+  }
+
+  protected async delete(url: string, data: any): Promise<AxiosResponse> {
+    const api = await this.getAxiosInstance();
+    return await api.delete(url, data);
   }
 }

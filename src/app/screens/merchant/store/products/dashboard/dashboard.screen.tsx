@@ -2,22 +2,19 @@ import _ from 'lodash';
 import React from 'react';
 import {SafeAreaView, Text, ScrollView,
   View, Image, TouchableOpacity,
-  Dimensions, FlatList, ActivityIndicator} from 'react-native';
-import {AsyncStorage} from 'react-native';
+  Dimensions, FlatList, ActivityIndicator, Alert} from 'react-native';
 
-import {Button} from '../../../components';
-import {AppNavigationProps} from '../../../app-navigation-props';
-import {ComponentViewState} from '../../../component.state';
-import {appStyles} from '../../../app.style-impl';
-import {styles} from './dashboard.screen.style-impl';
-import {MerchantDashboardScreenState} from './dashboard.screen.state';
-import {Orientation} from '../../../models/device-orientation';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Button} from '../../../../../components';
+import {AppNavigationProps} from '../../../../../app-navigation-props';
+import {ComponentViewState} from '../../../../../component.state';
+import {appStyles} from '../../../../../app.style-impl';
+import {styles} from './dashboard.style-impl';
+import {ProductsDashboardScreenState} from './dashboard.screen.state';
+import {Orientation} from '../../../../../models/device-orientation';
 import {NavigationEventSubscription} from 'react-navigation';
-import {Store} from '../../../models';
+import {Product} from '../../../../../models';
 
-
-export class MerchantDashboardScreen extends React.Component<AppNavigationProps, MerchantDashboardScreenState> {
+export class ProductsDashboardScreen extends React.Component<AppNavigationProps, ProductsDashboardScreenState> {
 
   static readonly STORE_ID = 'store_id';
   // @ts-ignore
@@ -54,21 +51,22 @@ export class MerchantDashboardScreen extends React.Component<AppNavigationProps,
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.getOrientation);
-    this.focusListner.remove();
   }
 
   async refresh() {
+    const {screenProps: {translate}, navigation: {navigate, getParam}} = this.props;
+    const store_id = getParam('store_id');
     this.setState({
       componentState: ComponentViewState.LOADING,
     });
     const storeService = this.getStoreService();
-    const response = await storeService.getStores();
+    const response = await storeService.getProducts(store_id);
     if (response.hasData()
        && response.data) {
-         if (response.data.stores.length) {
+         if (response.data.products.length) {
           this.setState({
             componentState: ComponentViewState.LOADED,
-            storeList: response.data,
+            productsList: response.data,
           });
          } else {
           this.setState({
@@ -88,8 +86,8 @@ export class MerchantDashboardScreen extends React.Component<AppNavigationProps,
     this.refresh();
   }
 
-  translate(key: string) {
-    return this.props.screenProps.translate(key, null);
+  translate(key: string, options?: any) {
+    return this.props.screenProps.translate(key, options);
   }
 
   getStoreService() {
@@ -132,55 +130,104 @@ export class MerchantDashboardScreen extends React.Component<AppNavigationProps,
     }
   }
 
-  async createNew(item) {
-    const store_id = item.storeId;
-    this.props.navigation.navigate('StoreDashboard', {store_id});
+  async editProduct(item) {
+    const {navigation: {getParam}} = this.props;
+    const store_id = getParam('store_id');
+    const product_id = item.productId;
+    this.props.navigation.navigate('EditProduct', {product_id, store_id});
+  }
+
+  async deleteProduct(productId: String) {
+    const {navigation: {getParam}} = this.props;
+    const store_id = getParam('store_id');
+    const storeService = this.getStoreService();
+    const response = await storeService.removeProduct(store_id, productId);
+    if (response.hasData()
+    && response.data) {
+      Alert.alert(this.translate('MANAGE_PRODUCTS_SCREEN.DELETE_SUCCESS'));
+    } else {
+      const msg = response.error || this.translate('no_internet');
+      Alert.alert(msg);
+    }
+    this.refresh();
+  }
+
+  deleteProductAlert(item) {
+    Alert.alert(
+      this.translate('MANAGE_PRODUCTS_SCREEN.DELETE_PRODUCT'),
+      this.translate('MANAGE_PRODUCTS_SCREEN.DELETE_PRODUCT_CONFIRMATION', {
+        product: item.name,
+      }),
+      [
+        {
+          text: this.translate('MANAGE_PRODUCTS_SCREEN.CANCEL_ALERT_TEXT'),
+          style: 'cancel',
+        },
+        {
+          text: this.translate('MANAGE_PRODUCTS_SCREEN.DELETE'),
+          onPress: () => this.deleteProduct(item.productId),
+          style: 'destructive',
+        },
+      ],
+      {cancelable: false},
+    );
   }
 
   renderStore = ({item}) => {
     return (
-      <TouchableOpacity onPress={() => this.createNew(item)} style={{backgroundColor: 'transparent'}}>
-        <View style={styles.storeListItemContainer}>
-          <Text style={styles.storeListItem}>{`${item.name}, ${item.streetAddress}`}</Text>
-          <Icon color={'#A3ADB4'} name='chevron-right'></Icon>
+      <View style={{backgroundColor: 'transparent'}}>
+        <View style={styles.productListItemContainer}>
+          <View style={styles.productNamePriceContainer}>
+          <View><Text style={[styles.productListItem, styles.productListItemName]}>{`${item.name}`}</Text></View>
+          <View style={styles.productListItemPriceContainer}><Text style={styles.productListItem}>{`$${item.price}`}</Text></View>
+          </View>
+          <View style={styles.productListItemButtonContainer}>
+            <TouchableOpacity onPress={() => this.editProduct(item)} style={styles.productListItemEditButton}>
+              <Text style={styles.productListItemButton}>{'Edit'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.deleteProductAlert(item)} style={styles.productListItemDeleteButton}>
+              <Text style={styles.productListItemButton}>{'Delete'}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 
   render() {
 
-    const {componentState, storeList, error} = this.state;
+    const {componentState, productsList, error} = this.state;
     const isLoaded = componentState === ComponentViewState.LOADED;
     const isLoading = componentState === ComponentViewState.LOADING;
     const isEmpty = componentState === ComponentViewState.NO_DATA;
     const isError = componentState === ComponentViewState.ERROR;
-    const {screenProps: {translate}, navigation: {navigate}} = this.props;
+    const {screenProps: {translate}, navigation: {navigate, getParam}} = this.props;
+    const store_id = getParam('store_id');
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
           <View style={styles.rootView}>
             <View style={styles.header}>
-              <Image source={require('../../../../assets/images/logo/logo.png')}/>
+              <Image source={require('../../../../../../assets/images/logo/logo.png')}/>
             </View>
             <View style={[{flexWrap: 'wrap', flexDirection: 'row'}, this.getContainerStyle()]}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigate('ManageStore')}>
               <Image style={[styles.manageStoreLogoStyle, this.getManageStoreLogoStyle()]}
-              source={require('../../../../assets/images/icons/manage_store_icon.png')}/>
-              <Text style={styles.manageStoreLogoSubTextStyle}>{translate('MERCHANT_DASHBOARD.SELECT_STORE')}</Text>
+              source={require('../../../../../../assets/images/icons/dummy_product_image_icon.png')}/>
+              <Text style={styles.manageStoreLogoSubTextStyle}>{translate('MANAGE_PRODUCTS_SCREEN.MANAGE_PRODUCTS')}</Text>
               </TouchableOpacity>
             {
-              isLoaded && storeList && (
+              isLoaded && productsList && (
               <View style={this.getContainerStyle()}>
               <View style={[styles.storeListContainer, this.getStoreListContainerStyle()]}>
                 {
                     <View style={[styles.storeList, this.getStoreListStyle()]}>
                     <FlatList
-                    data={storeList.stores}
+                    data={productsList.products}
                     renderItem={this.renderStore}
                     onRefresh={this.refresh}
                     refreshing={isLoading}
-                    keyExtractor={(item) => `${item['name']} ${item['streetAddress']}`}
+                    keyExtractor={(item) => `${item['name']} ${item['price']}`}
                     />
                     </View>
                 }
@@ -188,10 +235,15 @@ export class MerchantDashboardScreen extends React.Component<AppNavigationProps,
                 <View style={styles.buttonsContainer}>
                   <Button
                   type={'btn-primary'}
-                  onPress={() => navigate('CreateStore')}
+                  onPress={() => navigate('CreateProduct', {store_id})}
                   disabled={isLoading}
                   showActivityIndicator={isLoading}
-                  text={translate('MERCHANT_DASHBOARD.CREATE_NEW_STORE')}
+                  text={translate('MANAGE_PRODUCTS_SCREEN.CREATE_NEW_PRODUCT')}
+                  />
+                  <Button
+                  type={'btn-danger'}
+                  onPress={() => navigate('ManageStore')}
+                  text={translate('MANAGE_PRODUCTS_SCREEN.CANCEL')}
                   />
                 </View>
             </View>
@@ -199,10 +251,10 @@ export class MerchantDashboardScreen extends React.Component<AppNavigationProps,
             }
             {
               isEmpty && (
-                <TouchableOpacity style={this.getCreateStoreLogoContainerStyle()} onPress={() => navigate('CreateStore')}>
+                <TouchableOpacity style={this.getCreateStoreLogoContainerStyle()} onPress={() => navigate('CreateProduct', {store_id})}>
                   <Image style={[styles.createStoreLogoStyle, this.getCreateStoreLogoStyle()]}
-                  source={require('../../../../assets/images/icons/create_store_icon.png')}/>
-                  <Text style={styles.createStoreLogoSubTextStyle}>{translate('MERCHANT_DASHBOARD.CREATE_STORE')}</Text>
+                  source={require('../../../../../../assets/images/icons/add_product_icon.png')}/>
+                  <Text style={styles.createStoreLogoSubTextStyle}>{translate('MANAGE_PRODUCTS_SCREEN.ADD_PRODUCT')}</Text>
                 </TouchableOpacity>
               )
             }

@@ -9,9 +9,11 @@ import {styles} from './createStore.style-impl';
 import {CreateStoreScreenState} from './createStore.screen.state';
 import ModalFilterPicker from 'react-native-modal-filter-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Role, States} from '../../../../shared';
+import {States} from '../../../../shared';
 import {Store} from '../../../../models';
 import {Orientation} from '../../../../models/device-orientation';
+
+const emitter = require('tiny-emitter/instance');
 
 export class CreateStoreScreen extends React.Component<AppNavigationProps, CreateStoreScreenState> {
 
@@ -95,6 +97,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
   }
 
   async createStore() {
+    const {navigation: {goBack}} = this.props;
     this.setState({
       onceSubmitted: true,
     });
@@ -124,7 +127,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
             componentState: ComponentViewState.LOADED,
           });
           Alert.alert(this.translate('CREATE_STORE_SCREEN.CREATE_STORE_SUCCESS'));
-          this.props.navigation.navigate('ManageStore');
+          goBack();
         } else {
           const msg = response.error || this.translate('no_internet');
           Alert.alert(msg);
@@ -306,7 +309,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     const {componentState} = this.state;
     const options = States;
     const isComponentLoading = componentState === ComponentViewState.LOADING;
-    const {screenProps: {translate}, navigation: {navigate}} = this.props;
+    const {screenProps: {translate}, navigation: {navigate, goBack}} = this.props;
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
@@ -316,10 +319,10 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
               <Image source={require('../../../../../assets/images/icons/merchant_logo.png')}/>
             </View>
             <View style={[{flexWrap: 'wrap', flexDirection: 'row'}, this.getContainerStyle()]}>
-              <TouchableOpacity onPress={() => navigate('ManageStore')}>
+              <TouchableOpacity>
               <Image style={styles.manageStoreLogoStyle}
-              source={require('../../../../../assets/images/icons/manage_store_icon.png')}/>
-              <Text style={styles.manageStoreLogoSubTextStyle}>{translate('CREATE_STORE_SCREEN.MANAGE_STORE')}</Text>
+              source={require('../../../../../assets/images/icons/create_store_icon.png')}/>
+              <Text style={styles.manageStoreLogoSubTextStyle}>{translate('CREATE_STORE_SCREEN.CREATE_STORE')}</Text>
               </TouchableOpacity>
             <View style={[styles.formContainer]}>
               <View style={styles.formRow}>
@@ -338,7 +341,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <View>
                 <PhoneInput
                   label={translate('CREATE_STORE_SCREEN.PHONE')}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
@@ -351,7 +354,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <StringInput
                   label={translate('CREATE_STORE_SCREEN.STREET_ADDRESS')}
                   required={true}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
@@ -359,7 +362,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                   onChange={this.onStreetAddressChanged}
                 />
                 <EmailInput
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   style={inputStyle}
                   editable={true}
@@ -371,7 +374,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <StringInput
                   label={translate('CREATE_STORE_SCREEN.STREET_ADDRESS_2')}
                   required={false}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
@@ -381,7 +384,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <StringInput
                   label={translate('CREATE_STORE_SCREEN.MERCHANT_ID/EIN')}
                   required={true}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
@@ -393,7 +396,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <StringInput
                   label={translate('CREATE_STORE_SCREEN.CITY')}
                   required={true}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
@@ -434,7 +437,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                   </View>
                   <ZipcodeInput
                     label={translate('CREATE_STORE_SCREEN.ZIP')}
-                    autoFocus={true}
+                    autoFocus={false}
                     onceSubmitted={this.state.onceSubmitted}
                     editable={true}
                     style={inputZipStyle}
@@ -476,7 +479,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                   />
                   <Button
                   type={'btn-danger'}
-                  onPress={() => navigate('ManageStore')}
+                  onPress={() => goBack()}
                   text={translate('CREATE_STORE_SCREEN.CANCEL')}
                   />
                 </View>

@@ -9,6 +9,12 @@ export class StoreDashboardScreen extends React.Component<AppNavigationProps> {
 
   constructor(props: AppNavigationProps) {
     super(props);
+    this.back = this.back.bind(this);
+  }
+
+  back() {
+    const {navigation: {goBack}} = this.props;
+    goBack();
   }
 
   render() {
@@ -22,6 +28,9 @@ export class StoreDashboardScreen extends React.Component<AppNavigationProps> {
               <Image source={require('../../../../../assets/images/logo/logo.png')}/>
               <Image source={require('../../../../../assets/images/icons/merchant_logo.png')}/>
             </View>
+            <TouchableOpacity style={styles.backButton} onPress={this.back}>
+                <Image source={require('../../../../../assets/images/icons/back_icon.png')}/>
+            </TouchableOpacity>
             <View style={styles.imagesFirstRow}>
             <TouchableOpacity>
               <Image style={styles.imageStyle}

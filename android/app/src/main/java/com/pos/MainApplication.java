@@ -3,6 +3,7 @@ package com.pos;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.cmcewen.blurview.BlurViewPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ImagePickerPackage(),
             new RNCameraPackage(),
             new BlurViewPackage(),
             new ReanimatedPackage(),

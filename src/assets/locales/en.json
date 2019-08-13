@@ -54,7 +54,9 @@
   "MANAGE_STORE_SCREEN": {
     "CREATE_STORE": "Create Store",
     "ADD_PRODUCT": "Add Product",
-    "REMOVE_PRODUCT": "Remove Product"
+    "REMOVE_PRODUCT": "Remove Product",
+    "MANAGE_PRODUCTS": "Manage Products",
+    "EDIT_STORE": "Edit Store"
   },
   "CREATE_STORE_SCREEN": {
     "MANAGE_STORE": "Manage Store",
@@ -73,11 +75,71 @@
     "CANCEL": "CANCEL",
     "SELECT_STATE": "Select State",
     "PROFILE": "Profile?",
-    "CREATE_STORE_SUCCESS": "Your store has been created successfully"
+    "CREATE_STORE_SUCCESS": "Your store has been created successfully",
+    "INVALID_STATE": "Please specify a valid state to continue"
   },
   "MERCHANT_DASHBOARD": {
     "CREATE_NEW_STORE": "CREATE NEW STORE",
     "SELECT_STORE": "Select Store",
     "CREATE_STORE": "Create Store"
+  },
+  "CREATE_PRODUCT_SCREEN": {
+    "ADD_PRODUCT_IMAGE_TEXT": "Add Product",
+    "CREATE_PRODUCT": "ADD",
+    "ADD_PRODUCT_IMAGE_PLACEHOLDER": "Add Product Image",
+    "PRODUCT_IMAGE_PLACEHOLDER": "Product Image",
+    "PRODUCT_NAME": "PRODUCT NAME",
+    "PRICE": "PRICE",
+    "SKU_NUMBER": "SKU NUMBER",
+    "TAXABLE": "TAXABLE?",
+    "TAXABLE_DROPDOWN": "Taxable?",
+    "CANCEL": "CANCEL",
+    "ZIP": "ZIP",
+    "INVALID_VALUE": "Please specify a valid value to continue",
+    "SELECT_PRODUCT_IMAGE": "Select Product Image",
+    "IMAGE_PICKER_ERROR": "Could not complete the action, please try after some time",
+    "INVALID_IMAGE_FORMAT": "Please select jpeg/png image",
+    "IMAGE_UPLOAD_SUCCESS": "Image uploaded successfully!",
+    "CREATE_PRODUCT_SUCCESS": "Product has been created successfully",
+    "TAXABLE_OPTION_YES": "Yes",
+    "TAXABLE_OPTION_NO": "No"
+  },
+  "MANAGE_PRODUCTS_SCREEN": {
+    "CREATE_NEW_PRODUCT": "ADD NEW PRODUCT",
+    "MANAGE_PRODUCTS": "Manage Products",
+    "CANCEL": "CANCEL",
+    "ADD_PRODUCT": "Add Product",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "CANCEL_ALERT_TEXT": "Cancel",
+    "DELETE_PRODUCT": "Delete Product",
+    "DELETE_PRODUCT_CONFIRMATION": "Are you sure you want to delete %{product} product from the store",
+    "DELETE_SUCCESS": "Product deleted successfully!"
+  },
+  "NUMBER_INPUT_COMPONENT": {
+    "INVALID_INPUT": "Please specify a valid %{field} to continue"
+  },
+  "EDIT_PRODUCT_SCREEN": {
+    "ADD_PRODUCT_IMAGE_TEXT": "Add Product",
+    "UPDATE": "UPDATE",
+    "EDIT_PRODUCT": "Edit Product",
+    "CREATE_PRODUCT": "ADD",
+    "ADD_PRODUCT_IMAGE_PLACEHOLDER": "Add Product Image",
+    "PRODUCT_IMAGE_PLACEHOLDER": "Product Image",
+    "PRODUCT_NAME": "PRODUCT NAME",
+    "PRICE": "PRICE",
+    "SKU_NUMBER": "SKU NUMBER",
+    "TAXABLE": "TAXABLE?",
+    "TAXABLE_DROPDOWN": "Taxable?",
+    "CANCEL": "CANCEL",
+    "ZIP": "ZIP",
+    "INVALID_VALUE": "Please specify a valid value to continue",
+    "SELECT_PRODUCT_IMAGE": "Select Product Image",
+    "IMAGE_PICKER_ERROR": "Could not complete the action, please try after some time",
+    "INVALID_IMAGE_FORMAT": "Please select jpeg/png image",
+    "IMAGE_UPLOAD_SUCCESS": "Image uploaded successfully!",
+    "UPDATE_PRODUCT_SUCCESS": "Product has been updated successfully",
+    "TAXABLE_OPTION_YES": "Yes",
+    "TAXABLE_OPTION_NO": "No"
   }
 }

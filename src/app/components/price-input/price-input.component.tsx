@@ -2,12 +2,18 @@ import React from 'react';
 import _ from 'lodash';
 import {TextInput} from 'react-native-gesture-handler';
 import {View, Text} from 'react-native';
-import {stringInputStyle} from './string-input.component.style-impl';
-import {StringInputProps} from './string-input.component.props';
-import {StringInputState} from './string-input.component.state';
+import {priceInputStyle} from './price-input.component.style-impl';
+import {PriceInputProps} from './price-input.component.props';
+import {PriceInputState} from './price-input.component.state';
 
-export class StringInput extends React.Component<StringInputProps, StringInputState> {
-  constructor(props: StringInputProps) {
+export class PriceInput extends React.Component<PriceInputProps, PriceInputState> {
+
+  // regex for price to be upto 2 decimals
+  // valid: 12, 12.0, 12.04
+  // invalid: 12., 12.232
+  static readonly PRICE_FORMAT: RegExp = /^(?:\d*\.\d{1,2}|\d+)$/;
+
+  constructor(props: PriceInputProps) {
     super(props);
 
     this.state = {
@@ -19,10 +25,10 @@ export class StringInput extends React.Component<StringInputProps, StringInputSt
     this.onChangeText = this.onChangeText.bind(this);
   }
 
-  componentWillReceiveProps(nextProps: StringInputProps) {
+  componentWillReceiveProps(nextProps: PriceInputProps) {
     if (!_.isNil(nextProps.defaultValue)) {
-      const text = nextProps.defaultValue;
-      this.validateAndSetState(text);
+      const price = nextProps.defaultValue;
+      this.validateAndSetState(price);
     }
   }
 
@@ -32,26 +38,26 @@ export class StringInput extends React.Component<StringInputProps, StringInputSt
     });
   }
 
-  validateAndSetState(text: string): boolean {
+  validateAndSetState(price: string): boolean {
     let isValid = false;
-    if (!_.isEmpty(text)) {
+    if (!_.isEmpty(price) && Number(price)
+    && price.match(PriceInput.PRICE_FORMAT)) {
       isValid = true;
     }
 
     this.setState({
-      value: text,
+      value: price,
       valid: isValid,
       hasTouched: true,
     });
-
     return isValid;
   }
 
-  onChangeText(text: string) {
-    const isValid = this.validateAndSetState(text);
+  onChangeText(price: string) {
+    const isValid = this.validateAndSetState(price);
 
     if (_.isFunction(this.props.onChange)) {
-      this.props.onChange(text, isValid);
+      this.props.onChange(price, isValid);
     }
   }
 
@@ -62,15 +68,15 @@ export class StringInput extends React.Component<StringInputProps, StringInputSt
   render() {
     return (
       <View style={this.props.style.containerStyle}>
-        <View style={stringInputStyle.inputLabelContainer}>
-          <Text style={stringInputStyle.inputLabelText}>{this.props.label}</Text>
+        <View style={priceInputStyle.inputLabelContainer}>
+          <Text style={priceInputStyle.inputLabelText}>{this.props.label}</Text>
         </View>
         <View>
           <TextInput
           autoFocus={this.props.autoFocus}
           editable={this.props.editable}
           style={this.props.style.inputStyle}
-          autoCapitalize='none'
+          keyboardType='numeric'
           autoCorrect={false}
           onChangeText={this.onChangeText}
           onBlur={this.onBlur}
@@ -78,9 +84,8 @@ export class StringInput extends React.Component<StringInputProps, StringInputSt
           </TextInput>
         </View>
         {!this.state.valid && this.props.onceSubmitted && this.props.required &&
-        <View style={stringInputStyle.errorLabelContainer}>
-        <Text style={this.props.style.errorStyle}>
-        {this.translate('STRING_INPUT_COMPONENT.INVALID_INPUT', {
+        <View style={priceInputStyle.errorLabelContainer}>
+        <Text style={this.props.style.errorStyle}>{this.translate('NUMBER_INPUT_COMPONENT.INVALID_INPUT', {
           field: this.props.label.toLowerCase(),
         })}</Text>
       </View>
@@ -89,4 +94,3 @@ export class StringInput extends React.Component<StringInputProps, StringInputSt
     );
   }
 }
-// `Please specify a valid ${this.props.label.toLowerCase()} to continue`

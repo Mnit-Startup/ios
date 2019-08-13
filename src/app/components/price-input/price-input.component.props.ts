@@ -1,6 +1,6 @@
 import {InputProps} from '../shared/input-props';
 
-export interface StringInputProps extends InputProps {
+export interface PriceInputProps extends InputProps {
   onceSubmitted: boolean;
   label: string;
   required: boolean;
