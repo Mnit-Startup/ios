@@ -163,15 +163,22 @@ export class MerchantDashboardScreen extends React.Component<AppNavigationProps,
             <View style={styles.header}>
               <Image source={require('../../../../assets/images/logo/logo.png')}/>
             </View>
-            <View style={[{flexWrap: 'wrap', flexDirection: 'row'}, this.getContainerStyle()]}>
-              <TouchableOpacity>
-              <Image style={[styles.manageStoreLogoStyle, this.getManageStoreLogoStyle()]}
-              source={require('../../../../assets/images/icons/manage_store_icon.png')}/>
-              <Text style={styles.manageStoreLogoSubTextStyle}>{translate('MERCHANT_DASHBOARD.SELECT_STORE')}</Text>
-              </TouchableOpacity>
+            <View style={[{flexWrap: 'wrap', flexDirection: 'column'}]}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <TouchableOpacity style={{alignItems: 'center'}}>
+                <Image style={[styles.manageStoreLogoStyle, this.getManageStoreLogoStyle()]}
+                source={require('../../../../assets/images/icons/manage_store_icon.png')}/>
+                <Text>{translate('MERCHANT_DASHBOARD.SELECT_STORE')}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() =>  navigate('CashiersDashboard')} style={{alignItems: 'center'}}>
+                <Image style={[styles.manageStoreLogoStyle, this.getManageStoreLogoStyle()]}
+                source={require('../../../../assets/images/icons/manage_users_icon.png')}/>
+                <Text>{translate('MERCHANT_DASHBOARD.MANAGE_USERS')}</Text>
+            </TouchableOpacity>
+              </View>
             {
               isLoaded && storeList && (
-              <View style={this.getContainerStyle()}>
+              <View>
               <View style={[styles.storeListContainer, this.getStoreListContainerStyle()]}>
                 {
                     <View style={[styles.storeList, this.getStoreListStyle()]}>
@@ -199,10 +206,11 @@ export class MerchantDashboardScreen extends React.Component<AppNavigationProps,
             }
             {
               isEmpty && (
-                <TouchableOpacity style={this.getCreateStoreLogoContainerStyle()} onPress={() => navigate('CreateStore')}>
+                <TouchableOpacity style={[styles.createStoreLogoContainer, this.getCreateStoreLogoContainerStyle()]}
+                onPress={() => navigate('CreateStore')}>
                   <Image style={[styles.createStoreLogoStyle, this.getCreateStoreLogoStyle()]}
                   source={require('../../../../assets/images/icons/create_store_icon.png')}/>
-                  <Text style={styles.createStoreLogoSubTextStyle}>{translate('MERCHANT_DASHBOARD.CREATE_STORE')}</Text>
+                  <Text>{translate('MERCHANT_DASHBOARD.CREATE_STORE')}</Text>
                 </TouchableOpacity>
               )
             }

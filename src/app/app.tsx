@@ -17,7 +17,9 @@ import {
   TransactionService,
   TransactionServiceImpl,
   StoreService,
-  StoreServiceImpl} from './services';
+  StoreServiceImpl,
+  MerchantService,
+  MerchantServiceImpl} from './services';
 
 export default class App extends React.Component {
 
@@ -26,6 +28,7 @@ export default class App extends React.Component {
   authService: AuthService;
   transactionService: TransactionService;
   storeService: StoreService;
+  merchantService: MerchantService;
 
   readonly translationGetters = {
     en: () => require('../assets/locales/en.json'),
@@ -51,6 +54,8 @@ export default class App extends React.Component {
     this.transactionService = new TransactionServiceImpl(this.authService);
 
     this.storeService = new StoreServiceImpl(this.authService);
+
+    this.merchantService = new MerchantServiceImpl(this.authService);
 
   }
 
@@ -90,7 +95,7 @@ export default class App extends React.Component {
   }
 
   getScreenProps(): AppNavigationScreenProps {
-    const {translate, accountService, accountsService, authService, transactionService, storeService} = this;
+    const {translate, accountService, accountsService, authService, transactionService, storeService, merchantService} = this;
     return {
       translate,
       accountsService,
@@ -98,6 +103,7 @@ export default class App extends React.Component {
       accountService,
       transactionService,
       storeService,
+      merchantService,
     };
   }
 

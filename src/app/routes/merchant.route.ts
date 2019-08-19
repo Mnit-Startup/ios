@@ -1,6 +1,7 @@
 import {createStackNavigator} from 'react-navigation';
 import {MerchantDashboardScreen, ManageStoreScreen, CreateStoreScreen,
-  StoreDashboardScreen, CreateProductScreen, ProductsDashboardScreen, EditProductScreen} from '../screens/merchant';
+  StoreDashboardScreen, CreateProductScreen, ProductsDashboardScreen,
+  EditProductScreen, CashiersDashboardScreen, CreateCashierScreen, EditCashierScreen} from '../screens/merchant';
 
 export const MerchantNavigationStack = createStackNavigator({
   MerchantDashboard: {
@@ -41,6 +42,24 @@ export const MerchantNavigationStack = createStackNavigator({
   },
   ProductsDashboard: {
     screen: ProductsDashboardScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  CashiersDashboard: {
+    screen: CashiersDashboardScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  CreateCashier: {
+    screen: CreateCashierScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  EditCashier: {
+    screen: EditCashierScreen,
     navigationOptions: {
       header: null,
     },

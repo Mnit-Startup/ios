@@ -5,3 +5,6 @@ export {StoreDashboardScreen} from './store/dashboard/dashboard.screen';
 export {CreateProductScreen} from './store/products/createProduct/createProduct.screen';
 export {ProductsDashboardScreen} from './store/products/dashboard/dashboard.screen';
 export {EditProductScreen} from './store/products/editProduct/editProduct.screen';
+export {CashiersDashboardScreen} from './employees/cashier/cashierDashboard/cashierDashboard.screen';
+export {CreateCashierScreen} from './employees/cashier/createCashier/createCashier.screen';
+export {EditCashierScreen} from './employees/cashier/editCashier/editCashier.screen';

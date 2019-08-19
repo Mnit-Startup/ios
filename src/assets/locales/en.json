@@ -81,7 +81,8 @@
   "MERCHANT_DASHBOARD": {
     "CREATE_NEW_STORE": "CREATE NEW STORE",
     "SELECT_STORE": "Select Store",
-    "CREATE_STORE": "Create Store"
+    "CREATE_STORE": "Create Store",
+    "MANAGE_USERS": "Manage Users"
   },
   "CREATE_PRODUCT_SCREEN": {
     "ADD_PRODUCT_IMAGE_TEXT": "Add Product",
@@ -141,5 +142,41 @@
     "UPDATE_PRODUCT_SUCCESS": "Product has been updated successfully",
     "TAXABLE_OPTION_YES": "Yes",
     "TAXABLE_OPTION_NO": "No"
+  },
+  "MANAGE_USERS_SCREEN": {
+    "CREATE_NEW_USER": "ADD NEW USER",
+    "MANAGE_USERS": "Manage Users",
+    "CANCEL": "CANCEL",
+    "ADD_USER": "Add User",
+    "ADD_CASHIER": "Add Cashier",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "CANCEL_ALERT_TEXT": "Cancel",
+    "DELETE_PRODUCT": "Delete Product",
+    "DELETE_PRODUCT_CONFIRMATION": "Are you sure you want to delete %{cashier} from the list",
+    "DELETE_SUCCESS": "Employee removed successfully!"
+  },
+  "CREATE_CASHIER_SCREEN": {
+    "ADD_CASHIER_IMAGE_TEXT": "Add Employee",
+    "CREATE_CASHIER": "ADD",
+    "CASHIER_NAME": "CASHIER NAME",
+    "CASHIER_NUMBER": "CASHIER NUMBER",
+    "PIN": "PIN",
+    "CONFIRM_PIN": "CONFIRM PIN",
+    "CANCEL": "CANCEL",
+    "INVALID_VALUE": "Please specify a valid value to continue",
+    "CREATE_CASHIER_SUCCESS": "Employee has been created successfully"
+  },
+  "EDIT_CASHIER_SCREEN": {
+    "EDIT_CASHIER_IMAGE_TEXT": "Edit Employee",
+    "UPDATE_CASHIER": "UPDATE",
+    "CASHIER_NAME": "CASHIER NAME",
+    "CASHIER_NUMBER": "CASHIER NUMBER",
+    "PIN": "PIN",
+    "CONFIRM_PIN": "CONFIRM PIN",
+    "CANCEL": "CANCEL",
+    "INVALID_VALUE": "Please specify a valid value to continue",
+    "CREATE_CASHIER_SUCCESS": "Employee has been created successfully",
+    "UPDATE_CASHIER_SUCCESS": "Employee has been updated successfully"
   }
 }

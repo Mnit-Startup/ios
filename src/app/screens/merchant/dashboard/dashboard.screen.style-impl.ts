@@ -10,13 +10,12 @@ interface MerchantDashboardScreenStyle {
   storeListContainerPortrait: ViewStyle;
   buttonsContainer: ViewStyle;
   manageStoreLogoStyle: ImageStyle;
-  manageStoreLogoSubTextStyle: TextStyle;
   manageStoreLogoPortraitStyle: ImageStyle;
   orientationPortrait: ViewStyle;
   createStoreLogoStyle: ImageStyle;
-  createStoreLogoSubTextStyle: TextStyle;
   createStoreLogoPortraitStyle: ImageStyle;
   createStoreLogoContainerPortraitStyle: ViewStyle;
+  createStoreLogoContainer: ViewStyle;
   loadAndErrorContainer: ViewStyle;
   storeListItemContainer: ViewStyle;
   storeListItem: TextStyle;
@@ -39,33 +38,26 @@ export const styles = StyleSheet.create<MerchantDashboardScreenStyle>({
     marginRight: 20,
     marginTop: 30,
   },
-  manageStoreLogoSubTextStyle: {
-    marginLeft: 50,
-    marginRight: 20,
-  },
   createStoreLogoStyle: {
-    marginLeft: 250,
-    marginTop: 200,
-  },
-  createStoreLogoSubTextStyle: {
-    marginLeft: 250,
-    paddingLeft: 30,
+    marginTop: 100,
   },
   manageStoreLogoPortraitStyle: {
-    marginLeft: 5,
+    marginLeft: 20,
     marginRight: 20,
     marginTop: 30,
   },
   createStoreLogoPortraitStyle: {
     marginTop: 200,
-    marginHorizontal: 200,
   },
   createStoreLogoContainerPortraitStyle: {
-    marginLeft: 50,
+    alignItems: 'center',
+  },
+  createStoreLogoContainer: {
+    alignItems: 'center',
   },
   storeListContainer: {
-    marginTop: 200,
-    marginLeft: 80,
+    marginTop: 50,
+    alignItems: 'center',
   },
   storeList: {
     height: 250,
@@ -77,7 +69,7 @@ export const styles = StyleSheet.create<MerchantDashboardScreenStyle>({
   },
   storeListContainerPortrait: {
     marginTop: 200,
-    marginRight: 30,
+    alignItems: 'center',
   },
   buttonsContainer: {
     alignItems: 'center',

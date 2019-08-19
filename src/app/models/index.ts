@@ -6,3 +6,5 @@ export {Product} from './product';
 export {Image} from './image';
 export {ProductList} from './product-list';
 export {StoreList} from './store-list';
+export {Employee} from './employee';
+export {EmployeeList} from './employee-list';
