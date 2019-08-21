@@ -14,7 +14,9 @@
   },
   "LOGIN_SCREEN": {
     "PASSWORD": "PASSWORD",
-    "SIGN_IN": "SIGN IN"
+    "SIGN_IN": "SIGN IN",
+    "HELP_TEXT_OR": "OR",
+    "EMPLOYEE_LOGIN_TEXT": "Click here to login as an employee"
   },
   "EMAIL_INPUT_COMPONENT": {
     "EMAIL_INPUT_TITLE": "EMAIL",

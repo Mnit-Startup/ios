@@ -7,6 +7,7 @@ import {AppNavigationProps} from '../../app-navigation-props';
 import {LoginScreenState} from './log-in.screen.state';
 import {ComponentViewState} from '../../component.state';
 import {EmailInput, PasswordInput} from '../../components';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export class LogInScreen extends React.Component<AppNavigationProps, LoginScreenState> {
   constructor(props: AppNavigationProps) {
@@ -84,7 +85,7 @@ export class LogInScreen extends React.Component<AppNavigationProps, LoginScreen
 
   render() {
 
-    const {screenProps: {translate}} = this.props;
+    const {screenProps: {translate}, navigation: {navigate}} = this.props;
     const {componentState} = this.state;
     const loggingIn = (componentState === ComponentViewState.LOADING);
     const inputStyle = {
@@ -135,6 +136,13 @@ export class LogInScreen extends React.Component<AppNavigationProps, LoginScreen
                   animating={true}
                   style={{opacity: loggingIn ? 1 : 0}}
                 ></ActivityIndicator>
+              </TouchableOpacity>
+            </View>
+            <View style={style.employeeLoginContainer}>
+              <Text style={style.helpTextOrStyle}>{translate('LOGIN_SCREEN.HELP_TEXT_OR')}</Text>
+              <TouchableOpacity style={style.employeeLoginButtonContainer}>
+                <Icon size={30} onPress={() => navigate('EmployeeLogIn')} color={'gray'} name='long-arrow-right'></Icon>
+                <Text>{translate('LOGIN_SCREEN.EMPLOYEE_LOGIN_TEXT')}</Text>
               </TouchableOpacity>
             </View>
           </View>
