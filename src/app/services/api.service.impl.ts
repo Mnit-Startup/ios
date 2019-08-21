@@ -18,6 +18,10 @@ export class ApiServiceImpl implements ApiService {
     return _.get(response, 'response.data.error', '');
   }
 
+  protected static parseErrorParam(response: AxiosResponse): string {
+    return _.get(response, 'response.data.errors[0].msg', '');
+  }
+
   private logger(data: any, type: LogTypes) {
     if (__DEV__) {
       const formats = {

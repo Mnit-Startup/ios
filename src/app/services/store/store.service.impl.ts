@@ -44,6 +44,7 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
         zipcode: store.zipcode,
         merchant_id_ein: store.merchantIdEin,
         store_profile: store.storeProfile,
+        store_identifier: store.storeIdentifier,
       };
       const userId = await this.getUserAccountId();
       const response = await this.post(`/account/${userId}/store`, storeEntries);
@@ -51,7 +52,7 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
       this.storeList.addNewStore(newStore);
       return new ServiceResponse(newStore);
     } catch (e) {
-      return new ServiceResponse<Store>(undefined, ApiServiceImpl.parseError(e));
+      return new ServiceResponse<Store>(undefined, ApiServiceImpl.parseErrorParam(e));
     }
   }
 

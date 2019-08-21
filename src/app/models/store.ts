@@ -12,6 +12,7 @@ export class Store {
   readonly state: string;
   readonly storeProfile: string;
   readonly zipcode: string;
+  readonly storeIdentifier: string;
 
   constructor(item: any) {
     this.storeId = _.get(item, 'id', '');
@@ -25,6 +26,7 @@ export class Store {
     this.state = _.get(item, 'address.state', '');
     this.storeProfile = _.get(item, 'store_profile', '');
     this.zipcode = _.get(item, 'zipcode', '');
+    this.storeIdentifier = _.get(item, 'store_identifier', '');
   }
 
 }

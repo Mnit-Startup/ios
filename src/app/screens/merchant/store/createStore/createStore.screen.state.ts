@@ -42,6 +42,10 @@ export interface CreateStoreScreenState extends ComponentState {
     visible: boolean;
     picked: string;
   };
+  storeIdentifier: {
+    value: string,
+    valid: boolean,
+  };
   orientation: Orientation;
   onceSubmitted: boolean;
 }

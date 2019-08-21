@@ -60,6 +60,10 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
         visible: false,
         picked: '',
       },
+      storeIdentifier: {
+        value: '',
+        valid: false,
+      },
       orientation: Orientation.UNKNOWN,
       onceSubmitted: false,
       componentState: ComponentViewState.DEFAULT,
@@ -72,6 +76,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     this.onCityChanged = this.onCityChanged.bind(this);
     this.onPhoneChanged =  this.onPhoneChanged.bind(this);
     this.onZipcodeChanged = this.onZipcodeChanged.bind(this);
+    this.onStoreIdentifierChanged = this.onStoreIdentifierChanged.bind(this);
     this.createStore = this.createStore.bind(this);
   }
 
@@ -103,7 +108,8 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     });
     if (this.state.storeName.valid && this.state.phone.valid && this.state.streetAddress.valid
       && this.state.email.valid && this.state.merchantId.valid
-      && this.state.city.valid && this.state.zip.valid && this.state.stateDropdown.picked !== '') {
+      && this.state.city.valid && this.state.zip.valid && this.state.stateDropdown.picked !== ''
+      && this.state.storeIdentifier.valid) {
         const storeService = this.getStoreService();
         this.setState({
           componentState: ComponentViewState.LOADING,
@@ -119,6 +125,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
           state: this.state.stateDropdown.picked,
           storeProfile: this.state.storeProfileDropdown.picked,
           zipcode: this.state.zip.value,
+          storeIdentifier: this.state.storeIdentifier.value,
         };
         const response = await storeService.createStore(store);
         if (response.hasData()
@@ -284,6 +291,15 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     this.setState(state);
   }
 
+  onStoreIdentifierChanged(storeIdentifier: string, isValid: boolean) {
+    this.setState({
+      storeIdentifier: {
+        value: storeIdentifier,
+        valid: isValid,
+      },
+    });
+  }
+
   getContainerStyle() {
     if (this.state.orientation === Orientation.POTRAIT) {
       return styles.orientationPortrait;
@@ -402,6 +418,16 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                   style={inputStyle}
                   translate={this.props.screenProps.translate}
                   onChange={this.onCityChanged}
+                />
+                <StringInput
+                  label={translate('CREATE_STORE_SCREEN.STORE_IDENTIFIER')}
+                  required={true}
+                  autoFocus={false}
+                  onceSubmitted={this.state.onceSubmitted}
+                  editable={true}
+                  style={inputStyle}
+                  translate={this.props.screenProps.translate}
+                  onChange={this.onStoreIdentifierChanged}
                 />
               </View>
                 <View style={styles.formRow}>
