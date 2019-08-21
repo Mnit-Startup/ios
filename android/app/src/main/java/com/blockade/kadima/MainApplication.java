@@ -1,4 +1,4 @@
-package com.pos;
+package com.blockade.kadima;
 
 import android.app.Application;
 
