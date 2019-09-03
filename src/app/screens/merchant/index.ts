@@ -8,3 +8,4 @@ export {EditProductScreen} from './store/products/editProduct/editProduct.screen
 export {CashiersDashboardScreen} from './employees/cashier/cashierDashboard/cashierDashboard.screen';
 export {CreateCashierScreen} from './employees/cashier/createCashier/createCashier.screen';
 export {EditCashierScreen} from './employees/cashier/editCashier/editCashier.screen';
+export {AssignStoreScreen} from './employees/assign-store/assign-store.screen';

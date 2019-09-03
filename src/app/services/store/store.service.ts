@@ -1,7 +1,8 @@
 import {ServiceResponse} from '../service.response';
-import {Store, Product, Image, StoreList, ProductList} from '../../models';
+import {Store, Product, Image, StoreList, ProductList, EmployeeDetail, Employee} from '../../models';
 
 export interface StoreService {
+
   createStore(
     store: Store,
   ): Promise<ServiceResponse<Store>>;
@@ -37,4 +38,12 @@ export interface StoreService {
   getProducts(
     storeId: string,
     ): Promise<ServiceResponse<ProductList>>;
+
+    addEmployee(
+      employeeDetail: EmployeeDetail,
+    ): Promise<ServiceResponse<EmployeeDetail>>;
+
+    removeEmployee(
+      employeeDetail: EmployeeDetail,
+    ): Promise<ServiceResponse<EmployeeDetail>>;
 }

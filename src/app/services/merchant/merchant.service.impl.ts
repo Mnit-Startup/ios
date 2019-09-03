@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {MerchantService} from './merchant.service';
-import {Employee, EmployeeList} from '../../models';
+import {Employee, EmployeeList, EmployeeDetail} from '../../models';
 import {ApiServiceImpl} from '../api.service.impl';
 import {ServiceResponse} from '../service.response';
 import {AuthService} from '..';

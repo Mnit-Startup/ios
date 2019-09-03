@@ -53,10 +53,9 @@ export default class App extends React.Component {
 
     this.transactionService = new TransactionServiceImpl(this.authService);
 
-    this.storeService = new StoreServiceImpl(this.authService);
-
     this.merchantService = new MerchantServiceImpl(this.authService);
 
+    this.storeService = new StoreServiceImpl(this.authService, this.merchantService);
   }
 
   setLocale() {

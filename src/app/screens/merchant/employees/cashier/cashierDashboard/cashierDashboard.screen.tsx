@@ -127,6 +127,10 @@ export class CashiersDashboardScreen extends React.Component<AppNavigationProps,
     }
   }
 
+  async assignCashier(item) {
+    this.props.navigation.navigate('AssignStore', {item});
+  }
+
   async editCashier(item) {
     const empId = item.empId;
     this.props.navigation.navigate('EditCashier', {empId});
@@ -175,6 +179,9 @@ export class CashiersDashboardScreen extends React.Component<AppNavigationProps,
           <View style={styles.cashierListItemNumberContainer}><Text style={styles.cashierListItem}>{`${item.empNumber}`}</Text></View>
           </View>
           <View style={styles.cashierListItemButtonContainer}>
+            <TouchableOpacity onPress={() => this.assignCashier(item)} style={styles.cashierListItemAssignButton}>
+              <Text style={styles.cashierListItemButton}>{'Assign'}</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => this.editCashier(item)} style={styles.cashierListItemEditButton}>
               <Text style={styles.cashierListItemButton}>{'Edit'}</Text>
             </TouchableOpacity>

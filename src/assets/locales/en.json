@@ -181,5 +181,13 @@
     "INVALID_VALUE": "Please specify a valid value to continue",
     "CREATE_CASHIER_SUCCESS": "Employee has been created successfully",
     "UPDATE_CASHIER_SUCCESS": "Employee has been updated successfully"
+  },
+  "ASSIGN_STORE_SCREEN": {
+    "ADD": "ADD",
+    "MANAGE_USERS": "Manage Users",
+    "CANCEL": "CANCEL",
+    "ADD_STORE": "Add Store",
+    "ASSIGNED_STORE_SUCCESS": "Stores assigned successfully",
+    "REMOVE_EMP_FR0M_STORE_SUCCESS": "Employee removed from store successfully"
   }
 }

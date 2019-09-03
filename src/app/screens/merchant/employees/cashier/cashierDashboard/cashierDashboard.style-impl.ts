@@ -28,6 +28,7 @@ interface CashierDashboardScreenStyle {
   cashierListItemButtonContainer: ViewStyle;
   cashierListItemNumberContainer: ViewStyle;
   messageError: TextStyle;
+  cashierListItemAssignButton: TextStyle;
 }
 export const styles = StyleSheet.create<CashierDashboardScreenStyle>({
   rootView: {
@@ -117,15 +118,15 @@ export const styles = StyleSheet.create<CashierDashboardScreenStyle>({
     alignItems: 'center',
     paddingTop: 5,
     color: '#fff',
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
   },
   cashierListItemButtonContainer: {
     flexDirection: 'row',
-    width: 180,
+    width: 280,
     justifyContent: 'space-evenly',
   },
   cashierListItemName: {
-    width: 150,
+    width: 120,
   },
   cashierNameNumberContainer: {
     flexDirection: 'row',
@@ -134,12 +135,13 @@ export const styles = StyleSheet.create<CashierDashboardScreenStyle>({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 10,
+    marginRight: 10,
   },
   cashierListItemEditButton: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#2C8DDB',
+    backgroundColor: '#ffc107',
   },
   cashierListItemDeleteButton: {
     flex: 1,
@@ -150,5 +152,11 @@ export const styles = StyleSheet.create<CashierDashboardScreenStyle>({
   messageError: {
     color: '#f44336',
     textAlign: 'center',
+  },
+  cashierListItemAssignButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#28a745',
   },
 });

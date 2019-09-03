@@ -1,20 +1,25 @@
 import _ from 'lodash';
 import {StoreService} from './store.service';
-import {Store, Product, Image, ProductList} from '../../models';
+import {Store, Product, Image, ProductList, EmployeeDetail, Employee} from '../../models';
 import {StoreList} from '../../models/store-list';
 import {ApiServiceImpl} from '../api.service.impl';
 import {ServiceResponse} from '../service.response';
 import {AuthService} from '..';
+import {DataStore} from '../data-store';
 
 export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
 
+  dataStore: DataStore;
   storeList: StoreList;
   products: Map<string, ProductList>;
 
-  constructor(authService: AuthService) {
+  constructor(
+    authService: AuthService,
+    dataStore: DataStore) {
     super(authService);
     this.storeList = new StoreList();
     this.products = new Map<string, ProductList>();
+    this.dataStore = dataStore;
   }
 
   async getStores(
@@ -161,4 +166,38 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
           const product: Product = products.getProductById(productId);
           return new ServiceResponse(product);
     }
+
+    async addEmployee(
+      employeeDetail: EmployeeDetail,
+  ): Promise<ServiceResponse<EmployeeDetail>> {
+      try {
+          const userId = await this.getUserAccountId();
+          const response = await
+          this.post(`/account/${userId}/store/${employeeDetail.store}/${employeeDetail.role}/${employeeDetail.empId}`, undefined);
+          const newEmployeeDetail = new EmployeeDetail(response.data);
+          const responseDataStore = await this.dataStore.getEmployee(newEmployeeDetail.empId, newEmployeeDetail.role);
+          const employee: Employee = new Employee(responseDataStore.data);
+          employee.addToStoreWithRole(newEmployeeDetail.store);
+          return new ServiceResponse(newEmployeeDetail);
+      } catch (e) {
+          return new ServiceResponse<EmployeeDetail>(undefined, ApiServiceImpl.parseErrorParam(e));
+      }
+  }
+
+    async removeEmployee(
+      employeeDetail: EmployeeDetail,
+  ): Promise<ServiceResponse<EmployeeDetail>> {
+      try {
+          const userId = await this.getUserAccountId();
+          const response = await
+          this.delete(`/account/${userId}/store/${employeeDetail.store}/${employeeDetail.role}/${employeeDetail.empId}`, undefined);
+          const removedEmployeeDetail = new EmployeeDetail(response.data);
+          const responseDataStore = await this.dataStore.getEmployee(removedEmployeeDetail.empId, removedEmployeeDetail.role);
+          const employee: Employee = new Employee(responseDataStore.data);
+          employee.removeFromStore(removedEmployeeDetail.store);
+          return new ServiceResponse(removedEmployeeDetail);
+      } catch (e) {
+          return new ServiceResponse<EmployeeDetail>(undefined, ApiServiceImpl.parseErrorParam(e));
+      }
+  }
 }

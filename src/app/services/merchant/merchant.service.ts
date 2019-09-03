@@ -1,7 +1,8 @@
 import {ServiceResponse} from '../service.response';
-import {Employee, EmployeeList} from '../../models';
+import {Employee, EmployeeList, EmployeeDetail} from '../../models';
+import {DataStore} from '../data-store';
 
-export interface MerchantService {
+export interface MerchantService extends DataStore {
     createEmployee(
         employee: Employee,
         pin: string,
@@ -12,11 +13,6 @@ export interface MerchantService {
     ): Promise<ServiceResponse<EmployeeList>>;
 
     removeEmployee(
-        empId: string,
-        role: string,
-    ): Promise<ServiceResponse<Employee>>;
-
-    getEmployee(
         empId: string,
         role: string,
     ): Promise<ServiceResponse<Employee>>;
