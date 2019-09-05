@@ -56,4 +56,34 @@ export class AuthServiceImpl implements AuthService {
     await AsyncStorage.clear();
     return new ServiceResponse();
   }
+
+  async employeeLogin(
+    empNumber: string,
+    storeIdentifier: string,
+    pin: string,
+  ): Promise<ServiceResponse<User>> {
+    const loginEntries = {
+      emp_number: empNumber,
+      store_identifier: storeIdentifier,
+      pin,
+    };
+    try {
+      const response = await Axios.create().post(`${Config.API_ENDPOINT}/accounts/employee-login`, loginEntries,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      await AsyncStorage.setItem(AuthServiceImpl.ACCOUNT_ID, response.data.account_id);
+      await AsyncStorage.setItem(AuthServiceImpl.TOKEN_KEY, response.data.access_token);
+      await AsyncStorage.setItem(AuthServiceImpl.USER_ROLE, response.data.role);
+      return new ServiceResponse(new User({
+        account_id: response.data.account_id,
+        access_token: response.data.access_token,
+        role: response.data.role,
+      }));
+    } catch (e) {
+      return new ServiceResponse<User>(undefined, AuthServiceImpl.parseError(e));
+    }
+  }
 }

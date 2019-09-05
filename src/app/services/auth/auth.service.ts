@@ -14,4 +14,10 @@ export interface AuthService {
   getUser(): Promise<ServiceResponse<User>>;
 
   logout(): Promise<ServiceResponse<void>>;
+
+  employeeLogin(
+    empNumber: string,
+    storeIdentifier: string,
+    pin: string,
+  ): Promise<ServiceResponse<User>>;
 }

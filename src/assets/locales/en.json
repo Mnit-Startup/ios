@@ -189,5 +189,12 @@
     "ADD_STORE": "Add Store",
     "ASSIGNED_STORE_SUCCESS": "Stores assigned successfully",
     "REMOVE_EMP_FR0M_STORE_SUCCESS": "Employee removed from store successfully"
+  },
+  "EMPLOYEE_LOGIN_SCREEN": {
+    "EMPLOYEE_NUMBER": "EMPLOYEE NUMBER",
+    "SIGN_IN": "SIGN IN",
+    "STORE_ID": "STORE ID",
+    "PIN": "PIN",
+    "EMPLOYEE_LOGIN_TEXT": "EMPLOYEE LOGIN"
   }
 }
