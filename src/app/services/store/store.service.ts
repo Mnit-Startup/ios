@@ -1,5 +1,5 @@
 import {ServiceResponse} from '../service.response';
-import {Store, Product, Image, StoreList, ProductList, EmployeeDetail, Employee} from '../../models';
+import {Store, Product, Image, StoreList, ProductList, EmployeeDetail, Employee, Transaction} from '../../models';
 
 export interface StoreService {
 
@@ -37,13 +37,20 @@ export interface StoreService {
 
   getProducts(
     storeId: string,
+    user: string,
     ): Promise<ServiceResponse<ProductList>>;
 
-    addEmployee(
-      employeeDetail: EmployeeDetail,
-    ): Promise<ServiceResponse<EmployeeDetail>>;
+  addEmployee(
+    employeeDetail: EmployeeDetail,
+  ): Promise<ServiceResponse<EmployeeDetail>>;
 
-    removeEmployee(
-      employeeDetail: EmployeeDetail,
-    ): Promise<ServiceResponse<EmployeeDetail>>;
+  removeEmployee(
+    employeeDetail: EmployeeDetail,
+  ): Promise<ServiceResponse<EmployeeDetail>>;
+
+  createTransaction(
+    cart: Map<string, number>,
+    merchantId: string,
+    storeId: string,
+  ): Promise<ServiceResponse<Transaction>>;
 }

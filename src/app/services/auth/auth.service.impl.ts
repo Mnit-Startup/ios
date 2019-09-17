@@ -10,6 +10,8 @@ export class AuthServiceImpl implements AuthService {
   static readonly TOKEN_KEY = 'auth_token';
   static readonly ACCOUNT_ID = 'account_id';
   static readonly USER_ROLE = 'user_role';
+  static readonly STORE_ID = 'store_id';
+  static readonly MERCHANT_ID = 'merchant_id';
 
   protected static parseError(response: AxiosResponse): string {
     return _.get(response, 'response.data.error', '');
@@ -45,10 +47,14 @@ export class AuthServiceImpl implements AuthService {
     const accountId = await AsyncStorage.getItem(AuthServiceImpl.ACCOUNT_ID);
     const token = await AsyncStorage.getItem(AuthServiceImpl.TOKEN_KEY);
     const role = await AsyncStorage.getItem(AuthServiceImpl.USER_ROLE);
+    const merchantId = await AsyncStorage.getItem(AuthServiceImpl.MERCHANT_ID);
+    const storeId = await AsyncStorage.getItem(AuthServiceImpl.STORE_ID);
     return new ServiceResponse(new User({
       account_id: accountId,
       access_token: token,
       role: role,
+      merchant_id: merchantId,
+      store_id: storeId,
     }));
   }
 
@@ -77,6 +83,8 @@ export class AuthServiceImpl implements AuthService {
       await AsyncStorage.setItem(AuthServiceImpl.ACCOUNT_ID, response.data.account_id);
       await AsyncStorage.setItem(AuthServiceImpl.TOKEN_KEY, response.data.access_token);
       await AsyncStorage.setItem(AuthServiceImpl.USER_ROLE, response.data.role);
+      await AsyncStorage.setItem(AuthServiceImpl.STORE_ID, response.data.store_id);
+      await AsyncStorage.setItem(AuthServiceImpl.MERCHANT_ID, response.data.merchant_id);
       return new ServiceResponse(new User({
         account_id: response.data.account_id,
         access_token: response.data.access_token,

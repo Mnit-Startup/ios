@@ -140,8 +140,8 @@ export class LogInScreen extends React.Component<AppNavigationProps, LoginScreen
             </View>
             <View style={style.employeeLoginContainer}>
               <Text style={style.helpTextOrStyle}>{translate('LOGIN_SCREEN.HELP_TEXT_OR')}</Text>
-              <TouchableOpacity style={style.employeeLoginButtonContainer}>
-                <Icon size={30} onPress={() => navigate('EmployeeLogIn')} color={'gray'} name='long-arrow-right'></Icon>
+              <TouchableOpacity onPress={() => navigate('EmployeeLogIn')} style={style.employeeLoginButtonContainer}>
+                <Icon size={30} color={'gray'} name='long-arrow-right'></Icon>
                 <Text>{translate('LOGIN_SCREEN.EMPLOYEE_LOGIN_TEXT')}</Text>
               </TouchableOpacity>
             </View>

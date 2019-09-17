@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {StoreService} from './store.service';
-import {Store, Product, Image, ProductList, EmployeeDetail, Employee} from '../../models';
+import {Store, Product, Image, ProductList, EmployeeDetail, Employee, Transaction} from '../../models';
 import {StoreList} from '../../models/store-list';
 import {ApiServiceImpl} from '../api.service.impl';
 import {ServiceResponse} from '../service.response';
@@ -126,10 +126,13 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
 
   async getProducts(
     storeId: string,
+    userId: string,
     ): Promise<ServiceResponse<ProductList>> {
       try {
         if (!this.products.has(storeId)) {
-          const userId = await this.getUserAccountId();
+          if (_.isNil(userId)) {
+            userId = await this.getUserAccountId();
+          }
           const response = await this.get(`/account/${userId}/store/${storeId}/products`);
           const productsList: ProductList = new ProductList(response.data);
           this.products.set(storeId, productsList);
@@ -199,5 +202,28 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
       } catch (e) {
           return new ServiceResponse<EmployeeDetail>(undefined, ApiServiceImpl.parseErrorParam(e));
       }
+  }
+
+  async createTransaction(
+    cart: Map<string, number>,
+    merchantId: string,
+    storeId: string,
+  ): Promise<ServiceResponse<Transaction>> {
+    try {
+      const cart_items = Array<{product: string, quantity: number}>();
+      cart.forEach((value, key) => {
+        const cartItem = {
+          product: key,
+          quantity: value,
+        };
+        cart_items.push(cartItem);
+      });
+      const response = await this.post(`/account/${merchantId}/store/${storeId}/transaction`, {cart_items});
+      const transaction = new Transaction(response.data);
+      return new ServiceResponse(transaction);
+    } catch (e) {
+      return new ServiceResponse<Transaction>(undefined, ApiServiceImpl.parseError(e));
+    }
+
   }
 }

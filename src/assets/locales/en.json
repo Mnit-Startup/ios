@@ -196,5 +196,12 @@
     "STORE_ID": "STORE ID",
     "PIN": "PIN",
     "EMPLOYEE_LOGIN_TEXT": "EMPLOYEE LOGIN"
+  },
+  "POINT_OF_SALE_SCREEN": {
+    "PAY": "Pay",
+    "TIP": "Tip",
+    "TAX": "Tax",
+    "TOTAL": "Total",
+    "SUBTOTAL": "SubTotal"
   }
 }

@@ -25,7 +25,7 @@ export class Store {
     this.city = _.get(item, 'address.city', '');
     this.state = _.get(item, 'address.state', '');
     this.storeProfile = _.get(item, 'store_profile', '');
-    this.zipcode = _.get(item, 'zipcode', '');
+    this.zipcode = _.get(item, 'address.zipcode', '');
     this.storeIdentifier = _.get(item, 'store_identifier', '');
   }
 
