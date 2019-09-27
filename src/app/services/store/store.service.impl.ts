@@ -224,6 +224,5 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
     } catch (e) {
       return new ServiceResponse<Transaction>(undefined, ApiServiceImpl.parseError(e));
     }
-
   }
 }

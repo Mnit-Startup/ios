@@ -8,15 +8,16 @@ import {appStyles} from '../../../app.style-impl';
 import {Orientation} from '../../../models/device-orientation';
 import {styles} from './pos.style-impl';
 import {PointOfSaleScreenState} from './pos.screen.state';
-import {ProductList, Product} from '../../../models';
+import {ProductList, Product, CheckoutCart} from '../../../models';
 import {Button} from '../../../components';
 
 export class PointOfSaleScreen extends React.Component<AppNavigationProps, PointOfSaleScreenState> {
+
   constructor(props: AppNavigationProps) {
     super(props);
     this.state = {
       productsList: new ProductList(),
-      cart: new Map<string, number>(),
+      checkoutCart: new CheckoutCart(),
       subTotal: '',
       orientation: Orientation.UNKNOWN,
       componentState: ComponentViewState.DEFAULT,
@@ -58,42 +59,20 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
   }
 
   getSubtotal() {
-    const cart = this.state.cart;
-    const productsList = this.state.productsList;
-    let subTotal = 0;
-    cart.forEach((value, key) => {
-      const product: Product = productsList.getProductById(key);
-      subTotal += Number(product.price) * value;
-    });
-    return subTotal;
+    const {checkoutCart, productsList} = this.state;
+    return checkoutCart.getSubtotal(productsList);
   }
 
   async createSale() {
-    const cart = this.state.cart;
-    const {navigation: {getParam}} = this.props;
+    const {checkoutCart} = this.state;
+    const {navigation: {navigate, getParam}, screenProps: {translate}} = this.props;
     const storeId = getParam('store_id');
     const merchantId = getParam('merchant_id');
-    if (cart.size === 0) {
+    if (checkoutCart.isCartEmpty()) {
+      Alert.alert(translate('POINT_OF_SALE_SCREEN.EMPTY_CART'));
       return;
     }
-    this.setState({
-      componentState: ComponentViewState.LOADING,
-    });
-    const storeService = this.getStoreService();
-    const response = await storeService.createTransaction(cart, merchantId, storeId);
-    if (response.hasData()
-        && response.data) {
-          this.setState({
-            componentState: ComponentViewState.LOADED,
-          });
-          // on success render screen: options to pay with different modes
-        } else {
-          const msg = response.error || this.translate('no_internet');
-          Alert.alert(msg);
-          this.setState({
-            componentState: ComponentViewState.ERROR,
-          });
-        }
+    navigate('PaymentMode', {checkoutCart, store_id : storeId, merchant_id: merchantId});
   }
 
   async refresh() {
@@ -128,49 +107,40 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
   }
 
   addItemToCart(item) {
-    const cart = this.state.cart;
-    cart.set(item.productId, 1);
+    const {checkoutCart} = this.state;
+    checkoutCart.addItemToCart(item);
     const subTotal = this.getSubtotal();
     this.setState({
-      cart,
+      checkoutCart,
       subTotal: subTotal.toFixed(2),
     });
   }
 
   incrementQuantity(item) {
-    const cart = this.state.cart;
-    let quantity: number = cart.get(item);
-    quantity++;
-    cart.set(item, quantity);
+    const {checkoutCart} = this.state;
+    checkoutCart.incrementItemQuantity(item);
     const subTotal = this.getSubtotal();
     this.setState({
-      cart,
+      checkoutCart,
       subTotal: subTotal.toFixed(2),
     });
   }
 
   decrementQuantity(item) {
-    const cart = this.state.cart;
-    let quantity: number = cart.get(item);
-    if (quantity === 1) {
-      cart.delete(item);
-    } else {
-      quantity--;
-      cart.set(item, quantity);
-    }
+    const {checkoutCart} = this.state;
+    checkoutCart.decrementItemQuantity(item);
     const subTotal = this.getSubtotal();
     this.setState({
-      cart,
+      checkoutCart,
       subTotal: subTotal.toFixed(2),
     });
   }
 
   renderCartItem = ({item}) => {
-    const {componentState} = this.state;
+    const {componentState, checkoutCart} = this.state;
     const isComponentLoading = componentState === ComponentViewState.LOADING;
     const product: Product = this.state.productsList.getProductById(item);
-    const cart = this.state.cart;
-    const quantity = cart.get(item);
+    const quantity = checkoutCart.getItemQuantity(item);
     return (
       <View style={styles.cartItemContainer}>
         <View style={styles.cartItem}>
@@ -271,7 +241,7 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
   }
 
   render() {
-    const {productsList, cart, subTotal, componentState} = this.state;
+    const {productsList, checkoutCart, subTotal, componentState} = this.state;
     const {screenProps: {translate}} = this.props;
     const isComponentLoading = componentState === ComponentViewState.LOADING;
     const isItems = !_.isEmpty(subTotal);
@@ -303,7 +273,7 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
                 <View style={[styles.billingContainer, this.getBillingContainerStyle()]}>
                   <View style={[styles.cartSection, this.getCartSectionStyle()]}>
                     <FlatList
-                      data={Array.from(cart.keys())}
+                      data={Array.from(checkoutCart.cart.keys())}
                       renderItem={this.renderCartItem}
                     />
                   </View>

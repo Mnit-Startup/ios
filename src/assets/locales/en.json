@@ -202,6 +202,20 @@
     "TIP": "Tip",
     "TAX": "Tax",
     "TOTAL": "Total",
+    "SUBTOTAL": "SubTotal",
+    "EMPTY_CART": "Please add items in cart to continue"
+  },
+  "CART_COMPONENT": {
+    "TIP": "Tip",
+    "TAX": "Tax",
+    "TOTAL": "Total",
     "SUBTOTAL": "SubTotal"
+  },
+  "PAYMENT_MODE_SCREEN": {
+    "KADIMA": "Kadima",
+    "COIN": "Coin",
+    "CASH": "Cash",
+    "CREDIT": "Credit",
+    "PAY": "Pay"
   }
 }
