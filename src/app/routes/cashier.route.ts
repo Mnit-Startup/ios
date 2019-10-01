@@ -1,5 +1,5 @@
 import {createStackNavigator} from 'react-navigation';
-import {PointOfSaleScreen, PaymentModeScreen} from '../screens/cashier';
+import {PointOfSaleScreen, PaymentModeScreen, QRCodeScreen} from '../screens/cashier';
 
 export const CashierNavigationStack = createStackNavigator({
   POS: {
@@ -10,6 +10,12 @@ export const CashierNavigationStack = createStackNavigator({
   },
   PaymentMode: {
     screen: PaymentModeScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  QRCode: {
+    screen: QRCodeScreen,
     navigationOptions: {
       header: null,
     },

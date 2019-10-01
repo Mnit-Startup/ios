@@ -6,18 +6,26 @@ import {AppNavigationProps} from '../../../app-navigation-props';
 import {ComponentViewState} from '../../../component.state';
 import {appStyles} from '../../../app.style-impl';
 import {Orientation} from '../../../models/device-orientation';
-import {styles} from './payment-mode.screen.style-impl';
-import {PaymentModeScreenState} from './payment-mode.state';
+import {styles} from './qrcode.style-impl';
+import {QRCodeScreenState} from './qrcode.screen.state';
 import {Cart, Button} from '../../../components';
 import {CheckoutCart, Transaction} from '../../../models';
+import {PaymentStatus} from '../../../shared';
+import QRCode from 'react-native-qrcode-svg';
+import * as Progress from 'react-native-progress';
+import Config from 'react-native-config';
 
-export class PaymentModeScreen extends React.Component<AppNavigationProps, PaymentModeScreenState> {
+export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScreenState> {
+
+  static readonly interval = Number(Config.PAYMENT_STATUS_POLLING_INTERVAL);
+
   constructor(props: AppNavigationProps) {
     super(props);
     this.state = {
       orientation: Orientation.UNKNOWN,
       componentState: ComponentViewState.DEFAULT,
     };
+    this.pollTransactionStatus = this.pollTransactionStatus.bind(this);
   }
 
   getOrientation = () => {
@@ -58,13 +66,13 @@ export class PaymentModeScreen extends React.Component<AppNavigationProps, Payme
 
   getPaymentModeContainerStyle() {
     if (this.state.orientation === Orientation.POTRAIT) {
-      return styles.paymentModeContainerPotrait;
+      return styles.qrcodeContainerPotrait;
     }
   }
 
   getPaymentModeSectionStyle() {
     if (this.state.orientation === Orientation.POTRAIT) {
-      return styles.paymentModeSectionPotrait;
+      return styles.qrcodeSectionPotrait;
     }
   }
 
@@ -74,37 +82,54 @@ export class PaymentModeScreen extends React.Component<AppNavigationProps, Payme
     }
   }
 
-  async createSale() {
-    const {navigation: {getParam, navigate}} = this.props;
-    const checkoutCart: CheckoutCart = getParam('checkoutCart');
-    const storeId = getParam('store_id');
-    const merchantId = getParam('merchant_id');
-    const storeService = this.getStoreService();
-    this.setState({
-      componentState: ComponentViewState.LOADING,
-    });
-    const response = await storeService.createTransaction(checkoutCart.cart, merchantId, storeId);
-    if (response.hasData()
-      && response.data) {
-        this.setState({
-          componentState: ComponentViewState.LOADED,
-        });
+  getTransactionService() {
+    return this.props.screenProps.transactionService;
+  }
+
+  pollTransactionStatus() {
+    const {navigation: {getParam}} = this.props;
+    const transactionService = this.getTransactionService();
+    const transaction_id = getParam('transaction_id');
+    const checkStatus = (async (resolve, reject) => {
+      const response = await transactionService.getDetails(transaction_id);
+      if (response.hasData() &&
+        response.data) {
         const transaction: Transaction = response.data;
-        navigate('QRCode', {store_id: storeId, merchant_id: merchantId, checkoutCart, transaction_id: transaction.id});
-      } else {
-        const msg = response.error || this.translate('no_internet');
-        Alert.alert(msg);
-        this.setState({
-          componentState: ComponentViewState.ERROR,
-        });
+        if (transaction.paymentStatus === PaymentStatus.PENDING_PAYMENT) {
+          setTimeout(checkStatus, QRCodeScreen.interval, resolve, reject);
+        } else if (transaction.paymentStatus === PaymentStatus.PROCESSING) {
+          this.setState({
+            componentState: ComponentViewState.LOADING,
+          });
+          setTimeout(checkStatus, QRCodeScreen.interval, resolve, reject);
+        } else if (transaction.paymentStatus === PaymentStatus.PAID) {
+          this.setState({
+            componentState: ComponentViewState.LOADED,
+          });
+          resolve();
+        }
       }
+    });
+    return new Promise(checkStatus);
+  }
+
+  componentDidMount() {
+    this.pollTransactionStatus()
+      .then(() => {
+        // navigate to payment success screen
+      });
   }
 
   render() {
     const {navigation: {getParam, goBack}, screenProps: {translate}} = this.props;
+    const {componentState} = this.state;
+    const isComponentLoading = componentState === ComponentViewState.LOADING;
+    const isComponentLoaded = componentState === ComponentViewState.LOADED;
     const storeId = getParam('store_id');
     const merchantId = getParam('merchant_id');
     const checkoutCart: CheckoutCart = getParam('checkoutCart');
+    const transaction_id = getParam('transaction_id');
+
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
@@ -114,20 +139,25 @@ export class PaymentModeScreen extends React.Component<AppNavigationProps, Payme
               <Image source={require('../../../../assets/images/icons/merchant_logo.png')}/>
             </View>
             <View style={[styles.container, this.getContainerStyle()]}>
-              <View style={[styles.paymentModeSection, this.getPaymentModeSectionStyle()]}>
-                <View style={[styles.paymentModeContainer, this.getPaymentModeContainerStyle()]}>
-                  <View>
-                    <TouchableOpacity onPress={() => this.createSale()} style={styles.kadimaContainer}>
-                      <Text style={styles.kadimaText}>{translate('PAYMENT_MODE_SCREEN.KADIMA')}</Text>
-                      <Text style={styles.coinText}>{translate('PAYMENT_MODE_SCREEN.COIN')}</Text>
+              <View style={[styles.qrcodeSection, this.getPaymentModeSectionStyle()]}>
+                <View style={[styles.qrcodeContainer, this.getPaymentModeContainerStyle()]}>
+                  <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <TouchableOpacity style={styles.qrcode}>
+                    <QRCode
+                      value={transaction_id}
+                      color={'#2C8DDB'}
+                      size={265}
+                      logo={require('../../../../assets/images/logo/kadima_round_logo.png')}
+                      logoSize={40}
+                    />
                     </TouchableOpacity>
-                    <View style={{flexDirection: 'row'}}>
-                      <TouchableOpacity style={styles.cashContainer}>
-                        <Text style={styles.cashText}>{translate('PAYMENT_MODE_SCREEN.CASH')}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={styles.creditContainer}>
-                        <Text style={styles.creditText}>{translate('PAYMENT_MODE_SCREEN.CREDIT')}</Text>
-                      </TouchableOpacity>
+                    <View style={{marginTop: 10}}>
+                      {
+                        isComponentLoading && (
+                          <Progress.Pie
+                            borderColor={'#2C8DDB'} color={'#DA6624'} borderWidth={5} size={100} indeterminate={true}/>
+                        )
+                      }
                     </View>
                   </View>
                 </View>
