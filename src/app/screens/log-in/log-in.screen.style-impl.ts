@@ -13,6 +13,9 @@ interface LogInScreenStyle {
   logInButton: ViewStyle;
   logInButtonText: TextStyle;
   logInButtonContainer: ViewStyle;
+  employeeLoginContainer: ViewStyle;
+  employeeLoginButtonContainer: ViewStyle;
+  helpTextOrStyle: TextStyle;
 }
 
 export const style = StyleSheet.create<LogInScreenStyle>({
@@ -76,5 +79,16 @@ export const style = StyleSheet.create<LogInScreenStyle>({
   },
   logInButtonContainer: {
     flex: 1,
+  },
+  employeeLoginContainer: {
+    marginTop: 25,
+    alignItems: 'center',
+  },
+  employeeLoginButtonContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  helpTextOrStyle: {
+    fontSize: 24,
   },
 });

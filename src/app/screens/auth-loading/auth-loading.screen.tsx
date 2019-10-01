@@ -5,6 +5,7 @@ import {AppNavigationProps} from '../../app-navigation-props';
 import {ComponentViewState} from '../../component.state';
 import {User} from '../../models';
 import {AuthLoadingScreenState} from './auth-loading.screen.state';
+import {EmployeeRole} from '../../shared';
 
 import {styles} from './auth-loading.style-impl';
 
@@ -40,19 +41,28 @@ export class AuthLoadingScreen extends React.Component<AppNavigationProps, AuthL
     this.setState({
       componentState: ComponentViewState.LOADING,
     });
-    const response = await accountService.getDetails(user.getAccountId());
-    if (response.hasData()
-    && response.data) {
-      this.setState({
-        componentState: ComponentViewState.LOADED,
-      });
-      navigate(`${_.startCase(response.data.getRole())}Dashboard`, {user_account: response.data});
+    if (user.role === EmployeeRole.CASHIER) {
+        this.setState({
+          componentState: ComponentViewState.LOADED,
+        });
+        const store_id = user.storeId;
+        const merchant_id = user.merchantId;
+        navigate('POS', {store_id, merchant_id});
     } else {
-      const msg = response.error || this.translate('no_internet');
-      this.setState({
-        componentState: ComponentViewState.ERROR,
-        error: msg,
-      });
+      const response = await accountService.getDetails(user.getAccountId());
+      if (response.hasData()
+        && response.data) {
+        this.setState({
+          componentState: ComponentViewState.LOADED,
+        });
+        navigate(`${_.startCase(response.data.getRole())}Dashboard`, {user_account: response.data});
+      } else {
+        const msg = response.error || this.translate('no_internet');
+        this.setState({
+          componentState: ComponentViewState.ERROR,
+          error: msg,
+        });
+      }
     }
   }
 

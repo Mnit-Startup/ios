@@ -4,4 +4,5 @@ export interface StringInputProps extends InputProps {
   onceSubmitted: boolean;
   label: string;
   required: boolean;
+  defaultValue?: string;
 }

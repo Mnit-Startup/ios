@@ -10,13 +10,21 @@ export class PasswordInput extends React.Component<PasswordInputProps, PasswordI
   constructor(props: PasswordInputProps) {
     super(props);
 
-    this.state = {
-      value: '',
-      valid: false,
-      hasTouched: false,
-      secureTextEntry: true,
-    };
-
+    if (!_.isNil(this.props.placeholder)) {
+      this.state = {
+        value: '',
+        valid: true,
+        hasTouched: false,
+        secureTextEntry: true,
+      };
+    } else {
+      this.state = {
+        value: '',
+        valid: false,
+        hasTouched: false,
+        secureTextEntry: true,
+      };
+    }
     this.onBlur = this.onBlur.bind(this);
     this.onChangeText = this.onChangeText.bind(this);
   }
@@ -47,11 +55,11 @@ export class PasswordInput extends React.Component<PasswordInputProps, PasswordI
 
   render() {
     return (
-      <View>
+      <View style={this.props.style.containerStyle}>
         <View style={passwordInputStyle.inputLabelContainer}>
           <Text style={passwordInputStyle.inputLabelText}>{this.props.label}</Text>
         </View>
-        <View style={this.props.style.containerStyle}>
+        <View>
           <View style={passwordInputStyle.input}>
               <TextInput
                 autoFocus={this.props.autoFocus}
@@ -63,6 +71,7 @@ export class PasswordInput extends React.Component<PasswordInputProps, PasswordI
                 autoCorrect={false}
                 onBlur={this.onBlur}
                 onChangeText={this.onChangeText}
+                placeholder={this.props.placeholder}
               />
           </View>
         </View>

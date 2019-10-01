@@ -9,9 +9,11 @@ import {styles} from './createStore.style-impl';
 import {CreateStoreScreenState} from './createStore.screen.state';
 import ModalFilterPicker from 'react-native-modal-filter-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Role, States} from '../../../../shared';
+import {States} from '../../../../shared';
 import {Store} from '../../../../models';
 import {Orientation} from '../../../../models/device-orientation';
+
+const emitter = require('tiny-emitter/instance');
 
 export class CreateStoreScreen extends React.Component<AppNavigationProps, CreateStoreScreenState> {
 
@@ -58,6 +60,10 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
         visible: false,
         picked: '',
       },
+      storeIdentifier: {
+        value: '',
+        valid: false,
+      },
       orientation: Orientation.UNKNOWN,
       onceSubmitted: false,
       componentState: ComponentViewState.DEFAULT,
@@ -70,6 +76,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     this.onCityChanged = this.onCityChanged.bind(this);
     this.onPhoneChanged =  this.onPhoneChanged.bind(this);
     this.onZipcodeChanged = this.onZipcodeChanged.bind(this);
+    this.onStoreIdentifierChanged = this.onStoreIdentifierChanged.bind(this);
     this.createStore = this.createStore.bind(this);
   }
 
@@ -95,12 +102,14 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
   }
 
   async createStore() {
+    const {navigation: {goBack}} = this.props;
     this.setState({
       onceSubmitted: true,
     });
     if (this.state.storeName.valid && this.state.phone.valid && this.state.streetAddress.valid
       && this.state.email.valid && this.state.merchantId.valid
-      && this.state.city.valid && this.state.zip.valid && this.state.stateDropdown.picked !== '') {
+      && this.state.city.valid && this.state.zip.valid && this.state.stateDropdown.picked !== ''
+      && this.state.storeIdentifier.valid) {
         const storeService = this.getStoreService();
         this.setState({
           componentState: ComponentViewState.LOADING,
@@ -116,6 +125,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
           state: this.state.stateDropdown.picked,
           storeProfile: this.state.storeProfileDropdown.picked,
           zipcode: this.state.zip.value,
+          storeIdentifier: this.state.storeIdentifier.value,
         };
         const response = await storeService.createStore(store);
         if (response.hasData()
@@ -124,7 +134,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
             componentState: ComponentViewState.LOADED,
           });
           Alert.alert(this.translate('CREATE_STORE_SCREEN.CREATE_STORE_SUCCESS'));
-          this.props.navigation.navigate('ManageStore');
+          goBack();
         } else {
           const msg = response.error || this.translate('no_internet');
           Alert.alert(msg);
@@ -281,6 +291,15 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     this.setState(state);
   }
 
+  onStoreIdentifierChanged(storeIdentifier: string, isValid: boolean) {
+    this.setState({
+      storeIdentifier: {
+        value: storeIdentifier,
+        valid: isValid,
+      },
+    });
+  }
+
   getContainerStyle() {
     if (this.state.orientation === Orientation.POTRAIT) {
       return styles.orientationPortrait;
@@ -306,7 +325,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     const {componentState} = this.state;
     const options = States;
     const isComponentLoading = componentState === ComponentViewState.LOADING;
-    const {screenProps: {translate}, navigation: {navigate}} = this.props;
+    const {screenProps: {translate}, navigation: {navigate, goBack}} = this.props;
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
@@ -316,10 +335,10 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
               <Image source={require('../../../../../assets/images/icons/merchant_logo.png')}/>
             </View>
             <View style={[{flexWrap: 'wrap', flexDirection: 'row'}, this.getContainerStyle()]}>
-              <TouchableOpacity onPress={() => navigate('ManageStore')}>
+              <TouchableOpacity>
               <Image style={styles.manageStoreLogoStyle}
-              source={require('../../../../../assets/images/icons/manage_store_icon.png')}/>
-              <Text style={styles.manageStoreLogoSubTextStyle}>{translate('CREATE_STORE_SCREEN.MANAGE_STORE')}</Text>
+              source={require('../../../../../assets/images/icons/create_store_icon.png')}/>
+              <Text style={styles.manageStoreLogoSubTextStyle}>{translate('CREATE_STORE_SCREEN.CREATE_STORE')}</Text>
               </TouchableOpacity>
             <View style={[styles.formContainer]}>
               <View style={styles.formRow}>
@@ -338,7 +357,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <View>
                 <PhoneInput
                   label={translate('CREATE_STORE_SCREEN.PHONE')}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
@@ -351,7 +370,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <StringInput
                   label={translate('CREATE_STORE_SCREEN.STREET_ADDRESS')}
                   required={true}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
@@ -359,7 +378,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                   onChange={this.onStreetAddressChanged}
                 />
                 <EmailInput
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   style={inputStyle}
                   editable={true}
@@ -371,7 +390,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <StringInput
                   label={translate('CREATE_STORE_SCREEN.STREET_ADDRESS_2')}
                   required={false}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
@@ -381,7 +400,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <StringInput
                   label={translate('CREATE_STORE_SCREEN.MERCHANT_ID/EIN')}
                   required={true}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
@@ -393,12 +412,22 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                 <StringInput
                   label={translate('CREATE_STORE_SCREEN.CITY')}
                   required={true}
-                  autoFocus={true}
+                  autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}
                   editable={true}
                   style={inputStyle}
                   translate={this.props.screenProps.translate}
                   onChange={this.onCityChanged}
+                />
+                <StringInput
+                  label={translate('CREATE_STORE_SCREEN.STORE_IDENTIFIER')}
+                  required={true}
+                  autoFocus={false}
+                  onceSubmitted={this.state.onceSubmitted}
+                  editable={true}
+                  style={inputStyle}
+                  translate={this.props.screenProps.translate}
+                  onChange={this.onStoreIdentifierChanged}
                 />
               </View>
                 <View style={styles.formRow}>
@@ -434,7 +463,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                   </View>
                   <ZipcodeInput
                     label={translate('CREATE_STORE_SCREEN.ZIP')}
-                    autoFocus={true}
+                    autoFocus={false}
                     onceSubmitted={this.state.onceSubmitted}
                     editable={true}
                     style={inputZipStyle}
@@ -476,7 +505,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                   />
                   <Button
                   type={'btn-danger'}
-                  onPress={() => navigate('ManageStore')}
+                  onPress={() => goBack()}
                   text={translate('CREATE_STORE_SCREEN.CANCEL')}
                   />
                 </View>

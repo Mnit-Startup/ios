@@ -14,7 +14,9 @@
   },
   "LOGIN_SCREEN": {
     "PASSWORD": "PASSWORD",
-    "SIGN_IN": "SIGN IN"
+    "SIGN_IN": "SIGN IN",
+    "HELP_TEXT_OR": "OR",
+    "EMPLOYEE_LOGIN_TEXT": "Click here to login as an employee"
   },
   "EMAIL_INPUT_COMPONENT": {
     "EMAIL_INPUT_TITLE": "EMAIL",
@@ -54,7 +56,9 @@
   "MANAGE_STORE_SCREEN": {
     "CREATE_STORE": "Create Store",
     "ADD_PRODUCT": "Add Product",
-    "REMOVE_PRODUCT": "Remove Product"
+    "REMOVE_PRODUCT": "Remove Product",
+    "MANAGE_PRODUCTS": "Manage Products",
+    "EDIT_STORE": "Edit Store"
   },
   "CREATE_STORE_SCREEN": {
     "MANAGE_STORE": "Manage Store",
@@ -73,11 +77,150 @@
     "CANCEL": "CANCEL",
     "SELECT_STATE": "Select State",
     "PROFILE": "Profile?",
-    "CREATE_STORE_SUCCESS": "Your store has been created successfully"
+    "CREATE_STORE_SUCCESS": "Your store has been created successfully",
+    "INVALID_STATE": "Please specify a valid state to continue",
+    "STORE_IDENTIFIER": "STORE ID"
   },
   "MERCHANT_DASHBOARD": {
     "CREATE_NEW_STORE": "CREATE NEW STORE",
     "SELECT_STORE": "Select Store",
-    "CREATE_STORE": "Create Store"
+    "CREATE_STORE": "Create Store",
+    "MANAGE_USERS": "Manage Users"
+  },
+  "CREATE_PRODUCT_SCREEN": {
+    "ADD_PRODUCT_IMAGE_TEXT": "Add Product",
+    "CREATE_PRODUCT": "ADD",
+    "ADD_PRODUCT_IMAGE_PLACEHOLDER": "Add Product Image",
+    "PRODUCT_IMAGE_PLACEHOLDER": "Product Image",
+    "PRODUCT_NAME": "PRODUCT NAME",
+    "PRICE": "PRICE",
+    "SKU_NUMBER": "SKU NUMBER",
+    "TAXABLE": "TAXABLE?",
+    "TAXABLE_DROPDOWN": "Taxable?",
+    "CANCEL": "CANCEL",
+    "ZIP": "ZIP",
+    "INVALID_VALUE": "Please specify a valid value to continue",
+    "SELECT_PRODUCT_IMAGE": "Select Product Image",
+    "IMAGE_PICKER_ERROR": "Could not complete the action, please try after some time",
+    "INVALID_IMAGE_FORMAT": "Please select jpeg/png image",
+    "IMAGE_UPLOAD_SUCCESS": "Image uploaded successfully!",
+    "CREATE_PRODUCT_SUCCESS": "Product has been created successfully",
+    "TAXABLE_OPTION_YES": "Yes",
+    "TAXABLE_OPTION_NO": "No"
+  },
+  "MANAGE_PRODUCTS_SCREEN": {
+    "CREATE_NEW_PRODUCT": "ADD NEW PRODUCT",
+    "MANAGE_PRODUCTS": "Manage Products",
+    "CANCEL": "CANCEL",
+    "ADD_PRODUCT": "Add Product",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "CANCEL_ALERT_TEXT": "Cancel",
+    "DELETE_PRODUCT": "Delete Product",
+    "DELETE_PRODUCT_CONFIRMATION": "Are you sure you want to delete %{product} product from the store",
+    "DELETE_SUCCESS": "Product deleted successfully!"
+  },
+  "NUMBER_INPUT_COMPONENT": {
+    "INVALID_INPUT": "Please specify a valid %{field} to continue"
+  },
+  "EDIT_PRODUCT_SCREEN": {
+    "ADD_PRODUCT_IMAGE_TEXT": "Add Product",
+    "UPDATE": "UPDATE",
+    "EDIT_PRODUCT": "Edit Product",
+    "CREATE_PRODUCT": "ADD",
+    "ADD_PRODUCT_IMAGE_PLACEHOLDER": "Add Product Image",
+    "PRODUCT_IMAGE_PLACEHOLDER": "Product Image",
+    "PRODUCT_NAME": "PRODUCT NAME",
+    "PRICE": "PRICE",
+    "SKU_NUMBER": "SKU NUMBER",
+    "TAXABLE": "TAXABLE?",
+    "TAXABLE_DROPDOWN": "Taxable?",
+    "CANCEL": "CANCEL",
+    "ZIP": "ZIP",
+    "INVALID_VALUE": "Please specify a valid value to continue",
+    "SELECT_PRODUCT_IMAGE": "Select Product Image",
+    "IMAGE_PICKER_ERROR": "Could not complete the action, please try after some time",
+    "INVALID_IMAGE_FORMAT": "Please select jpeg/png image",
+    "IMAGE_UPLOAD_SUCCESS": "Image uploaded successfully!",
+    "UPDATE_PRODUCT_SUCCESS": "Product has been updated successfully",
+    "TAXABLE_OPTION_YES": "Yes",
+    "TAXABLE_OPTION_NO": "No"
+  },
+  "MANAGE_USERS_SCREEN": {
+    "CREATE_NEW_USER": "ADD NEW USER",
+    "MANAGE_USERS": "Manage Users",
+    "CANCEL": "CANCEL",
+    "ADD_USER": "Add User",
+    "ADD_CASHIER": "Add Cashier",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "CANCEL_ALERT_TEXT": "Cancel",
+    "DELETE_PRODUCT": "Delete Product",
+    "DELETE_PRODUCT_CONFIRMATION": "Are you sure you want to delete %{cashier} from the list",
+    "DELETE_SUCCESS": "Employee removed successfully!"
+  },
+  "CREATE_CASHIER_SCREEN": {
+    "ADD_CASHIER_IMAGE_TEXT": "Add Employee",
+    "CREATE_CASHIER": "ADD",
+    "CASHIER_NAME": "CASHIER NAME",
+    "CASHIER_NUMBER": "CASHIER NUMBER",
+    "PIN": "PIN",
+    "CONFIRM_PIN": "CONFIRM PIN",
+    "CANCEL": "CANCEL",
+    "INVALID_VALUE": "Please specify a valid value to continue",
+    "CREATE_CASHIER_SUCCESS": "Employee has been created successfully"
+  },
+  "EDIT_CASHIER_SCREEN": {
+    "EDIT_CASHIER_IMAGE_TEXT": "Edit Employee",
+    "UPDATE_CASHIER": "UPDATE",
+    "CASHIER_NAME": "CASHIER NAME",
+    "CASHIER_NUMBER": "CASHIER NUMBER",
+    "PIN": "PIN",
+    "CONFIRM_PIN": "CONFIRM PIN",
+    "CANCEL": "CANCEL",
+    "INVALID_VALUE": "Please specify a valid value to continue",
+    "CREATE_CASHIER_SUCCESS": "Employee has been created successfully",
+    "UPDATE_CASHIER_SUCCESS": "Employee has been updated successfully"
+  },
+  "ASSIGN_STORE_SCREEN": {
+    "ADD": "ADD",
+    "MANAGE_USERS": "Manage Users",
+    "CANCEL": "CANCEL",
+    "ADD_STORE": "Add Store",
+    "ASSIGNED_STORE_SUCCESS": "Stores assigned successfully",
+    "REMOVE_EMP_FR0M_STORE_SUCCESS": "Employee removed from store successfully"
+  },
+  "EMPLOYEE_LOGIN_SCREEN": {
+    "EMPLOYEE_NUMBER": "EMPLOYEE NUMBER",
+    "SIGN_IN": "SIGN IN",
+    "STORE_ID": "STORE ID",
+    "PIN": "PIN",
+    "EMPLOYEE_LOGIN_TEXT": "EMPLOYEE LOGIN"
+  },
+  "POINT_OF_SALE_SCREEN": {
+    "PAY": "Pay",
+    "TIP": "Tip",
+    "TAX": "Tax",
+    "TOTAL": "Total",
+    "SUBTOTAL": "SubTotal",
+    "EMPTY_CART": "Please add items in cart to continue"
+  },
+  "CART_COMPONENT": {
+    "TIP": "Tip",
+    "TAX": "Tax",
+    "TOTAL": "Total",
+    "SUBTOTAL": "SubTotal"
+  },
+  "PAYMENT_MODE_SCREEN": {
+    "KADIMA": "Kadima",
+    "COIN": "Coin",
+    "CASH": "Cash",
+    "CREDIT": "Credit",
+    "PAY": "Pay"
+  },
+  "QRCODE_SCREEN": {
+    "TRANSACTION_COMPLETE": "Transaction Complete",
+    "DONE": "DONE",
+    "PAY": "Pay"
   }
 }

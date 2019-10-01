@@ -4,7 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-  <!-- CFBundle Display name is used in the grid of app on ios devices -->
 	<key>CFBundleDisplayName</key>
 	<string>Kadima</string>
 	<key>CFBundleExecutable</key>
@@ -13,7 +12,6 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-  <!-- CFBundle name is used in the list of apps stored in iTunes library -->
 	<key>CFBundleName</key>
 	<string>Kadima</string>
 	<key>CFBundlePackageType</key>
@@ -39,10 +37,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We require this permission in order to choose images to be associated with a product, account and others from your library</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We require this permission in order to store images associated with a product, account and others on your device.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera will be used to scan QR code at merchant location to pay for transactions</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

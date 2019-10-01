@@ -1,8 +1,10 @@
-package com.pos;
+package com.blockade.kadima;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
+import com.imagepicker.ImagePickerPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.cmcewen.blurview.BlurViewPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
@@ -31,6 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
+            new ImagePickerPackage(),
             new RNCameraPackage(),
             new BlurViewPackage(),
             new ReanimatedPackage(),

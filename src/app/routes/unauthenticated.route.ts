@@ -1,5 +1,5 @@
 import {createStackNavigator} from 'react-navigation';
-import {SignInScreen, SignUpScreen, LogInScreen} from '../screens';
+import {SignInScreen, SignUpScreen, LogInScreen, EmployeeLoginScreen} from '../screens';
 
 /**
  * The navigation screen for the application
@@ -19,6 +19,12 @@ export const UnauthenticatedStack = createStackNavigator({
   },
   LogIn: {
     screen: LogInScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  EmployeeLogIn: {
+    screen: EmployeeLoginScreen,
     navigationOptions: {
       header: null,
     },

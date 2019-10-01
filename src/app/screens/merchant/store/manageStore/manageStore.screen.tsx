@@ -1,7 +1,6 @@
 import React from 'react';
 import {SafeAreaView, Text, ScrollView, View, Image, TouchableOpacity} from 'react-native';
 
-import {Button} from '../../../../components';
 import {AppNavigationProps} from '../../../../app-navigation-props';
 import {appStyles} from '../../../../app.style-impl';
 import {styles} from './manageStore.style-impl';
@@ -14,12 +13,13 @@ export class ManageStoreScreen extends React.Component<AppNavigationProps> {
   }
 
   back() {
-    const {navigation: {navigate}} = this.props;
-    navigate('MerchantDashboard');
+    const {navigation: {goBack}} = this.props;
+    goBack();
   }
 
   render() {
-    const {screenProps: {translate}, navigation: {navigate}} = this.props;
+    const {screenProps: {translate}, navigation: {navigate, getParam}} = this.props;
+    const store_id = getParam('store_id');
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
@@ -32,20 +32,15 @@ export class ManageStoreScreen extends React.Component<AppNavigationProps> {
                 <Image source={require('../../../../../assets/images/icons/back_icon.png')}/>
             </TouchableOpacity>
             <View style={styles.firstRow}>
-            <TouchableOpacity onPress={() => navigate('CreateStore')}>
+            <TouchableOpacity style={styles.imageContainer} onPress={() => navigate('ProductsDashboard', {store_id})}>
               <Image style={styles.imageStyle}
-              source={require('../../../../../assets/images/icons/create_store_icon.png')}/>
-              <Text style={styles.textStyle}>{translate('MANAGE_STORE_SCREEN.CREATE_STORE')}</Text>
+              source={require('../../../../../assets/images/icons/dummy_product_image_icon.png')}/>
+              <Text style={styles.textStyle}>{translate('MANAGE_STORE_SCREEN.MANAGE_PRODUCTS')}</Text>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity style={styles.imageContainer}>
               <Image style={styles.imageStyle}
-              source={require('../../../../../assets/images/icons/add_product_icon.png')}/>
-              <Text style={styles.textStyle}>{translate('MANAGE_STORE_SCREEN.ADD_PRODUCT')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-              <Image style={styles.imageStyle}
-              source={require('../../../../../assets/images/icons/remove_product_icon.png')}/>
-              <Text style={styles.textStyle}>{translate('MANAGE_STORE_SCREEN.REMOVE_PRODUCT')}</Text>
+              source={require('../../../../../assets/images/icons/edit_store_icon.png')}/>
+              <Text style={styles.textStyle}>{translate('MANAGE_STORE_SCREEN.EDIT_STORE')}</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -9,6 +9,7 @@ interface MerchantHomeScreenStyle {
   backButton: ImageStyle;
   imageStyle: ImageStyle;
   textStyle: TextStyle;
+  imageContainer: ViewStyle;
 }
 export const styles = StyleSheet.create<MerchantHomeScreenStyle>({
   rootView: {
@@ -39,7 +40,10 @@ export const styles = StyleSheet.create<MerchantHomeScreenStyle>({
     marginRight: 25,
   },
   textStyle: {
-    marginLeft: 30,
-    marginRight: 20,
+    marginRight: 25,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

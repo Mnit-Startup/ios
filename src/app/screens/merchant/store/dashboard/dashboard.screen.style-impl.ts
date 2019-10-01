@@ -6,6 +6,7 @@ interface StoreDashboardStyle {
   logo: ImageStyle;
   imagesFirstRow: ViewStyle;
   imagesSecondRow: ViewStyle;
+  backButton: ImageStyle;
   imageStyle: ImageStyle;
   textStyle: TextStyle;
 }
@@ -30,6 +31,10 @@ export const styles = StyleSheet.create<StoreDashboardStyle>({
   imagesSecondRow: {
     marginTop: 25,
     alignItems: 'center',
+  },
+  backButton: {
+    marginTop: 20,
+    marginLeft: 70,
   },
   imageStyle: {
     marginRight: 25,

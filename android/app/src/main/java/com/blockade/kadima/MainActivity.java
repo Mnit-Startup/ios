@@ -1,4 +1,4 @@
-package com.pos;
+package com.blockade.kadima;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

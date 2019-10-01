@@ -18,13 +18,21 @@ export class StringInput extends React.Component<StringInputProps, StringInputSt
     this.onBlur = this.onBlur.bind(this);
     this.onChangeText = this.onChangeText.bind(this);
   }
+
+  componentWillReceiveProps(nextProps: StringInputProps) {
+    if (!_.isNil(nextProps.defaultValue)) {
+      const text = nextProps.defaultValue;
+      this.validateAndSetState(text);
+    }
+  }
+
   onBlur() {
     this.setState({
       hasTouched: true,
     });
   }
 
-  onChangeText(text: string) {
+  validateAndSetState(text: string): boolean {
     let isValid = false;
     if (!_.isEmpty(text)) {
       isValid = true;
@@ -35,6 +43,12 @@ export class StringInput extends React.Component<StringInputProps, StringInputSt
       valid: isValid,
       hasTouched: true,
     });
+
+    return isValid;
+  }
+
+  onChangeText(text: string) {
+    const isValid = this.validateAndSetState(text);
 
     if (_.isFunction(this.props.onChange)) {
       this.props.onChange(text, isValid);
@@ -59,7 +73,8 @@ export class StringInput extends React.Component<StringInputProps, StringInputSt
           autoCapitalize='none'
           autoCorrect={false}
           onChangeText={this.onChangeText}
-          onBlur={this.onBlur}>
+          onBlur={this.onBlur}
+          defaultValue={this.props.defaultValue}>
           </TextInput>
         </View>
         {!this.state.valid && this.props.onceSubmitted && this.props.required &&
