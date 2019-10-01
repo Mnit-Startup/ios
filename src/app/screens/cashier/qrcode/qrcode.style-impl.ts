@@ -14,6 +14,8 @@ interface QRCodeScreenStyle {
   qrcode: ViewStyle;
   backButton: ViewStyle;
   payButtonContainer: ViewStyle;
+  transactionComplete: ViewStyle;
+  transactionCompleteText: TextStyle;
 }
 
 export const styles = StyleSheet.create<QRCodeScreenStyle>({
@@ -70,5 +72,17 @@ export const styles = StyleSheet.create<QRCodeScreenStyle>({
   },
   payButtonContainer: {
     alignItems: 'center',
+  },
+  transactionComplete: {
+    height: 150,
+    width: 350,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  transactionCompleteText: {
+    fontSize: 60,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

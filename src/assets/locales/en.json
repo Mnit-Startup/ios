@@ -217,5 +217,10 @@
     "CASH": "Cash",
     "CREDIT": "Credit",
     "PAY": "Pay"
+  },
+  "QRCODE_SCREEN": {
+    "TRANSACTION_COMPLETE": "Transaction Complete",
+    "DONE": "DONE",
+    "PAY": "Pay"
   }
 }

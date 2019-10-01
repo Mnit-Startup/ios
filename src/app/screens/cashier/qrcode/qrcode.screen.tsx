@@ -26,6 +26,7 @@ export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScre
       componentState: ComponentViewState.DEFAULT,
     };
     this.pollTransactionStatus = this.pollTransactionStatus.bind(this);
+    this.transactionComplete = this.transactionComplete.bind(this);
   }
 
   getOrientation = () => {
@@ -114,10 +115,20 @@ export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScre
   }
 
   componentDidMount() {
-    this.pollTransactionStatus()
-      .then(() => {
-        // navigate to payment success screen
-      });
+    this.pollTransactionStatus();
+  }
+
+  transactionComplete() {
+    const {navigation: {pop, push, getParam}} = this.props;
+    const storeId = getParam('store_id');
+    const merchantId = getParam('merchant_id');
+    /*
+    navigation stack from top has 1. qrcode screen 2. payment mode screen
+    3. pos screen
+    so now transaction is done and we need to navigate to pos screen
+    */
+    pop(3);
+    push('POS', {store_id: storeId, merchant_id: merchantId});
   }
 
   render() {
@@ -141,25 +152,45 @@ export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScre
             <View style={[styles.container, this.getContainerStyle()]}>
               <View style={[styles.qrcodeSection, this.getPaymentModeSectionStyle()]}>
                 <View style={[styles.qrcodeContainer, this.getPaymentModeContainerStyle()]}>
-                  <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <TouchableOpacity style={styles.qrcode}>
-                    <QRCode
-                      value={transaction_id}
-                      color={'#2C8DDB'}
-                      size={265}
-                      logo={require('../../../../assets/images/logo/kadima_round_logo.png')}
-                      logoSize={40}
-                    />
-                    </TouchableOpacity>
-                    <View style={{marginTop: 10}}>
-                      {
-                        isComponentLoading && (
-                          <Progress.Pie
-                            borderColor={'#2C8DDB'} color={'#DA6624'} borderWidth={5} size={100} indeterminate={true}/>
-                        )
-                      }
-                    </View>
-                  </View>
+                  {
+                    !isComponentLoaded && (
+                      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity style={styles.qrcode}>
+                          <QRCode
+                            value={transaction_id}
+                            color={'#2C8DDB'}
+                            size={265}
+                            logo={require('../../../../assets/images/logo/kadima_round_logo.png')}
+                            logoSize={40}
+                          />
+                        </TouchableOpacity>
+                        <View style={{marginTop: 10}}>
+                          {
+                            isComponentLoading && (
+                              <Progress.Pie
+                                borderColor={'#2C8DDB'} color={'#DA6624'} borderWidth={5} size={100} indeterminate={true} />
+                            )
+                          }
+                        </View>
+                      </View>
+                    )
+                  }
+                  {
+                    isComponentLoaded && (
+                      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={styles.transactionComplete}>
+                          <Text style={styles.transactionCompleteText}>{translate('QRCODE_SCREEN.TRANSACTION_COMPLETE')}</Text>
+                        </View>
+                        <View style={{marginTop: 10}}>
+                          <Button
+                            text={translate('QRCODE_SCREEN.DONE')}
+                            type={'btn-primary'}
+                            onPress={this.transactionComplete}
+                          />
+                        </View>
+                      </View>
+                    )
+                  }
                 </View>
                 <TouchableOpacity onPress={() => goBack()} style={styles.backButton}>
                   <Image source={require('../../../../assets/images/icons/back_icon.png')} />
@@ -177,7 +208,7 @@ export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScre
                   </View>
                   <View style={[styles.payButtonContainer]}>
                     <Button
-                      text={translate('PAYMENT_MODE_SCREEN.PAY')}
+                      text={translate('QRCODE_SCREEN.PAY')}
                       disabled={true}
                       type={'btn-primary'}
                     />
