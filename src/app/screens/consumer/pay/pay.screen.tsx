@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import {Text, SafeAreaView, View, ActivityIndicator, Dimensions, TouchableOpacity, Image} from 'react-native';
+import {Text, SafeAreaView, View, ActivityIndicator, Dimensions, TouchableOpacity, Image, Alert} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {AppNavigationProps} from '../../../app-navigation-props';
@@ -133,9 +133,9 @@ export class PayScreen extends React.Component<AppNavigationProps, PayScreenStat
       this.fetchBalances();
     } else {
       const msg = response.error || this.translate('no_internet');
+      Alert.alert(msg);
       this.setState({
         componentState: ComponentViewState.ERROR,
-        error: msg,
       });
     }
   }
