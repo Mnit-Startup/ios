@@ -50,6 +50,7 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
         merchant_id_ein: store.merchantIdEin,
         store_profile: store.storeProfile,
         store_identifier: store.storeIdentifier,
+        image: store.image,
       };
       const userId = await this.getUserAccountId();
       const response = await this.post(`/account/${userId}/store`, storeEntries);
@@ -224,5 +225,25 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
     } catch (e) {
       return new ServiceResponse<Transaction>(undefined, ApiServiceImpl.parseError(e));
     }
+  }
+
+  async getStore(
+    storeId: string,
+    merchantId?: string,
+  ): Promise<ServiceResponse<Store>> {
+    let store;
+    if (this.storeList.hasStores()) {
+      store = this.storeList.getStoreById(storeId);
+    } else {
+      let userId;
+      if (!_.isNil(merchantId)) {
+        userId = merchantId;
+      } else {
+        userId = await this.getUserAccountId();
+      }
+      const response = await this.get(`/account/${userId}/store/${storeId}`);
+      store = new Store(response.data);
+    }
+    return new ServiceResponse(store);
   }
 }

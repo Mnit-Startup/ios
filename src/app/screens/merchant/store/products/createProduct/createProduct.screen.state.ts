@@ -24,4 +24,6 @@ export interface CreateProductScreenState extends ComponentState {
   loadingImage: boolean;
   orientation: Orientation;
   onceSubmitted: boolean;
+  storeLogo: string;
+  loadingLogo: boolean;
 }

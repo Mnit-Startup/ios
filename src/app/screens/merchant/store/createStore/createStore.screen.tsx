@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import React from 'react';
-import {SafeAreaView, Text, ScrollView, View, Image, TouchableOpacity, Alert, Dimensions} from 'react-native';
+import {SafeAreaView, Text, ScrollView, View, Image, TouchableOpacity, Alert, Dimensions, Platform, ActivityIndicator} from 'react-native';
 
 import {Button, StringInput, EmailInput, PhoneInput, ZipcodeInput} from '../../../../components';
 import {AppNavigationProps} from '../../../../app-navigation-props';
@@ -12,8 +13,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {States} from '../../../../shared';
 import {Store} from '../../../../models';
 import {Orientation} from '../../../../models/device-orientation';
+import ImagePicker from 'react-native-image-picker';
+import * as Progress from 'react-native-progress';
 
 const emitter = require('tiny-emitter/instance');
+
+const PRODUCT_IMAGE_ALLOWED_FILE_TYPES = [
+  'image/jpeg',
+  'image/png',
+];
 
 export class CreateStoreScreen extends React.Component<AppNavigationProps, CreateStoreScreenState> {
 
@@ -64,6 +72,10 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
         value: '',
         valid: false,
       },
+      image: '',
+      uploadingImage: false,
+      reUploadingImage: false,
+      loadingImage: false,
       orientation: Orientation.UNKNOWN,
       onceSubmitted: false,
       componentState: ComponentViewState.DEFAULT,
@@ -78,6 +90,9 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     this.onZipcodeChanged = this.onZipcodeChanged.bind(this);
     this.onStoreIdentifierChanged = this.onStoreIdentifierChanged.bind(this);
     this.createStore = this.createStore.bind(this);
+    this.selectImage = this.selectImage.bind(this);
+    this.onImageLoadStartFromSource = this.onImageLoadStartFromSource.bind(this);
+    this.onImageLoadEndFromSource = this.onImageLoadEndFromSource.bind(this);
   }
 
   getOrientation = () => {
@@ -126,6 +141,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
           storeProfile: this.state.storeProfileDropdown.picked,
           zipcode: this.state.zip.value,
           storeIdentifier: this.state.storeIdentifier.value,
+          image: this.state.image,
         };
         const response = await storeService.createStore(store);
         if (response.hasData()
@@ -306,6 +322,77 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     }
   }
 
+  onImageLoadStartFromSource() {
+    this.setState({
+      loadingImage: true,
+    });
+  }
+
+  onImageLoadEndFromSource() {
+    this.setState({
+      loadingImage: false,
+      reUploadingImage: false,
+    });
+    Alert.alert(this.translate('CREATE_PRODUCT_SCREEN.IMAGE_UPLOAD_SUCCESS'));
+  }
+
+  async selectImage() {
+    const {image} = this.state;
+    const {screenProps: {translate}} = this.props;
+    const options = {
+      title: translate('CREATE_PRODUCT_SCREEN.SELECT_PRODUCT_IMAGE'),
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
+    ImagePicker.showImagePicker(options, async(res) => {
+      if (res.error) {
+        Alert.alert(translate('CREATE_PRODUCT_SCREEN.IMAGE_PICKER_ERROR'));
+      } else if (res.uri) {
+        // image input validation
+        if (!(res.type && PRODUCT_IMAGE_ALLOWED_FILE_TYPES.indexOf(res.type) + 1)) {
+          Alert.alert(translate('CREATE_PRODUCT_SCREEN.INVALID_IMAGE_FORMAT'));
+          return;
+        }
+        if (!image) {
+          this.setState({
+            uploadingImage: true,
+          });
+        } else {
+          this.setState({
+            uploadingImage: true,
+            reUploadingImage: true,
+            image: '',
+          });
+        }
+        const data = new FormData();
+        data.append('photo', {
+          name: res.fileName,
+          type: res.type,
+          uri: Platform.OS === 'android' ? res.uri : res.uri.replace('file://', ''),
+        });
+        // file size -> file size validation
+        const storeService = this.getStoreService();
+        const response = await storeService.uploadImage(data);
+        if (response.hasData()
+        && response.data) {
+          this.setState({
+            image: response.data.uri,
+            uploadingImage: false,
+            reUploadingImage: false,
+          });
+        } else {
+          const msg = response.error || this.translate('no_internet');
+          Alert.alert(msg);
+          this.setState({
+            uploadingImage: false,
+            reUploadingImage: false,
+          });
+        }
+      }
+    });
+  }
+
   render() {
 
     const inputStyle = {
@@ -322,17 +409,50 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
       inputStyle: styles.zipInput,
       errorStyle: styles.zipErrorStyle,
     };
-    const {componentState} = this.state;
+    const {componentState, image, uploadingImage, reUploadingImage, loadingImage} = this.state;
     const options = States;
     const isComponentLoading = componentState === ComponentViewState.LOADING;
     const {screenProps: {translate}, navigation: {navigate, goBack}} = this.props;
+    const isImage = !_.isEmpty(image);
+
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
           <View style={styles.rootView}>
             <View style={styles.header}>
               <Image source={require('../../../../../assets/images/logo/logo.png')}/>
-              <Image source={require('../../../../../assets/images/icons/merchant_logo.png')}/>
+              <View style={styles.storeLogoContainer}>
+              {
+                !isImage && (
+                  <TouchableOpacity onPress={this.selectImage}>
+                    <Image source={require('../../../../../assets/images/icons/add_merchant_logo.png')}/>
+                    <ActivityIndicator size='large' animating={uploadingImage} key={uploadingImage ? 'loading' : 'not-loading'}/>
+                  </TouchableOpacity>
+                )
+              }
+              {
+                isImage && loadingImage && !reUploadingImage && (
+                  <View style={styles.progressBar}>
+                    <Progress.Bar indeterminate={true} width={100}/>
+                  </View>
+                )
+              }
+              {
+                isImage && (
+                  <TouchableOpacity onPress={this.selectImage}>
+                    <Image style={styles.storeLogo} onLoadStart={this.onImageLoadStartFromSource}
+                    onLoad={this.onImageLoadEndFromSource} source={{uri: image}}/>
+                  </TouchableOpacity>
+                )
+              }
+              {
+                isImage && reUploadingImage && (
+                  <View style={styles.activityIndicator}>
+                    <ActivityIndicator size='large' animating={reUploadingImage} key={reUploadingImage ? 'loading' : 'not-loading'}/>
+                  </View>
+                )
+              }
+              </View>
             </View>
             <View style={[{flexWrap: 'wrap', flexDirection: 'row'}, this.getContainerStyle()]}>
               <TouchableOpacity>

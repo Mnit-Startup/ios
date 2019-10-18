@@ -5,4 +5,6 @@ import {ProductList} from '../../../../../models/product-list';
 export interface ProductsDashboardScreenState extends ComponentState {
   productsList?: ProductList;
   orientation: Orientation;
+  storeLogo: string;
+  loadingLogo: boolean;
 }

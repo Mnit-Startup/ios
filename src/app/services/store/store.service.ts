@@ -54,4 +54,9 @@ export interface StoreService {
     storeId: string,
   ): Promise<ServiceResponse<Transaction>>;
 
+  getStore(
+    storeId: string,
+    merchantId?: string,
+  ): Promise<ServiceResponse<Store>>;
+
 }

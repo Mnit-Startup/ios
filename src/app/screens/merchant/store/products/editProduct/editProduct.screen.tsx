@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import {SafeAreaView, Text, ScrollView, View, Image, TouchableOpacity, Alert, Dimensions, ActivityIndicator, Platform} from 'react-native';
 
@@ -45,6 +46,8 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
       uploadingImage: false,
       loadingImage: false,
       reUploadingImage: false,
+      storeLogo: '',
+      loadingLogo: false,
       orientation: Orientation.UNKNOWN,
       onceSubmitted: false,
       componentState: ComponentViewState.DEFAULT,
@@ -56,6 +59,8 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
     this.selectImage = this.selectImage.bind(this);
     this.onImageLoadStartFromSource = this.onImageLoadStartFromSource.bind(this);
     this.onImageLoadEndFromSource = this.onImageLoadEndFromSource.bind(this);
+    this.onLogoLoadStartFromSource = this.onLogoLoadStartFromSource.bind(this);
+    this.onLogoLoadEndFromSource = this.onLogoLoadEndFromSource.bind(this);
   }
 
   getOrientation = () => {
@@ -259,8 +264,9 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
     const store_id = getParam('store_id');
     const storeService = this.getStoreService();
     const response = await storeService.getProduct(store_id, product_id);
+    const response1 = await storeService.getStore(store_id);
     if (response.hasData()
-       && response.data) {
+       && response.data && response1.hasData() && response1.data) {
            const product = response.data;
            this.setState({
                productName: {
@@ -285,6 +291,11 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
                this.setState({
                    image: product.image,
                });
+           }
+           if (response1.data.image) {
+             this.setState({
+               storeLogo: response1.data.image,
+             });
            }
        } else {
          const msg = response.error || this.translate('no_internet');
@@ -312,6 +323,18 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
     });
   }
 
+  onLogoLoadStartFromSource() {
+    this.setState({
+      loadingLogo: true,
+    });
+  }
+
+  onLogoLoadEndFromSource() {
+    this.setState({
+      loadingLogo: false,
+    });
+  }
+
   render() {
 
     const inputStyle = {
@@ -328,11 +351,11 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
       inputStyle: styles.skuNumberInput,
       errorStyle: styles.skuNumberErrorStyle,
     };
-    const {componentState, image, uploadingImage, loadingImage, reUploadingImage} = this.state;
+    const {componentState, image, uploadingImage, loadingImage, reUploadingImage, loadingLogo, storeLogo} = this.state;
     const options = Taxable;
     const isComponentLoading = componentState === ComponentViewState.LOADING;
     const isImage = (!image) ? false : true;
-    const {screenProps: {translate}, navigation: {navigate}} = this.props;
+    const {screenProps: {translate}, navigation: {navigate, getParam}} = this.props;
     let picked: string;
     if (this.state.taxableDropdown.picked === 'true') {
       picked = translate('EDIT_PRODUCT_SCREEN.TAXABLE_OPTION_YES');
@@ -341,13 +364,37 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
     } else {
       picked = translate('EDIT_PRODUCT_SCREEN.TAXABLE_DROPDOWN');
     }
+    const isStoreLogo = !_.isEmpty(storeLogo);
+
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
           <View style={styles.rootView}>
             <View style={styles.header}>
               <Image source={require('../../../../../../assets/images/logo/logo.png')}/>
-              <Image source={require('../../../../../../assets/images/icons/merchant_logo.png')}/>
+              <View style={styles.storeLogoContainer}>
+              {
+                !isStoreLogo && (
+                  <Image source={require('../../../../../../assets/images/icons/merchant_logo.png')}/>
+                )
+              }
+              {
+                isStoreLogo && loadingLogo && (
+                  <View style={styles.progressBar}>
+                    <Progress.Bar indeterminate={true} width={100}/>
+                  </View>
+                )
+              }
+              {
+                isStoreLogo && (
+                  <TouchableOpacity>
+                    <Image style={styles.storeLogo} onLoadStart={this.onLogoLoadStartFromSource}
+                    onLoad={this.onLogoLoadEndFromSource}
+                    source={{uri: storeLogo}}/>
+                  </TouchableOpacity>
+                )
+              }
+              </View>
             </View>
             <View style={[{flexWrap: 'wrap', flexDirection: 'row'}]}>
               <TouchableOpacity>

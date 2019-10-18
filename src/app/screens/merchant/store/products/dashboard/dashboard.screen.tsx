@@ -13,6 +13,7 @@ import {ProductsDashboardScreenState} from './dashboard.screen.state';
 import {Orientation} from '../../../../../models/device-orientation';
 import {NavigationEventSubscription} from 'react-navigation';
 import {Product} from '../../../../../models';
+import * as Progress from 'react-native-progress';
 
 export class ProductsDashboardScreen extends React.Component<AppNavigationProps, ProductsDashboardScreenState> {
 
@@ -23,10 +24,14 @@ export class ProductsDashboardScreen extends React.Component<AppNavigationProps,
   constructor(props: AppNavigationProps) {
     super(props);
     this.state = {
+      storeLogo: '',
+      loadingLogo: false,
       orientation: Orientation.UNKNOWN,
       componentState: ComponentViewState.DEFAULT,
     };
     this.refresh = this.refresh.bind(this);
+    this.onLogoLoadStartFromSource = this.onLogoLoadStartFromSource.bind(this);
+    this.onLogoLoadEndFromSource = this.onLogoLoadEndFromSource.bind(this);
   }
 
   getOrientation = () => {
@@ -61,17 +66,29 @@ export class ProductsDashboardScreen extends React.Component<AppNavigationProps,
     });
     const storeService = this.getStoreService();
     const response = await storeService.getProducts(store_id);
+    const response1 = await storeService.getStore(store_id);
     if (response.hasData()
-       && response.data) {
-         if (response.data.products.length) {
+       && response.data && response1.hasData() && response1.data) {
+         if (response.data.products.length && response1.data.image) {
+          this.setState({
+            componentState: ComponentViewState.LOADED,
+            productsList: response.data,
+            storeLogo: response1.data.image,
+          });
+         } else if (response.data.products.length) {
           this.setState({
             componentState: ComponentViewState.LOADED,
             productsList: response.data,
           });
+         } else if (response1.data.image) {
+           this.setState({
+            componentState: ComponentViewState.LOADED,
+             storeLogo: response1.data.image,
+           });
          } else {
-          this.setState({
-            componentState: ComponentViewState.NO_DATA,
-          });
+           this.setState({
+             componentState: ComponentViewState.NO_DATA,
+           });
          }
        } else {
          const msg = response.error || this.translate('no_internet');
@@ -194,21 +211,57 @@ export class ProductsDashboardScreen extends React.Component<AppNavigationProps,
     );
   }
 
+  onLogoLoadStartFromSource() {
+    this.setState({
+      loadingLogo: true,
+    });
+  }
+
+  onLogoLoadEndFromSource() {
+    this.setState({
+      loadingLogo: false,
+    });
+  }
+
   render() {
 
-    const {componentState, productsList, error} = this.state;
+    const {componentState, productsList, error, loadingLogo, storeLogo} = this.state;
     const isLoaded = componentState === ComponentViewState.LOADED;
     const isLoading = componentState === ComponentViewState.LOADING;
-    const isEmpty = componentState === ComponentViewState.NO_DATA;
+    const isEmpty = _.isNil(productsList);
     const isError = componentState === ComponentViewState.ERROR;
     const {screenProps: {translate}, navigation: {navigate, getParam}} = this.props;
     const store_id = getParam('store_id');
+    const isStoreLogo = !_.isEmpty(storeLogo);
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
           <View style={styles.rootView}>
             <View style={styles.header}>
               <Image source={require('../../../../../../assets/images/logo/logo.png')}/>
+              <View style={styles.storeLogoContainer}>
+              {
+                !isStoreLogo && (
+                  <Image source={require('../../../../../../assets/images/icons/merchant_logo.png')}/>
+                )
+              }
+              {
+                isStoreLogo && loadingLogo && (
+                  <View style={styles.progressBar}>
+                    <Progress.Bar indeterminate={true} width={100}/>
+                  </View>
+                )
+              }
+              {
+                isStoreLogo && (
+                  <TouchableOpacity>
+                    <Image style={styles.storeLogo} onLoadStart={this.onLogoLoadStartFromSource}
+                    onLoad={this.onLogoLoadEndFromSource}
+                    source={{uri: storeLogo}}/>
+                  </TouchableOpacity>
+                )
+              }
+              </View>
             </View>
             <View style={[{flexWrap: 'wrap', flexDirection: 'row'}, this.getContainerStyle()]}>
               <TouchableOpacity onPress={() => navigate('ManageStore')}>

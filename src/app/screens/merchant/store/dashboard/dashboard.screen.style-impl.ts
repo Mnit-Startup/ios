@@ -9,6 +9,9 @@ interface StoreDashboardStyle {
   backButton: ImageStyle;
   imageStyle: ImageStyle;
   textStyle: TextStyle;
+  storeLogo: ImageStyle;
+  progressBar: ViewStyle;
+  storeLogoContainer: ViewStyle;
 }
 export const styles = StyleSheet.create<StoreDashboardStyle>({
   rootView: {
@@ -42,5 +45,18 @@ export const styles = StyleSheet.create<StoreDashboardStyle>({
   textStyle: {
     marginLeft: 30,
     marginRight: 20,
+  },
+  storeLogo: {
+    height: 96,
+    width: 100,
+    marginRight: 10,
+  },
+  progressBar: {
+    alignItems: 'center',
+    marginTop: 22,
+    marginBottom: 28,
+  },
+  storeLogoContainer: {
+    height: 96,
   },
 });

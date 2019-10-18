@@ -22,11 +22,16 @@ export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScre
   constructor(props: AppNavigationProps) {
     super(props);
     this.state = {
+      loadingLogo: false,
+      storeLogo: '',
       orientation: Orientation.UNKNOWN,
       componentState: ComponentViewState.DEFAULT,
     };
     this.pollTransactionStatus = this.pollTransactionStatus.bind(this);
     this.transactionComplete = this.transactionComplete.bind(this);
+    this.onLogoLoadStartFromSource = this.onLogoLoadStartFromSource.bind(this);
+    this.onLogoLoadEndFromSource = this.onLogoLoadEndFromSource.bind(this);
+    this.refresh = this.refresh.bind(this);
   }
 
   getOrientation = () => {
@@ -87,6 +92,34 @@ export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScre
     return this.props.screenProps.transactionService;
   }
 
+  async refresh() {
+    const {navigation: {getParam}} = this.props;
+    const storeId = getParam('store_id');
+    const merchantId = getParam('merchant_id');
+    const storeService = this.getStoreService();
+    const response = await storeService.getStore(storeId, merchantId);
+    if (response.hasData()
+    && response.data) {
+      if (response.data.image) {
+        this.setState({
+          storeLogo: response.data.image,
+        });
+      }
+    }
+  }
+
+  onLogoLoadStartFromSource() {
+    this.setState({
+      loadingLogo: true,
+    });
+  }
+
+  onLogoLoadEndFromSource() {
+    this.setState({
+      loadingLogo: false,
+    });
+  }
+
   pollTransactionStatus() {
     const {navigation: {getParam}} = this.props;
     const transactionService = this.getTransactionService();
@@ -115,6 +148,7 @@ export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScre
   }
 
   componentDidMount() {
+    this.refresh();
     this.pollTransactionStatus();
   }
 
@@ -133,13 +167,14 @@ export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScre
 
   render() {
     const {navigation: {getParam, goBack}, screenProps: {translate}} = this.props;
-    const {componentState} = this.state;
+    const {componentState, storeLogo, loadingLogo} = this.state;
     const isComponentLoading = componentState === ComponentViewState.LOADING;
     const isComponentLoaded = componentState === ComponentViewState.LOADED;
     const storeId = getParam('store_id');
     const merchantId = getParam('merchant_id');
     const checkoutCart: CheckoutCart = getParam('checkoutCart');
     const transaction_id = getParam('transaction_id');
+    const isStoreLogo = !_.isEmpty(storeLogo);
 
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
@@ -147,7 +182,29 @@ export class QRCodeScreen extends React.Component<AppNavigationProps, QRCodeScre
           <View style={styles.rootView}>
             <View style={styles.header}>
               <Image source={require('../../../../assets/images/logo/logo.png')}/>
-              <Image source={require('../../../../assets/images/icons/merchant_logo.png')}/>
+              <View style={styles.storeLogoContainer}>
+              {
+                !isStoreLogo && (
+                  <Image source={require('../../../../assets/images/icons/merchant_logo.png')}/>
+                )
+              }
+              {
+                isStoreLogo && loadingLogo && (
+                  <View style={styles.progressBar}>
+                    <Progress.Bar indeterminate={true} width={100}/>
+                  </View>
+                )
+              }
+              {
+                isStoreLogo && (
+                  <TouchableOpacity>
+                    <Image style={styles.storeLogo} onLoadStart={this.onLogoLoadStartFromSource}
+                    onLoad={this.onLogoLoadEndFromSource}
+                    source={{uri: storeLogo}}/>
+                  </TouchableOpacity>
+                )
+              }
+              </View>
             </View>
             <View style={[styles.container, this.getContainerStyle()]}>
               <View style={[styles.qrcodeSection, this.getPaymentModeSectionStyle()]}>

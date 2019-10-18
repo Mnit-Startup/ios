@@ -20,6 +20,9 @@ interface PaymentModeScreenStyle {
   creditContainer: ViewStyle;
   backButton: ViewStyle;
   payButtonContainer: ViewStyle;
+  storeLogo: ImageStyle;
+  progressBar: ViewStyle;
+  storeLogoContainer: ViewStyle;
 }
 
 export const styles = StyleSheet.create<PaymentModeScreenStyle>({
@@ -103,5 +106,18 @@ export const styles = StyleSheet.create<PaymentModeScreenStyle>({
   },
   payButtonContainer: {
     alignItems: 'center',
+  },
+  storeLogo: {
+    height: 96,
+    width: 100,
+    marginRight: 10,
+  },
+  progressBar: {
+    alignItems: 'center',
+    marginTop: 22,
+    marginBottom: 28,
+  },
+  storeLogoContainer: {
+    height: 96,
   },
 });
