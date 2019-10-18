@@ -36,6 +36,10 @@ interface MerchantHomeScreenStyle {
   manageStoreLogoSubTextStyle: TextStyle;
   formContainer: ViewStyle;
   orientationPortrait: ViewStyle;
+  storeLogoContainer: ViewStyle;
+  storeLogo: ImageStyle;
+  progressBar: ViewStyle;
+  activityIndicator: ViewStyle;
 }
 export const styles = StyleSheet.create<MerchantHomeScreenStyle>({
   rootView: {
@@ -189,5 +193,23 @@ export const styles = StyleSheet.create<MerchantHomeScreenStyle>({
   },
   orientationPortrait: {
     justifyContent: 'center',
+  },
+  storeLogoContainer: {
+    height: 96,
+  },
+  storeLogo: {
+    height: 96,
+    width: 100,
+    marginRight: 10,
+  },
+  progressBar: {
+    alignItems: 'center',
+    marginTop: 22,
+    marginBottom: 28,
+  },
+  activityIndicator: {
+    alignItems: 'center',
+    marginTop: 22,
+    marginBottom: 28,
   },
 });

@@ -10,14 +10,20 @@ import {styles} from './payment-mode.screen.style-impl';
 import {PaymentModeScreenState} from './payment-mode.state';
 import {Cart, Button} from '../../../components';
 import {CheckoutCart, Transaction} from '../../../models';
+import * as Progress from 'react-native-progress';
 
 export class PaymentModeScreen extends React.Component<AppNavigationProps, PaymentModeScreenState> {
   constructor(props: AppNavigationProps) {
     super(props);
     this.state = {
+      loadingLogo: false,
+      storeLogo: '',
       orientation: Orientation.UNKNOWN,
       componentState: ComponentViewState.DEFAULT,
     };
+    this.onLogoLoadStartFromSource = this.onLogoLoadStartFromSource.bind(this);
+    this.onLogoLoadEndFromSource = this.onLogoLoadEndFromSource.bind(this);
+    this.refresh = this.refresh.bind(this);
   }
 
   getOrientation = () => {
@@ -100,18 +106,86 @@ export class PaymentModeScreen extends React.Component<AppNavigationProps, Payme
       }
   }
 
+  async refresh() {
+    const {navigation: {getParam}} = this.props;
+    const storeId = getParam('store_id');
+    const merchantId = getParam('merchant_id');
+    const storeService = this.getStoreService();
+    const response = await storeService.getStore(storeId, merchantId);
+    if (response.hasData()
+    && response.data) {
+      if (response.data.image) {
+        this.setState({
+          componentState: ComponentViewState.LOADED,
+          storeLogo: response.data.image,
+        });
+      } else {
+        this.setState({
+          componentState: ComponentViewState.NO_DATA,
+        });
+      }
+    } else {
+      const msg = response.error || this.translate('no_internet');
+      this.setState({
+        componentState: ComponentViewState.ERROR,
+        error: msg,
+      });
+    }
+  }
+
+  onLogoLoadStartFromSource() {
+    this.setState({
+      loadingLogo: true,
+    });
+  }
+
+  onLogoLoadEndFromSource() {
+    this.setState({
+      loadingLogo: false,
+    });
+  }
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
     const {navigation: {getParam, goBack}, screenProps: {translate}} = this.props;
+    const {storeLogo, loadingLogo} = this.state;
     const storeId = getParam('store_id');
     const merchantId = getParam('merchant_id');
     const checkoutCart: CheckoutCart = getParam('checkoutCart');
+    const isStoreLogo = !_.isEmpty(storeLogo);
+
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
           <View style={styles.rootView}>
             <View style={styles.header}>
               <Image source={require('../../../../assets/images/logo/logo.png')}/>
-              <Image source={require('../../../../assets/images/icons/merchant_logo.png')}/>
+              <View style={styles.storeLogoContainer}>
+              {
+                !isStoreLogo && (
+                  <Image source={require('../../../../assets/images/icons/merchant_logo.png')}/>
+                )
+              }
+              {
+                isStoreLogo && loadingLogo && (
+                  <View style={styles.progressBar}>
+                    <Progress.Bar indeterminate={true} width={100}/>
+                  </View>
+                )
+              }
+              {
+                isStoreLogo && (
+                  <TouchableOpacity>
+                    <Image style={styles.storeLogo} onLoadStart={this.onLogoLoadStartFromSource}
+                    onLoad={this.onLogoLoadEndFromSource}
+                    source={{uri: storeLogo}}/>
+                  </TouchableOpacity>
+                )
+              }
+              </View>
             </View>
             <View style={[styles.container, this.getContainerStyle()]}>
               <View style={[styles.paymentModeSection, this.getPaymentModeSectionStyle()]}>

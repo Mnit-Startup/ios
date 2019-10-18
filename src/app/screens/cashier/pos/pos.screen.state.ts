@@ -9,5 +9,7 @@ export interface PointOfSaleScreenState extends ComponentState {
   checkoutCart: CheckoutCart;
   // subtotal of cart
   subTotal: string;
+  storeLogo: string;
+  loadingLogo: boolean;
   orientation: Orientation;
 }

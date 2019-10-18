@@ -32,4 +32,8 @@ export class StoreList {
     }
     return comparison;
   }
+
+  getStoreById(id: string) {
+    return _.find(this.stores, (item) => item.storeId === id);
+  }
 }

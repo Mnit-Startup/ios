@@ -46,6 +46,10 @@ export interface CreateStoreScreenState extends ComponentState {
     value: string,
     valid: boolean,
   };
+  image: string;
+  uploadingImage: boolean;
+  reUploadingImage: boolean;
+  loadingImage: boolean;
   orientation: Orientation;
   onceSubmitted: boolean;
 }

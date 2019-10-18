@@ -28,6 +28,9 @@ interface ProductsDashboardScreenStyle {
   productListItemButtonContainer: ViewStyle;
   productListItemPriceContainer: ViewStyle;
   messageError: TextStyle;
+  storeLogo: ImageStyle;
+  progressBar: ViewStyle;
+  storeLogoContainer: ViewStyle;
 }
 export const styles = StyleSheet.create<ProductsDashboardScreenStyle>({
   rootView: {
@@ -150,5 +153,18 @@ export const styles = StyleSheet.create<ProductsDashboardScreenStyle>({
   messageError: {
     color: '#f44336',
     textAlign: 'center',
+  },
+  storeLogo: {
+    height: 96,
+    width: 100,
+    marginRight: 10,
+  },
+  progressBar: {
+    alignItems: 'center',
+    marginTop: 22,
+    marginBottom: 28,
+  },
+  storeLogoContainer: {
+    height: 96,
   },
 });

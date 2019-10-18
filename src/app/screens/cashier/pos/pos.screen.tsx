@@ -10,6 +10,7 @@ import {styles} from './pos.style-impl';
 import {PointOfSaleScreenState} from './pos.screen.state';
 import {ProductList, Product, CheckoutCart} from '../../../models';
 import {Button} from '../../../components';
+import * as Progress from 'react-native-progress';
 
 export class PointOfSaleScreen extends React.Component<AppNavigationProps, PointOfSaleScreenState> {
 
@@ -19,6 +20,8 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
       productsList: new ProductList(),
       checkoutCart: new CheckoutCart(),
       subTotal: '',
+      loadingLogo: false,
+      storeLogo: '',
       orientation: Orientation.UNKNOWN,
       componentState: ComponentViewState.DEFAULT,
     };
@@ -27,6 +30,9 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     this.incrementQuantity = this.incrementQuantity.bind(this);
     this.decrementQuantity = this.decrementQuantity.bind(this);
     this.createSale = this.createSale.bind(this);
+    this.onLogoLoadStartFromSource = this.onLogoLoadStartFromSource.bind(this);
+    this.onLogoLoadEndFromSource = this.onLogoLoadEndFromSource.bind(this);
+    this.refresh = this.refresh.bind(this);
   }
 
   getOrientation = () => {
@@ -81,14 +87,26 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     const merchantId = getParam('merchant_id');
     const storeService = this.getStoreService();
     const response = await storeService.getProducts(storeId, merchantId);
+    const response1 = await storeService.getStore(storeId, merchantId);
     if (response.hasData()
-    && response.data) {
-      if (response.data.products.length) {
+    && response.data && response1.hasData() && response1.data) {
+      if (response.data.products.length && response1.data.image) {
+        this.setState({
+          componentState: ComponentViewState.LOADED,
+          productsList: response.data,
+          storeLogo: response1.data.image,
+        });
+      } else  if (response.data.products.length) {
         this.setState({
           componentState: ComponentViewState.LOADED,
           productsList: response.data,
         });
-      } else  {
+      } else if (response1.data.image) {
+        this.setState({
+          componentState: ComponentViewState.LOADED,
+          storeLogo: response1.data.image,
+        });
+      } else {
         this.setState({
           componentState: ComponentViewState.NO_DATA,
         });
@@ -240,19 +258,54 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     }
   }
 
+  onLogoLoadStartFromSource() {
+    this.setState({
+      loadingLogo: true,
+    });
+  }
+
+  onLogoLoadEndFromSource() {
+    this.setState({
+      loadingLogo: false,
+    });
+  }
+
   render() {
-    const {productsList, checkoutCart, subTotal, componentState} = this.state;
+    const {productsList, checkoutCart, subTotal, componentState, storeLogo, loadingLogo} = this.state;
     const {screenProps: {translate}} = this.props;
     const isComponentLoading = componentState === ComponentViewState.LOADING;
     const isItems = !_.isEmpty(subTotal);
     const numberOfColumns = this.getNumberOfColumns();
+    const isStoreLogo = !_.isEmpty(storeLogo);
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
           <View style={styles.rootView}>
             <View style={styles.header}>
               <Image source={require('../../../../assets/images/logo/logo.png')}/>
-              <Image source={require('../../../../assets/images/icons/merchant_logo.png')}/>
+              <View style={styles.storeLogoContainer}>
+              {
+                !isStoreLogo && (
+                  <Image source={require('../../../../assets/images/icons/merchant_logo.png')}/>
+                )
+              }
+              {
+                isStoreLogo && loadingLogo && (
+                  <View style={styles.progressBar}>
+                    <Progress.Bar indeterminate={true} width={100}/>
+                  </View>
+                )
+              }
+              {
+                isStoreLogo && (
+                  <TouchableOpacity>
+                    <Image style={styles.storeLogo} onLoadStart={this.onLogoLoadStartFromSource}
+                    onLoad={this.onLogoLoadEndFromSource}
+                    source={{uri: storeLogo}}/>
+                  </TouchableOpacity>
+                )
+              }
+              </View>
             </View>
             <View style={[styles.container, this.getContainerStyle()]}>
               <View style={[styles.productsSection, this.getProductsSectionStyle()]}>

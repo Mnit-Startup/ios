@@ -37,6 +37,9 @@ interface CreateProductScreenStyle {
   productImageText: TextStyle;
   productImageTextContainer: ViewStyle;
   progressBarContainer: ViewStyle;
+  storeLogo: ImageStyle;
+  progressBar: ViewStyle;
+  storeLogoContainer: ViewStyle;
 }
 export const styles = StyleSheet.create<CreateProductScreenStyle>({
   rootView: {
@@ -197,5 +200,18 @@ export const styles = StyleSheet.create<CreateProductScreenStyle>({
   },
   orientationPortrait: {
     marginLeft: 60,
+  },
+  storeLogo: {
+    height: 96,
+    width: 100,
+    marginRight: 10,
+  },
+  progressBar: {
+    alignItems: 'center',
+    marginTop: 22,
+    marginBottom: 28,
+  },
+  storeLogoContainer: {
+    height: 96,
   },
 });
