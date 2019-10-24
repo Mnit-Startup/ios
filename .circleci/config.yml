@@ -1,7 +1,6 @@
 version: 2
 jobs:
   node:
-    working_directory: ~/demo-react-native
     docker:
       - image: circleci/node:8
     steps:
@@ -26,15 +25,15 @@ jobs:
             - node_modules
 
   android-alpha:
-    working_directory: ~/demo-react-native/android
+    working_directory: /home/circleci/project/android
     docker:
       - image: circleci/android:api-28-node8-alpha
     steps:
       - checkout:
-          path: ~/demo-react-native
+          path: /home/circleci/project
 
       - attach_workspace:
-          at: ~/demo-react-native
+          at: /home/circleci/project
 
       - restore_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
@@ -55,15 +54,15 @@ jobs:
           path: app/build/outputs/apk/release/app-release.apk
 
   android-beta:
-    working_directory: ~/demo-react-native/android
+    working_directory: /home/circleci/project/android
     docker:
       - image: circleci/android:api-28-node8-alpha
     steps:
       - checkout:
-          path: ~/demo-react-native
+          path: /home/circleci/project
 
       - attach_workspace:
-          at: ~/demo-react-native
+          at: /home/circleci/project
 
       - restore_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
