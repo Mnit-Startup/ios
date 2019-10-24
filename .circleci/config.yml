@@ -52,6 +52,7 @@ jobs:
       - run:
           name: fastlane android alpha
           command: |
+            git config user.email "shreyancejain94@gmail.com"
             bundle exec fastlane alpha
 
       - store_artifacts:
