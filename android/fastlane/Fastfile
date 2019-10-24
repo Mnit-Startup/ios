@@ -32,6 +32,7 @@ platform :android do
     skip_upload_images: true,           
     skip_upload_screenshots:  true               
     )
+    git_add(path: ".")
     git_commit(
       path: "./app/build.gradle",
       message: "Fastlane Android: Released new build #{version_code} [ci skip]"
