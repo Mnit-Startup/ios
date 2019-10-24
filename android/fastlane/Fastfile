@@ -16,7 +16,7 @@ default_platform :android
 platform :android do
 
   before_all do
-    etup_circle_ci
+    setup_circle_ci
   end
   
   desc "Runs all the tests"
