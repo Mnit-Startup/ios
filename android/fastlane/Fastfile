@@ -22,6 +22,9 @@ platform :android do
 
   desc "submit to alpha"
   lane :alpha do
+    version_code = increment_version_code(
+      gradle_file_path: "./app/build.gradle"
+    )
     gradle(task: 'clean') 
     gradle(task: "assembleRelease")
     upload_to_play_store(track: 'alpha',
