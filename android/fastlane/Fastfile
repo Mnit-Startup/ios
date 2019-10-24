@@ -23,7 +23,11 @@ platform :android do
   desc "submit to alpha"
   lane :alpha do
     gradle(task: "assembleRelease")
-    upload_to_play_store(track: 'alpha')
+    upload_to_play_store(track: 'alpha',
+    skip_upload_metadata: true,
+    skip_upload_images: true,           
+    skip_upload_screenshots:  true               
+    )
   end
 
   desc "promote alpha build to beta"
