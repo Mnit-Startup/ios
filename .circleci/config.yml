@@ -47,7 +47,7 @@ jobs:
       - run:
           name: fastlane android alpha
           command: |
-            fastlane alpha
+            exec fastlane alpha
 
       - store_artifacts:
           path: app/build/outputs/apk/release/app-release.apk
