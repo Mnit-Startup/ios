@@ -22,6 +22,7 @@ platform :android do
 
   desc "submit to alpha"
   lane :alpha do
+    gradle(task: 'clean', project_dir: "android/") 
     gradle(task: "assembleRelease")
     upload_to_play_store(track: 'alpha',
     skip_upload_metadata: true,
