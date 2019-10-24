@@ -37,6 +37,7 @@ platform :android do
       path: "./app/build.gradle",
       message: "Fastlane Android: Released new build #{version_code} [ci skip]"
     )
+    push_to_git_remote
   end
 
   desc "promote alpha build to beta"
