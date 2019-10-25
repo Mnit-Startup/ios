@@ -27,10 +27,8 @@ platform :android do
     )
     gradle(task: 'clean')
     gradle(
-      task: "assembleRelease",
-      system_properties: {
-        "ENVFILE": "config/env.staging"
-      }
+      task: "assemble",
+      build_type: "Release"
     )
     upload_to_play_store(track: 'alpha',
     skip_upload_metadata: true,
