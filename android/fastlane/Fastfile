@@ -29,7 +29,7 @@ platform :android do
     gradle(
       task: "assembleRelease",
       system_properties: {
-        "ENVFILE": "/home/circleci/project/config/env.staging"
+        "ENVFILE": "../config/env.staging"
       }
     )
     upload_to_play_store(track: 'alpha',

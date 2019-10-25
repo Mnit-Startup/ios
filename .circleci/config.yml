@@ -27,6 +27,7 @@ jobs:
           root: /home/circleci/project
           paths:
             - node_modules/*
+            - config/*
 
   android-alpha:
     working_directory: /home/circleci/project/android
