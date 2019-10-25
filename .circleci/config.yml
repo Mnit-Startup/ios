@@ -26,7 +26,6 @@ jobs:
       - persist_to_workspace:
           root: /home/circleci/project
           paths:
-            - node_modules/*
             - config/*
 
   android-alpha:
