@@ -25,11 +25,11 @@ platform :android do
     version_code = increment_version_code(
       gradle_file_path: "./app/build.gradle"
     )
-    gradle(task: 'clean') 
+    gradle(task: 'clean')
     gradle(
       task: "assembleRelease",
       system_properties: {
-        "ENVFILE": "../config/env.staging"
+        "ENVFILE": "../../config/env.staging"
       }
     )
     upload_to_play_store(track: 'alpha',
