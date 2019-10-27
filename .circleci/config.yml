@@ -28,6 +28,12 @@ jobs:
           paths:
             - node_modules/*
             - config/*
+      - run:
+          name: version control
+          command: |
+              git config user.email $RELEASE_MANAGER_GITHUB_USER_EMAIL
+              git config --global user.name $RELEASE_MANAGER_GITHUB_USER_NAME
+
 
   android:
     working_directory: /home/circleci/project/android
@@ -41,13 +47,14 @@ jobs:
           at: /home/circleci/project
 
       - run:
-          name: android
+          name: Google Play Key and key store password
           command: |
             ls
             echo -e "\nMYAPP_RELEASE_STORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD\nMYAPP_RELEASE_KEY_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> ./gradle.properties
             echo -e $GOOGLE_PLAY_CREDS_JSON >> ./api_key.json
             ls
             cat ./gradle.properties
+            cat ./api_key.json
 
 
   android-alpha:
@@ -74,13 +81,6 @@ jobs:
       - run:
           name: fastlane android alpha
           command: |
-            git config user.email $RELEASE_MANAGER_GITHUB_USER_EMAIL
-            git config --global user.name $RELEASE_MANAGER_GITHUB_USER_NAME
-            ls
-            echo -e "\nMYAPP_RELEASE_STORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD\nMYAPP_RELEASE_KEY_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> ./gradle.properties
-            echo -e $GOOGLE_PLAY_CREDS_JSON >> ./api_key.json
-            ls
-            cat ./gradle.properties
             bundle update fastlane
             bundle exec fastlane alpha
 
