@@ -31,6 +31,15 @@ jobs:
       
     android:
     working_directory: /home/circleci/project/android
+    docker:
+      - image: circleci/android:api-28-node8-alpha
+    steps:
+      - checkout:
+          path: /home/circleci/project
+
+      - attach_workspace:
+          at: /home/circleci/project 
+
       - run:
           name: Create Google Play Key
           command: |
