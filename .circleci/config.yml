@@ -53,8 +53,7 @@ jobs:
       - run:
           name: Create Google Play Key
           command: |
-          ls
-          echo $GOOGLE_PLAY_CREDS_JSON > ./android/api_key.json
+          echo -e $GOOGLE_PLAY_CREDS_JSON > ./android/api_key.json
           ls
 
   android-alpha:
