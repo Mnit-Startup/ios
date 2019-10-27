@@ -49,6 +49,9 @@ jobs:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - vendor/bundle
+            
+      - override:
+        - echo -e "MYAPP_RELEASE_STORE_PASSWORD=Blockade!20!19\nMYAPP_RELEASE_KEY_PASSWORD=Blockade!20!19" >> /home/circleci/project/android/gradle.properties
 
       - run:
           name: fastlane android alpha
