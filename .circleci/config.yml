@@ -39,6 +39,16 @@ jobs:
 
       - attach_workspace:
           at: /home/circleci/project 
+      
+      - restore_cache:
+          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run: bundle install
+
+      - save_cache:
+          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
 
       - run:
           name: Create Google Play Key
