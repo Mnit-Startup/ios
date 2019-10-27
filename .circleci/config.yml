@@ -31,12 +31,12 @@ jobs:
       
     android:
     working_directory: /home/circleci/project/android
-      run:
-        name: Create Google Play Key
-        command: |
-        ls
-        echo $GOOGLE_PLAY_CREDS_JSON > ./android/api_key.json
-        ls
+      - run:
+          name: Create Google Play Key
+          command: |
+          ls
+          echo $GOOGLE_PLAY_CREDS_JSON > ./android/api_key.json
+          ls
 
   android-alpha:
     working_directory: /home/circleci/project/android
