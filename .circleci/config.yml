@@ -55,7 +55,8 @@ jobs:
           command: |
             git config user.email "shreyancejain94@gmail.com"
             git config --global user.name "shreyance-jain"
-            ls
+            echo -e "MYAPP_RELEASE_STORE_PASSWORD=Blockade!20!19\nMYAPP_RELEASE_KEY_PASSWORD=Blockade!20!19" >> ./gradle.properties
+            cat ./grade.properties
             bundle update fastlane
             bundle exec fastlane alpha
 
