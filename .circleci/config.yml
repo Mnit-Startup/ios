@@ -29,6 +29,37 @@ jobs:
             - node_modules/*
             - config/*
 
+  android:
+    working_directory: /home/circleci/project/android
+    docker:
+      - image: circleci/android:api-28-node8-alpha
+    steps:
+      - checkout:
+          path: /home/circleci/project
+
+      - attach_workspace:
+          at: /home/circleci/project
+
+      - restore_cache:
+          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run: bundle install
+
+      - save_cache:
+          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: android
+          command: |
+            ls
+            echo -e "\nMYAPP_RELEASE_STORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD\nMYAPP_RELEASE_KEY_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> ./gradle.properties
+            echo -e $GOOGLE_PLAY_CREDS_JSON >> ./api_key.json
+            ls
+            cat ./gradle.properties
+
+
   android-alpha:
     working_directory: /home/circleci/project/android
     docker:
