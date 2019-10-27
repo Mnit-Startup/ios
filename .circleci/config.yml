@@ -58,7 +58,7 @@ jobs:
             git config --global user.name $RELEASE_MANAGER_GITHUB_USER_NAME
             ls
             echo -e "\nMYAPP_RELEASE_STORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD\nMYAPP_RELEASE_KEY_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> ./gradle.properties
-            echo -e $GOOGLE_PLAY_CREDS_JSON > ./api_key.json
+            echo $GOOGLE_PLAY_CREDS_JSON > ./api_key.json
             ls
             cat ./gradle.properties
             cat ./api_key.json
