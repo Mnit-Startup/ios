@@ -1,6 +1,6 @@
 apply plugin: "com.android.application"
 project.ext.envConfigFiles = [
-    debug: "./config/.env.staging",
+    stagingrelease: "./config/.env.staging",
     release: "./config/.env.production",
     anothercustombuild: ".env",
 ]

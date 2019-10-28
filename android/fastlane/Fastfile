@@ -28,7 +28,7 @@ platform :android do
     gradle(task: 'clean')
     gradle(
       task: "assemble",
-      build_type: "Debug"
+      build_type: "stagingrelease"
     )
     upload_to_play_store(
       track: 'alpha',
