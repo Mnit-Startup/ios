@@ -48,7 +48,9 @@ platform :android do
 
   desc "promote alpha build to beta"
   lane :beta do
-    upload_to_play_store(track: 'alpha', track_promote_to: 'beta')
+    upload_to_play_store(
+      track: 'alpha',
+      track_promote_to: 'beta')
   end
 
   # You can define as many lanes as you want
