@@ -22,25 +22,27 @@ platform :android do
 
   desc "submit to alpha"
   lane :alpha do
-    version_code = increment_version_code(
-      gradle_file_path: "./app/build.gradle"
-    )
-    gradle(task: 'clean')
-    gradle(
-      task: "assemble",
-      build_type: "Release"
-    )
-    upload_to_play_store(track: 'alpha',
-    skip_upload_metadata: true,
-    skip_upload_images: true,           
-    skip_upload_screenshots:  true               
-    )
-    git_add(path: ".")
-    git_commit(
-      path: "./app/build.gradle",
-      message: "Fastlane Android: Released new build #{version_code} [ci skip]"
-    )
-    push_to_git_remote
+    begin
+      version_code = increment_version_code(
+        gradle_file_path: "./app/build.gradle"
+      )
+      gradle(task: 'clean')
+      gradle(
+        task: "assemble",
+        build_type: "Release"
+      )
+      upload_to_play_store(track: 'alpha',
+      skip_upload_metadata: true,
+      skip_upload_images: true,           
+      skip_upload_screenshots:  true               
+      )
+      git_add(path: ".")
+      git_commit(
+        path: "./app/build.gradle",
+        message: "Fastlane Android: Released new build #{version_code} [ci skip]"
+      )
+      push_to_git_remote
+    end
   end
 
   desc "promote alpha build to beta"
