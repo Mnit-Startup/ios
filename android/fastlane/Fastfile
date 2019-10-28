@@ -53,8 +53,6 @@ platform :android do
       track_promote_to: 'beta')
   end
 
-  # You can define as many lanes as you want
-
   after_all do |lane|
     # This block is called, only if the executed lane was successful
 
@@ -72,10 +70,3 @@ platform :android do
     # )
   # end
 end
-
-
-# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
-# All available actions: https://docs.fastlane.tools/actions
-
-# fastlane reports which actions are used
-# No personal data is sent or shared. Learn more at https://github.com/fastlane/enhancer
