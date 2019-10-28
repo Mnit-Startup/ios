@@ -27,8 +27,6 @@ jobs:
           root: /home/circleci/project
           paths:
             - node_modules/*
-            - config/*
-      - run: echo "hello world"
 
   android-alpha:
     working_directory: /home/circleci/project/android
@@ -57,8 +55,7 @@ jobs:
             git config user.email $RELEASE_MANAGER_GITHUB_USER_EMAIL
             git config --global user.name $RELEASE_MANAGER_GITHUB_USER_NAME
             echo -e "\nMYAPP_RELEASE_STORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD\nMYAPP_RELEASE_KEY_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> ./gradle.properties
-            ls
-            cat ./gradle.properties
+            echo $GOOGLE_PLAY_CREDS_JSON > ./api_key.json
             bundle update fastlane
             bundle exec fastlane alpha
 
