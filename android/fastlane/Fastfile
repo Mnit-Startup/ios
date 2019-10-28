@@ -22,13 +22,14 @@ platform :android do
 
   desc "submit to alpha"
   lane :alpha do
+    ENV["ENVFILE"]="./config/.env.staging"
     version_code = increment_version_code(
       gradle_file_path: "./app/build.gradle"
     )
     gradle(task: 'clean')
     gradle(
       task: "assemble",
-      build_type: "Stagingrelease"
+      build_type: "Release"
     )
     upload_to_play_store(
       track: 'alpha',
