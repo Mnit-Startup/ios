@@ -51,9 +51,8 @@ platform :android do
       track_promote_to: 'beta')
   end
 
+  # we dont't have to keep browser window open and keep check on status
   after_all do |lane|
-    # This block is called, only if the executed lane was successful
-
     slack(
        message: "Successfully deployed new App Update.",
        success: true,
