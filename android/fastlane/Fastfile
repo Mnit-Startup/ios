@@ -61,10 +61,11 @@ platform :android do
      )
   end
 
-  # error do |lane, exception|
-    # slack(
-    #   message: exception.message,
-    #   success: false
-    # )
-  # end
+  error do |lane, exception|
+    slack(
+       message: exception.message,
+       success: false,
+       slack_url: "https://hooks.slack.com/services/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"
+    )
+  end
 end
