@@ -111,7 +111,7 @@ android {
         applicationId "com.blockade.kadima"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 40
+        versionCode 49
         versionName "1.0.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
@@ -136,6 +136,11 @@ android {
     }
     buildTypes {
         release {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+        }
+        stagingrelease {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
