@@ -69,10 +69,10 @@ platform :android do
   end
 
   desc "promote alpha build to beta"
-  lane :beta do
+  lane :deploy do
     upload_to_play_store(
-      track: 'alpha',
-      track_promote_to: 'beta')
+      track: 'beta',
+      track_promote_to: 'production')
   end
 
   # we dont't have to keep browser window open and keep check on status
