@@ -31,10 +31,11 @@ platform :android do
         task: "assemble",
         build_type: "Release"
       )
-      upload_to_play_store(track: 'alpha',
-      skip_upload_metadata: true,
-      skip_upload_images: true,           
-      skip_upload_screenshots:  true               
+      upload_to_play_store(
+        track: 'alpha',
+        skip_upload_metadata: true,
+        skip_upload_images: true,           
+        skip_upload_screenshots:  true               
       )
       git_add(path: ".")
       git_commit(
