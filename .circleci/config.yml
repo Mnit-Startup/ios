@@ -150,7 +150,3 @@ workflows:
       - android-production:
           requires:
             - android-hold
-            filters:
-              branches:
-                only: 
-                  — master
