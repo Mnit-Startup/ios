@@ -20,7 +20,7 @@ platform :android do
     commit = last_git_commit
     notes = commit[:message]
     puts notes
-    changelog = notes
+    changelog_from_git_commits(commits_count: 1)
     ENV["ENVFILE"]="./config/.env.staging"
     version_code = increment_version_code(
       gradle_file_path: "./app/build.gradle"
