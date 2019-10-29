@@ -46,9 +46,13 @@ platform :android do
 
   desc "submit to beta"
   lane :beta do
+    commit = last_git_commit
+    notes = commit[:message]
     version_code = increment_version_code(
       gradle_file_path: "./app/build.gradle"
     )
+    changelog_dir = "./metadata/android/en-US/changelogs"
+    sh("echo '#{notes}' >> #{changelog_dir}/#{version_code}.txt")
     gradle(task: 'clean')
     gradle(
       task: "assemble",
@@ -84,11 +88,11 @@ platform :android do
      )
   end
 
-  # error do |lane, exception|
-  #  slack(
-  #     message: exception.message,
-  #     success: false,
-  #     slack_url: "https://hooks.slack.com/services/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"
-  #  )
-  # end
+  error do |lane, exception|
+    slack(
+      message: exception.message,
+       success: false,
+       slack_url: "https://hooks.slack.com/services/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"
+    )
+  end
 end
