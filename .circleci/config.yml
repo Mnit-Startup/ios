@@ -128,8 +128,18 @@ workflows:
   node-android-ios:
     jobs:
       - node
+          filters:
+            branches:
+              only: 
+                — master
+                - develop
+
       - android-hold:
           type: approval
+          filters:
+            branches:
+              only: 
+                — master
 
       - android-alpha:
           requires:
