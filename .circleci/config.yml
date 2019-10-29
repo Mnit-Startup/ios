@@ -130,10 +130,6 @@ workflows:
       - node
       - android-hold:
           type: approval
-          filters:
-            branches:
-              only: 
-                — master
 
       - android-alpha:
           requires:
