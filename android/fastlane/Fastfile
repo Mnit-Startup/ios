@@ -17,6 +17,10 @@ platform :android do
   
   desc "submit to alpha"
   lane :alpha do
+    commit = last_git_commit
+    notes = commit[:message]
+    puts notes
+    changelog = notes
     ENV["ENVFILE"]="./config/.env.staging"
     version_code = increment_version_code(
       gradle_file_path: "./app/build.gradle"
