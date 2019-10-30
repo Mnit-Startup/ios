@@ -91,7 +91,7 @@ jobs:
             echo -e "\nMYAPP_RELEASE_STORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD\nMYAPP_RELEASE_KEY_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> ./gradle.properties
             echo $GOOGLE_PLAY_CREDS_JSON > ./api_key.json
             bundle update fastlane
-            bundle exec fastlane beta
+            SLACK_URL="$SLACK_URL" fastlane beta
 
       - store_artifacts:
           path: app/build/outputs/apk/release/app-release.apk
@@ -121,13 +121,18 @@ jobs:
           name: fastlane android deploy
           command: |
             bundle update fastlane
-            bundle exec fastlane deploy
+            SLACK_URL="$SLACK_URL" fastlane deploy
 
 workflows:
   version: 2
   node-android-ios:
     jobs:
-      - node
+      - node:
+          filters:
+            branches:
+              only: 
+                - develop
+                — master
 
       - android-hold:
           type: approval
@@ -139,6 +144,10 @@ workflows:
       - android-internal:
           requires:
             - node
+          filters:
+            branches:
+              only: 
+                — develop
 
       - android-beta:
           requires:
