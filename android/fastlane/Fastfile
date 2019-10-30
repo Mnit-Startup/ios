@@ -84,7 +84,7 @@ platform :android do
     slack(
        message: "Successfully deployed new App Update.",
        success: true,
-       slack_url: "https://hooks.slack.com/services/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"
+       slack_url: ENV['SLACK_URL']
      )
   end
 
@@ -92,7 +92,7 @@ platform :android do
     slack(
       message: exception.message,
        success: false,
-       slack_url: "https://hooks.slack.com/services/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"
+       slack_url: ENV['SLACK_URL']
     )
   end
 end
