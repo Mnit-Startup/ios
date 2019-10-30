@@ -111,7 +111,7 @@ android {
         applicationId "com.blockade.kadima"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 76
+        versionCode 77
         versionName "1.0.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
