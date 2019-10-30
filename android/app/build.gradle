@@ -1,9 +1,4 @@
 apply plugin: "com.android.application"
-project.ext.envConfigFiles = [
-    debug: ".env.development",
-    release: "./config/.env.production",
-    anothercustombuild: ".env",
-]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 import com.android.build.OutputFile
 
@@ -111,7 +106,7 @@ android {
         applicationId "com.blockade.kadima"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 79
+        versionCode 2
         versionName "1.0.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
