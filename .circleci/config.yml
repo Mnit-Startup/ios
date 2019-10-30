@@ -131,8 +131,8 @@ workflows:
           filters:
             branches:
               only: 
-                - develop
                 — master
+                - develop
 
       - android-hold:
           type: approval
