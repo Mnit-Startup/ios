@@ -16,7 +16,7 @@ default_platform :android
 platform :android do
   
   desc "submit to alpha"
-  lane :alpha do
+  lane :internal do
     ENV["ENVFILE"]="./config/.env.staging"
     commit = last_git_commit
     notes = commit[:message]
@@ -31,7 +31,7 @@ platform :android do
       build_type: "Release"
     )
     upload_to_play_store(
-      track: 'alpha',
+      track: 'internal',
       skip_upload_metadata: false,
       skip_upload_images: true,           
       skip_upload_screenshots:  true               
@@ -39,7 +39,7 @@ platform :android do
     git_add(path: ".")
     git_commit(
       path: "./app/build.gradle",
-      message: "Fastlane Android: Released new build #{version_code} [ci skip]"
+      message: "Auto deploy build #{version_code} to internal track [ci skip]"
     )
     push_to_git_remote
   end
@@ -67,7 +67,7 @@ platform :android do
     git_add(path: ".")
     git_commit(
       path: "./app/build.gradle",
-      message: "Fastlane Android: Released new build #{version_code} [ci skip]"
+      message: "Auto deploy build #{version_code} to beta [ci skip]"
     )
     push_to_git_remote
   end
