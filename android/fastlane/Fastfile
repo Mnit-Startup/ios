@@ -24,7 +24,6 @@ platform :android do
       gradle_file_path: "./app/build.gradle"
     )
     changelog_dir = "./metadata/android/en-US/changelogs"
-    sh("mkdir -p /metadata/android/en-US/changelogs")
     sh("echo '#{notes}' >> #{changelog_dir}/#{version_code}.txt")
     gradle(task: 'clean')
     gradle(
