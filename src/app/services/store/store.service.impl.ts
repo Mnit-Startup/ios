@@ -51,6 +51,7 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
         store_profile: store.storeProfile,
         store_identifier: store.storeIdentifier,
         image: store.image,
+        tax: store.tax,
       };
       const userId = await this.getUserAccountId();
       const response = await this.post(`/account/${userId}/store`, storeEntries);
@@ -71,6 +72,7 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
         taxable: product.taxable,
         image: product.image,
         active: product.active,
+        tax: product.tax,
       };
       const userId = await this.getUserAccountId();
       const response = await this.post(`/account/${userId}/store/${storeId}/product`, productEntries);
@@ -95,6 +97,7 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
         taxable: product.taxable,
         image: product.image,
         active: product.active,
+        tax: product.tax,
       };
       const userId = await this.getUserAccountId();
       const response = await this.put(`/account/${userId}/store/${storeId}/product/${productId}`, productEntries);

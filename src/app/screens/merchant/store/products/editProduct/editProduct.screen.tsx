@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import {SafeAreaView, Text, ScrollView, View, Image, TouchableOpacity, Alert, Dimensions, ActivityIndicator, Platform} from 'react-native';
 
-import {Button, StringInput, PriceInput} from '../../../../../components';
+import {Button, StringInput, NumberInput} from '../../../../../components';
 import {AppNavigationProps} from '../../../../../app-navigation-props';
 import {ComponentViewState} from '../../../../../component.state';
 import {appStyles} from '../../../../../app.style-impl';
@@ -31,8 +31,8 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
         valid: false,
       },
       price: {
-        value: '',
-        valid: false,
+        value: 0,
+        valid: true,
       },
       skuNumber: {
         value: '',
@@ -42,6 +42,7 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
         visible: false,
         picked: '',
       },
+      storeTax: 0,
       image: '',
       uploadingImage: false,
       loadingImage: false,
@@ -99,11 +100,12 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
         });
         const product: Product = {
           name: this.state.productName.value,
-          price: Number(this.state.price.value).toFixed(2),
+          price: this.state.price.value,
           skuNumber: this.state.skuNumber.value,
           taxable: this.state.taxableDropdown.picked === 'true',
           image: this.state.image,
           active: true,
+          tax: this.state.storeTax,
         };
        const response = await storeService.editProduct(store_id, product_id, product);
         if (response.hasData()
@@ -141,7 +143,7 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
     this.setState(state);
   }
 
-  onPriceChanged(number: string, isValid: boolean): void {
+  onPriceChanged(number: Number, isValid: boolean): void {
     const state = {
       price: {
         value: number,
@@ -285,6 +287,7 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
                 picked: product.taxable.toString(),
                 visible: false,
                },
+               storeTax: response1.data.tax,
                componentState: ComponentViewState.LOADED,
            });
            if (product.image) {
@@ -460,7 +463,7 @@ export class EditProductScreen extends React.Component<AppNavigationProps, EditP
                 />
                 </View>
                 <View>
-                <PriceInput
+                <NumberInput
                   label={translate('EDIT_PRODUCT_SCREEN.PRICE')}
                   autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}

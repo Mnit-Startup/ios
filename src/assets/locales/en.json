@@ -79,7 +79,8 @@
     "PROFILE": "Profile?",
     "CREATE_STORE_SUCCESS": "Your store has been created successfully",
     "INVALID_STATE": "Please specify a valid state to continue",
-    "STORE_IDENTIFIER": "STORE ID"
+    "STORE_IDENTIFIER": "STORE ID",
+    "TAX_RATE": "TAX RATE (%)"
   },
   "MERCHANT_DASHBOARD": {
     "CREATE_NEW_STORE": "CREATE NEW STORE",

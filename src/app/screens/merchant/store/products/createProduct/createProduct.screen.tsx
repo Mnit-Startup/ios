@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import {SafeAreaView, Text, ScrollView, View, Image, TouchableOpacity, Alert, Dimensions, ActivityIndicator, Platform} from 'react-native';
 
-import {Button, StringInput, PriceInput} from '../../../../../components';
+import {Button, StringInput, NumberInput} from '../../../../../components';
 import {AppNavigationProps} from '../../../../../app-navigation-props';
 import {ComponentViewState} from '../../../../../component.state';
 import {appStyles} from '../../../../../app.style-impl';
@@ -31,8 +31,8 @@ export class CreateProductScreen extends React.Component<AppNavigationProps, Cre
         valid: false,
       },
       price: {
-        value: '',
-        valid: false,
+        value: 0,
+        valid: true,
       },
       skuNumber: {
         value: '',
@@ -42,6 +42,7 @@ export class CreateProductScreen extends React.Component<AppNavigationProps, Cre
         visible: false,
         picked: '',
       },
+      storeTax: 0,
       image: '',
       uploadingImage: false,
       loadingImage: false,
@@ -90,10 +91,12 @@ export class CreateProductScreen extends React.Component<AppNavigationProps, Cre
         this.setState({
           componentState: ComponentViewState.LOADED,
           storeLogo: response.data.image,
+          storeTax: response.data.tax,
         });
        } else {
         this.setState({
-          componentState: ComponentViewState.NO_DATA,
+          storeTax: response.data.tax,
+          componentState: ComponentViewState.LOADED,
         });
        }
      } else {
@@ -132,11 +135,12 @@ export class CreateProductScreen extends React.Component<AppNavigationProps, Cre
         });
         const product: Product = {
           name: this.state.productName.value,
-          price: Number(this.state.price.value).toFixed(2),
+          price: this.state.price.value,
           skuNumber: this.state.skuNumber.value,
           taxable: this.state.taxableDropdown.picked === 'true',
           image: this.state.image,
           active: true,
+          tax: this.state.storeTax,
         };
        const response = await storeService.createProduct(store_id, product);
         if (response.hasData()
@@ -174,7 +178,7 @@ export class CreateProductScreen extends React.Component<AppNavigationProps, Cre
     this.setState(state);
   }
 
-  onPriceChanged(number: string, isValid: boolean): void {
+  onPriceChanged(number: Number, isValid: boolean): void {
     const state = {
       price: {
         value: number,
@@ -438,7 +442,7 @@ export class CreateProductScreen extends React.Component<AppNavigationProps, Cre
                 />
                 </View>
                 <View>
-                <PriceInput
+                <NumberInput
                   label={translate('CREATE_PRODUCT_SCREEN.PRICE')}
                   autoFocus={false}
                   onceSubmitted={this.state.onceSubmitted}

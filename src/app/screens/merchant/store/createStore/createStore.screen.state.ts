@@ -46,6 +46,10 @@ export interface CreateStoreScreenState extends ComponentState {
     value: string,
     valid: boolean,
   };
+  tax: {
+    value: Number,
+    valid: boolean,
+  };
   image: string;
   uploadingImage: boolean;
   reUploadingImage: boolean;

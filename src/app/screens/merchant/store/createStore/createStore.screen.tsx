@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import {SafeAreaView, Text, ScrollView, View, Image, TouchableOpacity, Alert, Dimensions, Platform, ActivityIndicator} from 'react-native';
 
-import {Button, StringInput, EmailInput, PhoneInput, ZipcodeInput} from '../../../../components';
+import {Button, StringInput, EmailInput, PhoneInput, ZipcodeInput, NumberInput} from '../../../../components';
 import {AppNavigationProps} from '../../../../app-navigation-props';
 import {ComponentViewState} from '../../../../component.state';
 import {appStyles} from '../../../../app.style-impl';
@@ -72,6 +72,10 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
         value: '',
         valid: false,
       },
+      tax: {
+        value: 0,
+        valid: true,
+      },
       image: '',
       uploadingImage: false,
       reUploadingImage: false,
@@ -89,6 +93,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     this.onPhoneChanged =  this.onPhoneChanged.bind(this);
     this.onZipcodeChanged = this.onZipcodeChanged.bind(this);
     this.onStoreIdentifierChanged = this.onStoreIdentifierChanged.bind(this);
+    this.onTaxChanged = this.onTaxChanged.bind(this);
     this.createStore = this.createStore.bind(this);
     this.selectImage = this.selectImage.bind(this);
     this.onImageLoadStartFromSource = this.onImageLoadStartFromSource.bind(this);
@@ -124,7 +129,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     if (this.state.storeName.valid && this.state.phone.valid && this.state.streetAddress.valid
       && this.state.email.valid && this.state.merchantId.valid
       && this.state.city.valid && this.state.zip.valid && this.state.stateDropdown.picked !== ''
-      && this.state.storeIdentifier.valid) {
+      && this.state.storeIdentifier.valid && this.state.tax.valid) {
         const storeService = this.getStoreService();
         this.setState({
           componentState: ComponentViewState.LOADING,
@@ -142,6 +147,7 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
           zipcode: this.state.zip.value,
           storeIdentifier: this.state.storeIdentifier.value,
           image: this.state.image,
+          tax: this.state.tax.value,
         };
         const response = await storeService.createStore(store);
         if (response.hasData()
@@ -316,6 +322,16 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
     });
   }
 
+  onTaxChanged(number: Number, isValid: boolean): void {
+    const state = {
+      tax: {
+        value: number,
+        valid: isValid,
+      },
+    };
+   this.setState(state);
+  }
+
   getContainerStyle() {
     if (this.state.orientation === Orientation.POTRAIT) {
       return styles.orientationPortrait;
@@ -401,13 +417,6 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
       forgotStyle: styles.forgotStyle,
       inputStyle: styles.input,
       errorStyle: styles.errorStyle,
-    };
-    const inputZipStyle = {
-      containerStyle: styles.zipInputContainer,
-      labelStyle: styles.zipInputLabel,
-      forgotStyle: styles.zipForgotStyle,
-      inputStyle: styles.zipInput,
-      errorStyle: styles.zipErrorStyle,
     };
     const {componentState, image, uploadingImage, reUploadingImage, loadingImage} = this.state;
     const options = States;
@@ -581,40 +590,54 @@ export class CreateStoreScreen extends React.Component<AppNavigationProps, Creat
                   </View>
                   }
                   </View>
-                  <ZipcodeInput
-                    label={translate('CREATE_STORE_SCREEN.ZIP')}
-                    autoFocus={false}
-                    onceSubmitted={this.state.onceSubmitted}
-                    editable={true}
-                    style={inputZipStyle}
-                    translate={this.props.screenProps.translate}
-                    onChange={this.onZipcodeChanged}
-                  />
                   </View>
-                  <View>
+                  <View style={styles.stateZipcodeContainer}>
                   <View style={styles.storeProfileContainer}>
-                    <TouchableOpacity onPress={this.onShowStoreProfileDropdown}>
-                      <Text style={styles.buttonContainer}>{translate('CREATE_STORE_SCREEN.STORE_PROFILE')}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.selectedOptionContainer} onPress={this.onShowStoreProfileDropdown}>
-                      <Text style={styles.selectedOptionStyle}>
-                      {this.state.storeProfileDropdown.picked || translate('CREATE_STORE_SCREEN.PROFILE')}</Text>
-                      <View style={styles.chevron_down}><Icon color={'white'} name='chevron-down'></Icon></View>
-                    </TouchableOpacity>
-                    <ModalFilterPicker
-                      visible={this.state.storeProfileDropdown.visible}
-                      onSelect={this.onSelectStoreProfileDropdown}
-                      onCancel={this.onCancelStoreProfileDropdown}
-                      options={options}
-                      listContainerStyle={styles.listContainerStyle}
-                      optionTextStyle={styles.optionTextStyle}
-                      showFilter={false}
-                      cancelContainerStyle={styles.cancelContainerStyle}
-                    />
+                    <View style={styles.container}>
+                      <TouchableOpacity onPress={this.onShowStoreProfileDropdown}>
+                        <Text style={styles.buttonContainer}>{translate('CREATE_STORE_SCREEN.STORE_PROFILE')}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.selectedOptionContainer} onPress={this.onShowStoreProfileDropdown}>
+                        <Text style={styles.selectedOptionStyle}>
+                        {this.state.storeProfileDropdown.picked || translate('CREATE_STORE_SCREEN.PROFILE')}</Text>
+                        <View style={styles.chevron_down}><Icon color={'white'} name='chevron-down'></Icon></View>
+                      </TouchableOpacity>
+                      <ModalFilterPicker
+                        visible={this.state.storeProfileDropdown.visible}
+                        onSelect={this.onSelectStoreProfileDropdown}
+                        onCancel={this.onCancelStoreProfileDropdown}
+                        options={options}
+                        listContainerStyle={styles.listContainerStyle}
+                        optionTextStyle={styles.optionTextStyle}
+                        showFilter={false}
+                        cancelContainerStyle={styles.cancelContainerStyle}
+                      />
+                    </View>
+                    <View style={styles.storeProfileDropdownUnderline}></View>
                   </View>
-                  <View style={styles.storeProfileDropdownUnderline}></View>
                   </View>
                 </View>
+                <View style={[styles.formRow, {marginTop: 10}]}>
+                <ZipcodeInput
+                  label={translate('CREATE_STORE_SCREEN.ZIP')}
+                  autoFocus={false}
+                  onceSubmitted={this.state.onceSubmitted}
+                  editable={true}
+                  style={inputStyle}
+                  translate={this.props.screenProps.translate}
+                  onChange={this.onZipcodeChanged}
+                />
+                <NumberInput
+                  label={translate('CREATE_STORE_SCREEN.TAX_RATE')}
+                  required={true}
+                  autoFocus={false}
+                  onceSubmitted={this.state.onceSubmitted}
+                  editable={true}
+                  style={inputStyle}
+                  translate={this.props.screenProps.translate}
+                  onChange={this.onTaxChanged}
+                />
+              </View>
                 <View style={styles.buttonsContainer}>
                   <Button
                   type={'btn-primary'}

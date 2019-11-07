@@ -14,6 +14,7 @@ export class Store {
   readonly zipcode: string;
   readonly storeIdentifier: string;
   readonly image?: string;
+  readonly tax: Number;
 
   constructor(item: any) {
     this.storeId = _.get(item, 'id', '');
@@ -29,6 +30,7 @@ export class Store {
     this.zipcode = _.get(item, 'address.zipcode', '');
     this.storeIdentifier = _.get(item, 'store_identifier', '');
     this.image = _.get(item, 'image', '');
+    this.tax = _.get(item, 'tax', 0);
   }
 
 }

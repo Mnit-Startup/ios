@@ -24,11 +24,6 @@ interface MerchantHomeScreenStyle {
   stateDropdownUnderline: ViewStyle;
   chevron_down: ImageStyle;
   storeProfileDropdownUnderline: ViewStyle;
-  zipInputContainer: ViewStyle;
-  zipInputLabel: TextStyle;
-  zipForgotStyle: TextStyle;
-  zipInput: TextStyle;
-  zipErrorStyle: TextStyle;
   errorLabelContainer: ViewStyle;
   formRow: ViewStyle;
   buttonsContainer: ViewStyle;
@@ -72,15 +67,15 @@ export const styles = StyleSheet.create<MerchantHomeScreenStyle>({
     padding: 10,
   },
   storeProfileContainer: {
-    padding: 10,
-    marginLeft: 20,
-    width: 300,
+    flex: 1,
+    marginLeft: 5,
   },
   buttonContainer: {
     color: '#A3ADB4',
   },
   stateDropdownContainer: {
     flex: 1,
+    paddingLeft: 10,
   },
   listContainerStyle: {
     justifyContent: 'center',
@@ -108,6 +103,7 @@ export const styles = StyleSheet.create<MerchantHomeScreenStyle>({
   stateDropdownUnderline: {
     borderBottomColor: '#A3ADB4',
     borderBottomWidth: 1,
+    marginRight: 15,
   },
   chevron_down: {
     paddingRight: 3,
@@ -127,8 +123,8 @@ export const styles = StyleSheet.create<MerchantHomeScreenStyle>({
   storeProfileDropdownUnderline: {
     borderBottomColor: '#A3ADB4',
     borderBottomWidth: 1,
-    marginLeft: 15,
     paddingLeft: 5,
+    marginRight: 10,
   },
   inputContainer: {
     padding: 10,
@@ -162,28 +158,6 @@ export const styles = StyleSheet.create<MerchantHomeScreenStyle>({
   manageStoreLogoSubTextStyle: {
     marginLeft: 50,
     marginRight: 20,
-  },
-  zipInputContainer: {
-    padding: 10,
-  },
-  zipInputLabel: {
-    fontSize: 16,
-  },
-  zipForgotStyle: {
-    fontSize: 16,
-  },
-  zipErrorStyle: {
-    color: 'red',
-  },
-  zipInput: {
-    fontSize: 18,
-    borderBottomColor: '#A3ADB4',
-    borderBottomWidth: 1,
-    width: 120,
-    paddingHorizontal: 15,
-    color: '#506C82',
-    paddingBottom: 10,
-    paddingTop: 14,
   },
   formRow: {
     flexDirection: 'row',
