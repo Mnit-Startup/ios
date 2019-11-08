@@ -8,7 +8,9 @@ export interface PointOfSaleScreenState extends ComponentState {
   // cart is a map of product id and its quantity
   checkoutCart: CheckoutCart;
   // subtotal of cart
-  subTotal: string;
+  subTotal: number;
+  // total tax on cart items
+  totalTax: number;
   storeLogo: string;
   loadingLogo: boolean;
   orientation: Orientation;

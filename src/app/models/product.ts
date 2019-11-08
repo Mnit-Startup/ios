@@ -3,12 +3,12 @@ import _ from 'lodash';
 export class Product {
   readonly productId?: string;
   readonly name: string;
-  readonly price: Number;
+  readonly price: number;
   readonly skuNumber: string;
   readonly taxable: boolean;
   readonly image?: string;
   readonly active: boolean;
-  readonly tax: Number;
+  readonly tax: number;
 
   constructor(item: any) {
     this.productId = _.get(item, 'id', '');

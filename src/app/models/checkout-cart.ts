@@ -8,17 +8,23 @@ export class CheckoutCart {
     this.cart = new Map<string, number>();
   }
 
-  addItemToCart(item) {
-    this.cart.set(item.productId, 1);
+  addItemToCart(item: Product) {
+    if (item.productId) {
+      if (this.cart.has(item.productId)) {
+        this.incrementItemQuantity(item.productId);
+      } else  {
+        this.cart.set(item.productId, 1);
+      }
+    }
   }
 
-  removeItemFromCart(item) {
-    this.cart.delete(item);
+  removeItemFromCart(id: string) {
+    this.cart.delete(id);
   }
 
-  getItemQuantity(item) {
-    if (this.cart.has(item)) {
-      return this.cart.get(item);
+  getItemQuantity(id: string) {
+    if (this.cart.has(id)) {
+      return this.cart.get(id);
     }
   }
 
@@ -29,27 +35,27 @@ export class CheckoutCart {
     return false;
   }
 
-  incrementItemQuantity(item) {
-    if (this.cart.has(item)) {
-      let quantity: number = this.cart.get(item);
+  incrementItemQuantity(id: string) {
+    if (this.cart.has(id)) {
+      let quantity: number = this.cart.get(id);
       quantity++;
-      this.cart.set(item, quantity);
+      this.cart.set(id, quantity);
     }
   }
 
-  decrementItemQuantity(item) {
-    if (this.cart.has(item)) {
-      let quantity: number = this.cart.get(item);
+  decrementItemQuantity(id: string) {
+    if (this.cart.has(id)) {
+      let quantity: number = this.cart.get(id);
       if (quantity === 1) {
-        this.removeItemFromCart(item);
+        this.removeItemFromCart(id);
       } else {
         quantity--;
-        this.cart.set(item, quantity);
+        this.cart.set(id, quantity);
       }
     }
   }
 
-  getSubtotal(productList: ProductList) {
+  getSubtotal(productList: ProductList): number {
     let subTotal = 0;
     this.cart.forEach((value, key) => {
       const product: Product = productList.getProductById(key);
