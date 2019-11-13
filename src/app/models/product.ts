@@ -20,4 +20,8 @@ export class Product {
     this.active = _.get(item, 'active', false);
     this.tax = _.get(item, 'tax', 0);
   }
+
+  taxAmount(): number {
+    return this.taxable ? this.price * this.tax / 100 : 0;
+  }
 }

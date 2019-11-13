@@ -34,8 +34,6 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     this.onLogoLoadStartFromSource = this.onLogoLoadStartFromSource.bind(this);
     this.onLogoLoadEndFromSource = this.onLogoLoadEndFromSource.bind(this);
     this.refresh = this.refresh.bind(this);
-    this.addItemTax = this.addItemTax.bind(this);
-    this.removeItemTax = this.removeItemTax.bind(this);
   }
 
   getOrientation = () => {
@@ -127,73 +125,47 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     this.refresh();
   }
 
-  /* addItemTax is a function which if item is taxable,
-    calculate its applicable tax using item price and item tax rate
-    add calculated tax amount to current total tax of cart
-    return totalTax applicable on cart items*/
-  addItemTax(item: Product): number {
-    const {totalTax} = this.state;
-    if (!item.taxable) {
-      return totalTax;
-    }
-    const taxAmount: number = Number(((item.price * item.tax) / 100).toFixed(2));
-    return totalTax + taxAmount;
-  }
-
-  /* removeItemTax is a function which if item is taxable,
-    calulate its applicable tax using item price and item tax rate
-    remove calculated tax amount from current total tax of cart
-    return totalTax applicable on cart items*/
-  removeItemTax(item: Product): number {
-    const {totalTax} = this.state;
-    if (!item.taxable) {
-      return totalTax;
-    }
-    const taxAmount: number = Number(((item.price * item.tax) / 100).toFixed(2));
-    return totalTax - taxAmount;
-  }
-
   addItemToCart(item: Product) {
-    const {checkoutCart} = this.state;
+    const {checkoutCart, totalTax} = this.state;
     checkoutCart.addItemToCart(item);
     const subTotal = this.getSubtotal();
-    const totalTax = this.addItemTax(item);
+    const tax = item.taxAmount();
     this.setState({
       checkoutCart,
-      subTotal: Number(subTotal.toFixed(2)),
-      totalTax,
+      subTotal,
+      totalTax: totalTax + tax,
     });
   }
 
   incrementQuantity(id: string) {
-    const {checkoutCart, productsList} = this.state;
+    const {checkoutCart, productsList, totalTax} = this.state;
     checkoutCart.incrementItemQuantity(id);
     const subTotal = this.getSubtotal();
     const item = _.find(productsList.products, (product) => product.productId === id);
-    let cartTax = 0;
+    let tax = 0;
     if (!_.isNil(item)) {
-      cartTax = this.addItemTax(item);
+      tax = item.taxAmount();
     }
     this.setState({
       checkoutCart,
-      subTotal: Number(subTotal.toFixed(2)),
-      totalTax: cartTax,
+      subTotal,
+      totalTax: totalTax + tax,
     });
   }
 
   decrementQuantity(id: string) {
-    const {checkoutCart, productsList} = this.state;
+    const {checkoutCart, productsList, totalTax} = this.state;
     checkoutCart.decrementItemQuantity(id);
     const subTotal = this.getSubtotal();
     const item = _.find(productsList.products, (product) => product.productId === id);
-    let cartTax = 0;
+    let tax = 0;
     if (!_.isNil(item)) {
-      cartTax = this.removeItemTax(item);
+      tax = item.taxAmount();
     }
     this.setState({
       checkoutCart,
-      subTotal: Number(subTotal.toFixed(2)),
-      totalTax: cartTax,
+      subTotal,
+      totalTax: totalTax - tax,
     });
   }
 
@@ -313,6 +285,10 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     });
   }
 
+  roundOff(n: number): number {
+    return _.round(n, 2);
+  }
+
   render() {
     const {productsList, checkoutCart, subTotal, componentState, storeLogo, loadingLogo, totalTax} = this.state;
     const {screenProps: {translate}} = this.props;
@@ -320,7 +296,10 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     const isItems = !(checkoutCart.isCartEmpty());
     const numberOfColumns = this.getNumberOfColumns();
     const isStoreLogo = !_.isEmpty(storeLogo);
-    const total = subTotal + totalTax;
+    const total: number = this.roundOff(subTotal + totalTax);
+    const roundedSubTotal = this.roundOff(subTotal);
+    const tax: number = this.roundOff(total - roundedSubTotal);
+
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
@@ -379,7 +358,7 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
                       <Text style={styles.subTotalText}>{translate('POINT_OF_SALE_SCREEN.SUBTOTAL')}</Text>
                       {
                         isItems && (
-                          <Text style={styles.subTotal}>{`$${subTotal}`}</Text>
+                          <Text style={styles.subTotal}>{`$${roundedSubTotal}`}</Text>
                         )
                       }
                     </View>
@@ -387,7 +366,7 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
                       <Text>{translate('POINT_OF_SALE_SCREEN.TAX')}</Text>
                       {
                         isItems && (
-                          <Text>{`$${totalTax}`}</Text>
+                          <Text>{`$${tax}`}</Text>
                         )
                       }
                     </View>
