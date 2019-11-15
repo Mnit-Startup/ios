@@ -223,5 +223,14 @@
     "TRANSACTION_COMPLETE": "Transaction Complete",
     "DONE": "DONE",
     "PAY": "Pay"
+  },
+  "TRANSACTION_LIST_SCREEN": {
+    "TRANSACTION_DETAIL": "Transaction Detail",
+    "TAX": "Tax",
+    "TOTAL": "Total",
+    "QUANTITY": "Quantity",
+    "AMOUNT": "Amount",
+    "PRICE": "Price",
+    "ITEM": "Item"
   }
 }

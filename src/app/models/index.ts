@@ -10,3 +10,4 @@ export {Employee} from './employee';
 export {EmployeeList} from './employee-list';
 export {EmployeeDetail} from './employee-detail';
 export {CheckoutCart} from './checkout-cart';
+export {TransactionList} from './transaction-list';
