@@ -3,3 +3,7 @@ export enum ButtonType {
   SECONDARY = 'btn-secondary',
   DANGER= 'btn-danger',
 }
+
+export enum ButtonSize {
+  SMALL = 'sm',
+}

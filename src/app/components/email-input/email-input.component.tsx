@@ -54,7 +54,9 @@ export class EmailInput extends React.Component<EmailInputProps, EmailInputState
     return (
       <View style={this.props.style.containerStyle}>
         <View style={emailInputStyle.inputLabelContainer}>
-          <Text style={emailInputStyle.inputLabelText}>{this.translate('EMAIL_INPUT_COMPONENT.EMAIL_INPUT_TITLE')}</Text>
+          <Text style={[emailInputStyle.inputLabelText, this.props.style.labelStyle]}>
+            {this.translate('EMAIL_INPUT_COMPONENT.EMAIL_INPUT_TITLE')}
+          </Text>
         </View>
         <View>
           <TextInput

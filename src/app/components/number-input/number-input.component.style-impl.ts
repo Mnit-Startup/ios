@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-export const priceInputStyle = StyleSheet.create({
+export const numberInputStyle = StyleSheet.create({
   inputLabelContainer: {
     flexDirection: 'row',
     paddingLeft: 15,

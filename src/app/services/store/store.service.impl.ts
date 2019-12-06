@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {StoreService} from './store.service';
-import {Store, Product, Image, ProductList, EmployeeDetail, Employee, Transaction} from '../../models';
+import {Store, Product, Image, ProductList, EmployeeDetail, Employee, Transaction, Receipt} from '../../models';
 import {StoreList} from '../../models/store-list';
 import {ApiServiceImpl} from '../api.service.impl';
 import {ServiceResponse} from '../service.response';
@@ -51,6 +51,7 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
         store_profile: store.storeProfile,
         store_identifier: store.storeIdentifier,
         image: store.image,
+        tax: store.tax,
       };
       const userId = await this.getUserAccountId();
       const response = await this.post(`/account/${userId}/store`, storeEntries);
@@ -71,6 +72,7 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
         taxable: product.taxable,
         image: product.image,
         active: product.active,
+        tax: product.tax,
       };
       const userId = await this.getUserAccountId();
       const response = await this.post(`/account/${userId}/store/${storeId}/product`, productEntries);
@@ -95,6 +97,7 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
         taxable: product.taxable,
         image: product.image,
         active: product.active,
+        tax: product.tax,
       };
       const userId = await this.getUserAccountId();
       const response = await this.put(`/account/${userId}/store/${storeId}/product/${productId}`, productEntries);
@@ -245,5 +248,19 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
       store = new Store(response.data);
     }
     return new ServiceResponse(store);
+  }
+
+  async emailReceipt(
+    transactionId: string,
+    receiptId: string,
+    email: string,
+  ): Promise<ServiceResponse<Receipt>> {
+    try {
+      const response = await this.post(`/transaction/${transactionId}/receipt/${receiptId}/email`, {email});
+      const receipt = new Receipt(response.data);
+      return new ServiceResponse(receipt);
+    } catch (e) {
+      return new ServiceResponse<Receipt>(undefined, ApiServiceImpl.parseError(e));
+    }
   }
 }

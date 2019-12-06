@@ -11,6 +11,7 @@ import {PaymentModeScreenState} from './payment-mode.state';
 import {Cart, Button} from '../../../components';
 import {CheckoutCart, Transaction} from '../../../models';
 import * as Progress from 'react-native-progress';
+import {PaymentMode} from '../../../shared';
 
 export class PaymentModeScreen extends React.Component<AppNavigationProps, PaymentModeScreenState> {
   constructor(props: AppNavigationProps) {
@@ -80,7 +81,7 @@ export class PaymentModeScreen extends React.Component<AppNavigationProps, Payme
     }
   }
 
-  async createSale() {
+  async createSale(paymentMode: string) {
     const {navigation: {getParam, navigate}} = this.props;
     const checkoutCart: CheckoutCart = getParam('checkoutCart');
     const storeId = getParam('store_id');
@@ -96,7 +97,11 @@ export class PaymentModeScreen extends React.Component<AppNavigationProps, Payme
           componentState: ComponentViewState.LOADED,
         });
         const transaction: Transaction = response.data;
-        navigate('QRCode', {store_id: storeId, merchant_id: merchantId, checkoutCart, transaction_id: transaction.id});
+        if (paymentMode === PaymentMode.KADIMA) {
+          navigate('QRCode', {store_id: storeId, merchant_id: merchantId, checkoutCart, transaction_id: transaction.id});
+        } else if (paymentMode === PaymentMode.CASH) {
+          navigate('TenderAmount', {store_id: storeId, merchant_id: merchantId, checkoutCart, transaction_id: transaction.id});
+        }
       } else {
         const msg = response.error || this.translate('no_internet');
         Alert.alert(msg);
@@ -191,12 +196,12 @@ export class PaymentModeScreen extends React.Component<AppNavigationProps, Payme
               <View style={[styles.paymentModeSection, this.getPaymentModeSectionStyle()]}>
                 <View style={[styles.paymentModeContainer, this.getPaymentModeContainerStyle()]}>
                   <View>
-                    <TouchableOpacity onPress={() => this.createSale()} style={styles.kadimaContainer}>
+                    <TouchableOpacity onPress={() => this.createSale(PaymentMode.KADIMA)} style={styles.kadimaContainer}>
                       <Text style={styles.kadimaText}>{translate('PAYMENT_MODE_SCREEN.KADIMA')}</Text>
                       <Text style={styles.coinText}>{translate('PAYMENT_MODE_SCREEN.COIN')}</Text>
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row'}}>
-                      <TouchableOpacity style={styles.cashContainer}>
+                      <TouchableOpacity style={styles.cashContainer} onPress={() => this.createSale(PaymentMode.CASH)}>
                         <Text style={styles.cashText}>{translate('PAYMENT_MODE_SCREEN.CASH')}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity style={styles.creditContainer}>

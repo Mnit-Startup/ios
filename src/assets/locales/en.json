@@ -79,7 +79,8 @@
     "PROFILE": "Profile?",
     "CREATE_STORE_SUCCESS": "Your store has been created successfully",
     "INVALID_STATE": "Please specify a valid state to continue",
-    "STORE_IDENTIFIER": "STORE ID"
+    "STORE_IDENTIFIER": "STORE ID",
+    "TAX_RATE": "TAX RATE (%)"
   },
   "MERCHANT_DASHBOARD": {
     "CREATE_NEW_STORE": "CREATE NEW STORE",
@@ -222,5 +223,36 @@
     "TRANSACTION_COMPLETE": "Transaction Complete",
     "DONE": "DONE",
     "PAY": "Pay"
+  },
+  "TRANSACTION_LIST_SCREEN": {
+    "TRANSACTION_DETAIL": "Transaction Detail",
+    "TAX": "Tax",
+    "TOTAL": "Total",
+    "QUANTITY": "Quantity",
+    "AMOUNT": "Amount",
+    "PRICE": "Price",
+    "ITEM": "Item"
+  },
+  "TENDER_AMOUNT_SCREEN": {
+    "AMOUNT_TENDERED": "Amount Tendered",
+    "TENDERED_INVALID_AMOUNT": "Please tender a valid amount not less than transaction amount"
+  },
+  "CUSTOMER_CHANGE_SCREEN": {
+    "CUSTOMER_CHANGE": "Customer Change",
+    "EMAIL": "EMAIL",
+    "PAPER": "PAPER",
+    "BOTH": "BOTH",
+    "NONE": "NONE",
+    "AMOUNT": "AMOUNT",
+    "RECEIPT": "Receipt?"
+  },
+  "CUSTOMER_EMAIL_SCREEN": {
+    "CUSTOMER_EMAIL": "Customer Email",
+    "EMAIL": "EMAIL",
+    "PAPER": "PAPER",
+    "BOTH": "BOTH",
+    "NONE": "NONE",
+    "RECEIPT": "Receipt?",
+    "EMAIL_SUCCESS": "Receipt has been emailed successfully"
   }
 }

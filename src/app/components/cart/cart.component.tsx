@@ -119,8 +119,12 @@ export class Cart extends React.Component<CartProps, CartState> {
     const {productsList} = this.state;
     const isProductList = productsList.products.length > 0 ? true : false;
     let subTotal;
+    let total;
+    let tax;
     if (isProductList) {
-      subTotal = cart.getSubtotal(productsList);
+      subTotal = cart.getRoundedSubtotal(productsList);
+      total = cart.getTotal(productsList);
+      tax = cart.getTotalTax(productsList);
     }
     const isItems = !_.isNil(subTotal);
     return (
@@ -145,6 +149,11 @@ export class Cart extends React.Component<CartProps, CartState> {
               </View>
               <View style={cartStyle.taxContainer}>
                 <Text>{translate('CART_COMPONENT.TAX')}</Text>
+                {
+                    isItems && (
+                      <Text style={cartStyle.totalPriceText}>{`$${tax}`}</Text>
+                    )
+                  }
               </View>
               <View style={cartStyle.tipContainer}>
                 <Text>{translate('CART_COMPONENT.TIP')}</Text>
@@ -153,7 +162,7 @@ export class Cart extends React.Component<CartProps, CartState> {
                 <Text style={cartStyle.totalText}>{translate('CART_COMPONENT.TOTAL')}</Text>
                   {
                     isItems && (
-                      <Text style={cartStyle.totalPriceText}>{`$${subTotal}`}</Text>
+                      <Text style={cartStyle.totalPriceText}>{`$${total}`}</Text>
                     )
                   }
               </View>

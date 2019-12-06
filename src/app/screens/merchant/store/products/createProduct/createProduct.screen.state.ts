@@ -7,7 +7,7 @@ export interface CreateProductScreenState extends ComponentState {
     valid: boolean,
   };
   price: {
-    value: string,
+    value: Number,
     valid: boolean,
   };
   skuNumber: {
@@ -26,4 +26,5 @@ export interface CreateProductScreenState extends ComponentState {
   onceSubmitted: boolean;
   storeLogo: string;
   loadingLogo: boolean;
+  storeTax: Number;
 }

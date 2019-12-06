@@ -8,5 +8,6 @@ export interface TransactionService {
 
   pay(
     transactionId: string,
+    paymentMode: string,
   ): Promise<ServiceResponse<Transaction>>;
 }

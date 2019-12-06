@@ -19,7 +19,8 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     this.state = {
       productsList: new ProductList(),
       checkoutCart: new CheckoutCart(),
-      subTotal: '',
+      subTotal: 0,
+      totalTax: 0,
       loadingLogo: false,
       storeLogo: '',
       orientation: Orientation.UNKNOWN,
@@ -124,33 +125,47 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     this.refresh();
   }
 
-  addItemToCart(item) {
-    const {checkoutCart} = this.state;
+  addItemToCart(item: Product) {
+    const {checkoutCart, totalTax} = this.state;
     checkoutCart.addItemToCart(item);
     const subTotal = this.getSubtotal();
+    const tax = item.taxAmount();
     this.setState({
       checkoutCart,
-      subTotal: subTotal.toFixed(2),
+      subTotal,
+      totalTax: totalTax + tax,
     });
   }
 
-  incrementQuantity(item) {
-    const {checkoutCart} = this.state;
-    checkoutCart.incrementItemQuantity(item);
+  incrementQuantity(id: string) {
+    const {checkoutCart, productsList, totalTax} = this.state;
+    checkoutCart.incrementItemQuantity(id);
     const subTotal = this.getSubtotal();
+    const item = _.find(productsList.products, (product) => product.productId === id);
+    let tax = 0;
+    if (!_.isNil(item)) {
+      tax = item.taxAmount();
+    }
     this.setState({
       checkoutCart,
-      subTotal: subTotal.toFixed(2),
+      subTotal,
+      totalTax: totalTax + tax,
     });
   }
 
-  decrementQuantity(item) {
-    const {checkoutCart} = this.state;
-    checkoutCart.decrementItemQuantity(item);
+  decrementQuantity(id: string) {
+    const {checkoutCart, productsList, totalTax} = this.state;
+    checkoutCart.decrementItemQuantity(id);
     const subTotal = this.getSubtotal();
+    const item = _.find(productsList.products, (product) => product.productId === id);
+    let tax = 0;
+    if (!_.isNil(item)) {
+      tax = item.taxAmount();
+    }
     this.setState({
       checkoutCart,
-      subTotal: subTotal.toFixed(2),
+      subTotal,
+      totalTax: totalTax - tax,
     });
   }
 
@@ -270,13 +285,21 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
     });
   }
 
+  roundOff(n: number): number {
+    return _.round(n, 2);
+  }
+
   render() {
-    const {productsList, checkoutCart, subTotal, componentState, storeLogo, loadingLogo} = this.state;
+    const {productsList, checkoutCart, subTotal, componentState, storeLogo, loadingLogo, totalTax} = this.state;
     const {screenProps: {translate}} = this.props;
     const isComponentLoading = componentState === ComponentViewState.LOADING;
-    const isItems = !_.isEmpty(subTotal);
+    const isItems = !(checkoutCart.isCartEmpty());
     const numberOfColumns = this.getNumberOfColumns();
     const isStoreLogo = !_.isEmpty(storeLogo);
+    const total: number = this.roundOff(subTotal + totalTax);
+    const roundedSubTotal = this.roundOff(subTotal);
+    const tax: number = this.roundOff(total - roundedSubTotal);
+
     return (
       <SafeAreaView style={appStyles.safeAreaView}>
         <ScrollView>
@@ -335,12 +358,17 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
                       <Text style={styles.subTotalText}>{translate('POINT_OF_SALE_SCREEN.SUBTOTAL')}</Text>
                       {
                         isItems && (
-                          <Text style={styles.subTotal}>{`$${subTotal}`}</Text>
+                          <Text style={styles.subTotal}>{`$${roundedSubTotal}`}</Text>
                         )
                       }
                     </View>
                     <View style={styles.taxContainer}>
-                      <Text>{translate('POINT_OF_SALE_SCREEN.PAY')}</Text>
+                      <Text>{translate('POINT_OF_SALE_SCREEN.TAX')}</Text>
+                      {
+                        isItems && (
+                          <Text style={styles.subTotal}>{`$${tax}`}</Text>
+                        )
+                      }
                     </View>
                     <View style={styles.tipContainer}>
                       <Text>{translate('POINT_OF_SALE_SCREEN.TIP')}</Text>
@@ -349,7 +377,7 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
                       <Text style={styles.totalText}>{translate('POINT_OF_SALE_SCREEN.TOTAL')}</Text>
                       {
                         isItems && (
-                          <Text style={styles.totalPriceText}>{`$${subTotal}`}</Text>
+                          <Text style={styles.totalPriceText}>{`$${total}`}</Text>
                         )
                       }
                     </View>
