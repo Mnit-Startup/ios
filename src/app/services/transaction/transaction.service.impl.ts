@@ -22,9 +22,10 @@ export class TransactionServiceImpl extends ApiServiceImpl implements Transactio
     }
   }
 
-  async pay(transactionId: string): Promise<ServiceResponse<Transaction>> {
+  async pay(transactionId: string, paymentMode: string): Promise<ServiceResponse<Transaction>> {
     try {
-      const response = await this.patch(`/transaction/${transactionId}/pay`, undefined);
+      const mode_of_payment = paymentMode;
+      const response = await this.patch(`/transaction/${transactionId}/pay`, {mode_of_payment});
       const transaction = new Transaction(response.data);
       return new ServiceResponse<Transaction>(transaction);
     } catch (e) {

@@ -12,7 +12,7 @@ export interface NumberInputProps {
   editable: boolean;
   autoFocus: boolean;
   translate: ((key: any, config: any) => string) & MemoizedFunction;
-  onChange?: ((value: Number, isValid: boolean) => void);
+  onChange?: ((value: number, isValid: boolean) => void);
   onceSubmitted: boolean;
   label: string;
   required: boolean;

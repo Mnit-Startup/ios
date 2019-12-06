@@ -9,6 +9,7 @@ export class Transaction {
   readonly merchantName: string;
   readonly paymentStatus: string;
   readonly cart: Array<CartItem>;
+  readonly receipt?: string;
 
   constructor(item: any) {
     this.id = _.get(item, 'id', '');
@@ -21,6 +22,7 @@ export class Transaction {
       const cartItem = new CartItem({product: new Product(product), quantity: product.quantity});
       this.cart.push(cartItem);
     });
+    this.receipt = _.get(item, 'receipt', '');
   }
 
   calculateTax(): number {

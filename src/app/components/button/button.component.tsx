@@ -3,12 +3,14 @@ import React from 'react';
 import {Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {ButtonComponentProps} from './button.component.props';
 import {buttonStyles as styles} from './button.component.style-impl';
-import {ButtonType} from './button.component.type';
+import {ButtonType, ButtonSize} from './button.component.type';
 
 export class Button extends React.Component<ButtonComponentProps> {
 
-    getSubmitButtonStyle(type: string) {
-      if (type === ButtonType.PRIMARY) {
+    getSubmitButtonStyle(type: string, size?: string) {
+      if (type === ButtonType.PRIMARY && size === ButtonSize.SMALL) {
+        return [styles.buttonPrimary, styles.buttonSm];
+      } else if (type === ButtonType.PRIMARY) {
         return styles.buttonPrimary;
       } else if (type === ButtonType.DANGER) {
         return styles.buttonDanger;
@@ -30,7 +32,7 @@ export class Button extends React.Component<ButtonComponentProps> {
 
   render() {
     const {text, style, ...props} = this.props;
-    let buttonStyle = this.getSubmitButtonStyle(this.props.type);
+    let buttonStyle = this.getSubmitButtonStyle(this.props.type, this.props.size);
     if (this.props.disabled) {
       buttonStyle = _.assign(_.cloneDeep(buttonStyle), {
         opacity: 0.5,

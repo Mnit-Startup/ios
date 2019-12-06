@@ -366,7 +366,7 @@ export class PointOfSaleScreen extends React.Component<AppNavigationProps, Point
                       <Text>{translate('POINT_OF_SALE_SCREEN.TAX')}</Text>
                       {
                         isItems && (
-                          <Text>{`$${tax}`}</Text>
+                          <Text style={styles.subTotal}>{`$${tax}`}</Text>
                         )
                       }
                     </View>

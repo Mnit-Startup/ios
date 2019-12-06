@@ -10,6 +10,7 @@ import {PayScreenState} from './pay.screen.state';
 import {styles} from './pay.screen.style-impl';
 import {CurrencyText} from '../../../components/currency-text/currency-text.component';
 import {Button} from '../../../components';
+import {PaymentMode} from '../../../shared';
 
 export class PayScreen extends React.Component<AppNavigationProps, PayScreenState> {
 
@@ -124,7 +125,7 @@ export class PayScreen extends React.Component<AppNavigationProps, PayScreenStat
     this.setState({
       componentState: ComponentViewState.LOADING,
     });
-    const response = await transactionService.pay(transaction.id);
+    const response = await transactionService.pay(transaction.id, PaymentMode.KADIMA);
     if (response.hasData()
     && response.data) {
       this.setState({

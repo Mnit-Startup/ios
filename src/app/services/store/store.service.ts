@@ -1,5 +1,5 @@
 import {ServiceResponse} from '../service.response';
-import {Store, Product, Image, StoreList, ProductList, EmployeeDetail, Employee, Transaction} from '../../models';
+import {Store, Product, Image, StoreList, ProductList, EmployeeDetail, Employee, Transaction, Receipt} from '../../models';
 
 export interface StoreService {
 
@@ -58,5 +58,11 @@ export interface StoreService {
     storeId: string,
     merchantId?: string,
   ): Promise<ServiceResponse<Store>>;
+
+  emailReceipt(
+    transactionId: string,
+    receiptId: string,
+    email: string,
+  ): Promise<ServiceResponse<Receipt>>;
 
 }

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {Product} from './product';
 import {ProductList} from './product-list';
 
@@ -62,5 +63,24 @@ export class CheckoutCart {
       subTotal += Number(product.price) * value;
     });
     return subTotal;
+  }
+
+  getRoundedSubtotal(productList: ProductList): number {
+    const subTotal = this.getSubtotal(productList);
+    return _.round(subTotal, 2);
+  }
+
+  getTotal(productList: ProductList): number {
+    let total = 0;
+    this.cart.forEach((value, key) => {
+      const product: Product = productList.getProductById(key);
+      total += (product.price + product.taxAmount()) * value ;
+    });
+    return _.round(total, 2);
+  }
+
+  getTotalTax(productList: ProductList) {
+    const totalTax = this.getTotal(productList) - this.getRoundedSubtotal(productList);
+    return _.round(totalTax, 2);
   }
 }

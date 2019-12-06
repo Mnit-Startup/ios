@@ -232,5 +232,27 @@
     "AMOUNT": "Amount",
     "PRICE": "Price",
     "ITEM": "Item"
+  },
+  "TENDER_AMOUNT_SCREEN": {
+    "AMOUNT_TENDERED": "Amount Tendered",
+    "TENDERED_INVALID_AMOUNT": "Please tender a valid amount not less than transaction amount"
+  },
+  "CUSTOMER_CHANGE_SCREEN": {
+    "CUSTOMER_CHANGE": "Customer Change",
+    "EMAIL": "EMAIL",
+    "PAPER": "PAPER",
+    "BOTH": "BOTH",
+    "NONE": "NONE",
+    "AMOUNT": "AMOUNT",
+    "RECEIPT": "Receipt?"
+  },
+  "CUSTOMER_EMAIL_SCREEN": {
+    "CUSTOMER_EMAIL": "Customer Email",
+    "EMAIL": "EMAIL",
+    "PAPER": "PAPER",
+    "BOTH": "BOTH",
+    "NONE": "NONE",
+    "RECEIPT": "Receipt?",
+    "EMAIL_SUCCESS": "Receipt has been emailed successfully"
   }
 }

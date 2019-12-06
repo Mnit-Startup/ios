@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {StoreService} from './store.service';
-import {Store, Product, Image, ProductList, EmployeeDetail, Employee, Transaction} from '../../models';
+import {Store, Product, Image, ProductList, EmployeeDetail, Employee, Transaction, Receipt} from '../../models';
 import {StoreList} from '../../models/store-list';
 import {ApiServiceImpl} from '../api.service.impl';
 import {ServiceResponse} from '../service.response';
@@ -248,5 +248,19 @@ export class StoreServiceImpl extends ApiServiceImpl implements StoreService {
       store = new Store(response.data);
     }
     return new ServiceResponse(store);
+  }
+
+  async emailReceipt(
+    transactionId: string,
+    receiptId: string,
+    email: string,
+  ): Promise<ServiceResponse<Receipt>> {
+    try {
+      const response = await this.post(`/transaction/${transactionId}/receipt/${receiptId}/email`, {email});
+      const receipt = new Receipt(response.data);
+      return new ServiceResponse(receipt);
+    } catch (e) {
+      return new ServiceResponse<Receipt>(undefined, ApiServiceImpl.parseError(e));
+    }
   }
 }

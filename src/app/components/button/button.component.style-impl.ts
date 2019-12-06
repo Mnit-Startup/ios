@@ -39,4 +39,7 @@ export const buttonStyles = StyleSheet.create({
     color: '#506C82',
   }),
   buttonDangerText: <TextStyle> buttonText,
+  buttonSm: <ViewStyle> _.assign(_.clone(button), {
+    width: 150,
+  }),
 });

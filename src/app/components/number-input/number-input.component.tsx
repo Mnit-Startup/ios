@@ -64,7 +64,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     return (
       <View style={this.props.style.containerStyle}>
         <View style={numberInputStyle.inputLabelContainer}>
-          <Text style={numberInputStyle.inputLabelText}>{this.props.label}</Text>
+          <Text style={[numberInputStyle.inputLabelText, this.props.style.labelStyle]}>{this.props.label}</Text>
         </View>
         <View>
           <TextInput
